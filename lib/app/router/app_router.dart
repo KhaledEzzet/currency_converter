@@ -1,7 +1,9 @@
 import 'package:currency_converter/app/router/app_shell.dart';
 import 'package:currency_converter/app/router/custom_route_observer.dart';
 import 'package:currency_converter/feature/charts/view/charts_view.dart';
+import 'package:currency_converter/feature/convert/cubit/convert_cubit.dart';
 import 'package:currency_converter/feature/convert/view/convert_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 /// Holds all the routes that are defined in the app.
@@ -22,7 +24,12 @@ final class AppRouter {
               GoRoute(
                 path: '/convert',
                 name: 'convert',
-                builder: (context, state) => const ConvertView(),
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (_) => ConvertCubit(),
+                    child: const ConvertView(),
+                  );
+                },
               ),
             ],
           ),
