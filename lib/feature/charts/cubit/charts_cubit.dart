@@ -1,9 +1,30 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'charts_state.dart';
 
 class ChartsCubit extends Cubit<ChartsState> {
   ChartsCubit() : super(ChartsState.initial());
+
+  final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
+
+  void syncFormFields() {
+    final formState = formKey.currentState;
+    if (formState == null) {
+      return;
+    }
+
+    final fromField = formState.fields['chart_from_currency'];
+    if (fromField?.value != state.fromCurrency) {
+      fromField?.didChange(state.fromCurrency);
+    }
+
+    final toField = formState.fields['chart_to_currency'];
+    if (toField?.value != state.toCurrency) {
+      toField?.didChange(state.toCurrency);
+    }
+  }
 
   void updateFromCurrency(String? currency) {
     if (currency == null) {
@@ -43,6 +64,8 @@ class ChartsCubit extends Cubit<ChartsState> {
     final updatedRange = selectedRange ?? state.selectedRange;
     final rate = _rateForPair(updatedFrom, updatedTo);
     final chartPoints = _buildChartPoints(rate, updatedRange);
+    final (minValue, maxValue, yInterval) =
+        ChartsState.calculateStats(chartPoints);
 
     emit(
       state.copyWith(
@@ -52,6 +75,9 @@ class ChartsCubit extends Cubit<ChartsState> {
         selectedRange: updatedRange,
         rate: rate,
         chartPoints: chartPoints,
+        minValue: minValue,
+        maxValue: maxValue,
+        yInterval: yInterval,
       ),
     );
   }

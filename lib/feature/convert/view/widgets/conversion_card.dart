@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class ConversionCard extends StatelessWidget {
   const ConversionCard({
-    super.key,
     required this.state,
     required this.currency,
+    super.key,
   });
 
   final ConvertState state;
@@ -37,7 +37,10 @@ class ConversionCard extends StatelessWidget {
           vertical: 12,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.25),
+          color: Theme.of(context)
+              .colorScheme
+              .surfaceContainerHighest
+              .withOpacity(0.25),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -70,8 +73,8 @@ class ConversionCard extends StatelessWidget {
                 ],
               ],
             ),
-            const SizedBox(width: 8),
-            const Icon(Icons.drag_handle, size: 18),
+            // const SizedBox(width: 8),
+            // const Icon(Icons.drag_handle, size: 18),
           ],
         ),
       ),

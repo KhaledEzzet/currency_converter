@@ -18,6 +18,9 @@ class ChartsState {
     required this.selectedRange,
     required this.rate,
     required this.chartPoints,
+    required this.minValue,
+    required this.maxValue,
+    required this.yInterval,
   });
 
   final ChartsStatus status;
@@ -29,6 +32,9 @@ class ChartsState {
   final String selectedRange;
   final double rate;
   final List<ChartsPoint> chartPoints;
+  final double minValue;
+  final double maxValue;
+  final double yInterval;
 
   factory ChartsState.initial() {
     const currencies = <String>['USD', 'EUR', 'GBP', 'JPY'];
@@ -52,6 +58,7 @@ class ChartsState {
     const selectedRange = '1W';
     final rate = currencyRates[toCurrency]! / currencyRates[fromCurrency]!;
     final chartPoints = _buildInitialChartPoints(rate, selectedRange);
+    final (minValue, maxValue, yInterval) = calculateStats(chartPoints);
 
     return ChartsState(
       status: ChartsStatus.initial,
@@ -63,6 +70,9 @@ class ChartsState {
       selectedRange: selectedRange,
       rate: rate,
       chartPoints: chartPoints,
+      minValue: minValue,
+      maxValue: maxValue,
+      yInterval: yInterval,
     );
   }
 
@@ -76,6 +86,9 @@ class ChartsState {
     String? selectedRange,
     double? rate,
     List<ChartsPoint>? chartPoints,
+    double? minValue,
+    double? maxValue,
+    double? yInterval,
   }) {
     return ChartsState(
       status: status ?? this.status,
@@ -87,6 +100,9 @@ class ChartsState {
       selectedRange: selectedRange ?? this.selectedRange,
       rate: rate ?? this.rate,
       chartPoints: chartPoints ?? this.chartPoints,
+      minValue: minValue ?? this.minValue,
+      maxValue: maxValue ?? this.maxValue,
+      yInterval: yInterval ?? this.yInterval,
     );
   }
 
@@ -280,5 +296,21 @@ class ChartsState {
           -0.002,
         ];
     }
+  }
+
+  static (double minValue, double maxValue, double yInterval) calculateStats(
+    List<ChartsPoint> points,
+  ) {
+    if (points.isEmpty) {
+      return (0, 0, 1);
+    }
+
+    final values = points.map((point) => point.value).toList();
+    final minValue = values.reduce((a, b) => a < b ? a : b);
+    final maxValue = values.reduce((a, b) => a > b ? a : b);
+    final range = maxValue - minValue;
+    final interval = range == 0 ? 1.0 : range;
+
+    return (minValue, maxValue, interval);
   }
 }
