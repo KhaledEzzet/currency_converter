@@ -1,0 +1,42 @@
+import 'package:currency_converter/feature/convert/cubit/convert_state.dart';
+import 'package:currency_converter/feature/convert/view/widgets/amount_field.dart';
+import 'package:currency_converter/feature/convert/view/widgets/currency_dropdown_field.dart';
+import 'package:flutter/material.dart';
+
+class FromRow extends StatelessWidget {
+  const FromRow({
+    super.key,
+    required this.state,
+    required this.onCurrencyChanged,
+    required this.onAmountChanged,
+  });
+
+  final ConvertState state;
+  final ValueChanged<String?> onCurrencyChanged;
+  final ValueChanged<String> onAmountChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final symbol = state.currencySymbols[state.fromCurrency] ?? '';
+
+    return Row(
+      children: [
+        Expanded(
+          flex: 4,
+          child: CurrencyDropdownField(
+            state: state,
+            onChanged: onCurrencyChanged,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          flex: 7,
+          child: AmountField(
+            symbol: symbol,
+            onChanged: onAmountChanged,
+          ),
+        ),
+      ],
+    );
+  }
+}

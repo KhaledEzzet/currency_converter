@@ -5,6 +5,7 @@ class ConvertState {
     required this.status,
     required this.currencies,
     required this.currencySymbols,
+    required this.currencyFlags,
     required this.currencyRates,
     required this.fromCurrency,
     required this.amountText,
@@ -14,6 +15,7 @@ class ConvertState {
   final ConvertStatus status;
   final List<String> currencies;
   final Map<String, String> currencySymbols;
+  final Map<String, String> currencyFlags;
   final Map<String, double> currencyRates;
   final String? fromCurrency;
   final String amountText;
@@ -28,6 +30,12 @@ class ConvertState {
         'EUR': '\u20AC',
         'GBP': '\u00A3',
         'JPY': '\u00A5',
+      },
+      currencyFlags: <String, String>{
+        'USD': 'us',
+        'EUR': 'eu',
+        'GBP': 'gb',
+        'JPY': 'jp',
       },
       currencyRates: <String, double>{
         'USD': 1,
@@ -45,6 +53,7 @@ class ConvertState {
     ConvertStatus? status,
     List<String>? currencies,
     Map<String, String>? currencySymbols,
+    Map<String, String>? currencyFlags,
     Map<String, double>? currencyRates,
     String? fromCurrency,
     String? amountText,
@@ -54,6 +63,7 @@ class ConvertState {
       status: status ?? this.status,
       currencies: currencies ?? this.currencies,
       currencySymbols: currencySymbols ?? this.currencySymbols,
+      currencyFlags: currencyFlags ?? this.currencyFlags,
       currencyRates: currencyRates ?? this.currencyRates,
       fromCurrency: fromCurrency ?? this.fromCurrency,
       amountText: amountText ?? this.amountText,

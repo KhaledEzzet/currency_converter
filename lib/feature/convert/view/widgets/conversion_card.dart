@@ -1,0 +1,80 @@
+import 'package:currency_converter/feature/convert/cubit/convert_state.dart';
+import 'package:currency_converter/feature/convert/view/widgets/currency_flag.dart';
+import 'package:flutter/material.dart';
+
+class ConversionCard extends StatelessWidget {
+  const ConversionCard({
+    super.key,
+    required this.state,
+    required this.currency,
+  });
+
+  final ConvertState state;
+  final String currency;
+
+  @override
+  Widget build(BuildContext context) {
+    final converted = state.convertedAmounts[currency];
+    final convertedText =
+        converted == null ? '--' : converted.toStringAsFixed(2);
+    final targetSymbol = state.currencySymbols[currency] ?? '';
+    final displayValue =
+        targetSymbol.isEmpty ? convertedText : '$targetSymbol $convertedText';
+    final fromCurrency = state.fromCurrency;
+    final rateFrom = state.currencyRates[fromCurrency] ?? 1;
+    final rateTo = state.currencyRates[currency] ?? 1;
+    final rateValue =
+        rateFrom == 0 ? null : (rateTo / rateFrom).toStringAsFixed(4);
+    final rateText = fromCurrency == null || rateValue == null
+        ? ''
+        : '1 $fromCurrency = $rateValue $currency';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 12,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.25),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            CurrencyFlag(code: state.currencyFlags[currency]),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                currency,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  displayValue,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (rateText.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    rateText,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ],
+            ),
+            const SizedBox(width: 8),
+            const Icon(Icons.drag_handle, size: 18),
+          ],
+        ),
+      ),
+    );
+  }
+}
