@@ -7,18 +7,22 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 class CurrencyDropdownField extends StatelessWidget {
   const CurrencyDropdownField({
     super.key,
+    required this.name,
     required this.state,
     required this.onChanged,
+    this.initialValue,
   });
 
+  final String name;
   final ConvertState state;
   final ValueChanged<String?> onChanged;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
     return FormBuilderDropdown<String>(
-      name: 'from_currency',
-      initialValue: state.fromCurrency,
+      name: name,
+      initialValue: initialValue ?? state.fromCurrency,
       decoration: InputDecoration(
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(
