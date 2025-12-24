@@ -1,5 +1,6 @@
 import 'package:currency_converter/app/router/app_shell.dart';
 import 'package:currency_converter/app/router/custom_route_observer.dart';
+import 'package:currency_converter/feature/charts/cubit/charts_cubit.dart';
 import 'package:currency_converter/feature/charts/view/charts_view.dart';
 import 'package:currency_converter/feature/convert/cubit/convert_cubit.dart';
 import 'package:currency_converter/feature/convert/view/convert_view.dart';
@@ -38,7 +39,12 @@ final class AppRouter {
               GoRoute(
                 path: '/charts',
                 name: 'charts',
-                builder: (context, state) => const ChartsView(),
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (_) => ChartsCubit(),
+                    child: const ChartsView(),
+                  );
+                },
               ),
             ],
           ),

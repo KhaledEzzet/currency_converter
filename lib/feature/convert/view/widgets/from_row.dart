@@ -25,7 +25,9 @@ class FromRow extends StatelessWidget {
           flex: 4,
           child: CurrencyDropdownField(
             name: 'from_currency',
-            state: state,
+            currencies: state.currencies,
+            currencyFlags: state.currencyFlags,
+            initialValue: state.fromCurrency,
             onChanged: onCurrencyChanged,
           ),
         ),
