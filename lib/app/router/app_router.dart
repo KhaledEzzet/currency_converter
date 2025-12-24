@@ -1,17 +1,20 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:currency_converter/app/router/app_router.gr.dart';
+import 'package:currency_converter/app/router/custom_route_observer.dart';
+import 'package:currency_converter/feature/home/view/home_view.dart';
+import 'package:go_router/go_router.dart';
 
-@AutoRouterConfig(replaceInRouteName: 'View,Route')
+/// Holds all the routes that are defined in the app.
+final class AppRouter {
+  AppRouter();
 
-/// Holds all the routes that are defined in the app
-/// Used to generate the Router object
-final class AppRouter extends RootStackRouter {
-  @override
-  List<AutoRoute> get routes => [
-        // TODO: Add routes here
-        AutoRoute(
-          initial: true,
-          page: HomeRoute.page,
-        ),
-      ];
+  late final GoRouter router = GoRouter(
+    initialLocation: '/',
+    observers: [CustomRouteObserver()],
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        name: 'home',
+        builder: (context, state) => const HomeView(),
+      ),
+    ],
+  );
 }

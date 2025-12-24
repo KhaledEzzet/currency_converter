@@ -3,7 +3,6 @@ import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:currency_converter/app/router/app_router.dart';
 import 'package:flutter/material.dart';
 
-import 'package:currency_converter/app/router/custom_route_observer.dart';
 import 'package:currency_converter/app/theme/dark/dark_theme.dart';
 import 'package:currency_converter/app/theme/light/light_theme.dart';
 
@@ -27,9 +26,7 @@ class App extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
 
       // Routing
-      routerConfig: _appRouter.config(
-        navigatorObservers: () => [CustomRouteObserver()],
-      ),
+      routerConfig: _appRouter.router,
     );
   }
 }
