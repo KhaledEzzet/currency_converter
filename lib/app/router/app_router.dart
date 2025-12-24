@@ -1,5 +1,7 @@
+import 'package:currency_converter/app/router/app_shell.dart';
 import 'package:currency_converter/app/router/custom_route_observer.dart';
-import 'package:currency_converter/feature/home/view/home_view.dart';
+import 'package:currency_converter/feature/charts/view/charts_view.dart';
+import 'package:currency_converter/feature/convert/view/convert_view.dart';
 import 'package:go_router/go_router.dart';
 
 /// Holds all the routes that are defined in the app.
@@ -7,13 +9,33 @@ final class AppRouter {
   AppRouter();
 
   late final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/convert',
     observers: [CustomRouteObserver()],
     routes: <RouteBase>[
-      GoRoute(
-        path: '/',
-        name: 'home',
-        builder: (context, state) => const HomeView(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AppShell(navigationShell: navigationShell);
+        },
+        branches: <StatefulShellBranch>[
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/convert',
+                name: 'convert',
+                builder: (context, state) => const ConvertView(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/charts',
+                name: 'charts',
+                builder: (context, state) => const ChartsView(),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );
