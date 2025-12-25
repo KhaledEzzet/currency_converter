@@ -1,11 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:currency_converter/app/environment/app_environment.dart';
 import 'package:currency_converter/core/utils/device_info/device_info_utils.dart';
 import 'package:currency_converter/core/utils/logger/logger_utils.dart';
 import 'package:currency_converter/core/utils/package_info/package_info_utils.dart';
 import 'package:currency_converter/locator.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> bootstrap({required FutureOr<Widget> Function() builder, required AppEnvironment environment}) async {
   FlutterError.onError = (details) {
@@ -14,6 +17,11 @@ Future<void> bootstrap({required FutureOr<Widget> Function() builder, required A
   await runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      HydratedBloc.storage = await HydratedStorage.build(
+        storageDirectory: kIsWeb
+            ? HydratedStorage.webStorageDirectory
+            : await getApplicationDocumentsDirectory(),
+      );
       // Initialize Locator and Utils
       await Future.wait([
         Locator.locateServices(environment: environment),

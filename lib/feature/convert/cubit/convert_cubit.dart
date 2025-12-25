@@ -1,11 +1,10 @@
+import 'package:currency_converter/feature/convert/cubit/convert_state.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_latest_rates_usecase.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/intl.dart';
 
-import 'package:currency_converter/feature/convert/cubit/convert_state.dart';
-
-class ConvertCubit extends Cubit<ConvertState> {
+class ConvertCubit extends HydratedCubit<ConvertState> {
   ConvertCubit({
     required GetLatestRatesUseCase getLatestRatesUseCase,
     required GetCurrenciesUseCase getCurrenciesUseCase,
@@ -18,7 +17,10 @@ class ConvertCubit extends Cubit<ConvertState> {
 
   Future<void> initialize() async {
     emit(state.copyWith(status: ConvertStatus.loading, errorMessage: null));
-    await _loadRates(fromCurrency: state.fromCurrency, refreshCurrencies: true);
+    await _loadRates(
+      fromCurrency: state.fromCurrency,
+      refreshCurrencies: state.currencies.isEmpty,
+    );
   }
 
   Future<void> updateFromCurrency(String? currency) async {
@@ -160,5 +162,42 @@ class ConvertCubit extends Cubit<ConvertState> {
       return '';
     }
     return currency.substring(0, 2).toLowerCase();
+  }
+
+  @override
+  ConvertState? fromJson(Map<String, dynamic> json) {
+    final rawCurrencies = json['currencies'];
+    final currencies = rawCurrencies is List
+        ? rawCurrencies.whereType<String>().toList()
+        : <String>[];
+    if (currencies.isEmpty) {
+      return null;
+    }
+
+    final rawFromCurrency = json['fromCurrency'];
+    final fromCurrency =
+        rawFromCurrency is String && currencies.contains(rawFromCurrency)
+            ? rawFromCurrency
+            : currencies.first;
+    final currencySymbols = _buildCurrencySymbols(currencies);
+    final currencyFlags = _buildCurrencyFlags(currencies);
+
+    return ConvertState.initial().copyWith(
+      currencies: currencies,
+      fromCurrency: fromCurrency,
+      currencySymbols: currencySymbols,
+      currencyFlags: currencyFlags,
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(ConvertState state) {
+    if (state.currencies.isEmpty) {
+      return null;
+    }
+    return <String, dynamic>{
+      'currencies': state.currencies,
+      'fromCurrency': state.fromCurrency,
+    };
   }
 }
