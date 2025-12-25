@@ -11,6 +11,14 @@
 4) (Optional) Build release:
    - `flutter build apk` or `flutter build ios`
 
+## Testing
+
+Run all tests:
+- `flutter test`
+
+Run a specific test file:
+- `flutter test test/feature/convert/convert_remote_data_source_test.dart`
+
 ## Architecture (Design Pattern)
 
 The app uses a feature-based Clean Architecture with BLoC (Cubit):
