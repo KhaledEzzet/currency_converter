@@ -14,15 +14,15 @@ class ToList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: currencies
-          .map(
-            (currency) => ConversionCard(
-              state: state,
-              currency: currency,
-            ),
-          )
-          .toList(),
+    return ListView.builder(
+      itemCount: currencies.length,
+      itemBuilder: (context, index) {
+        final currency = currencies[index];
+        return ConversionCard(
+          state: state,
+          currency: currency,
+        );
+      },
     );
   }
 }

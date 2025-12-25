@@ -1,4 +1,4 @@
-enum ConvertStatus { initial, updated }
+enum ConvertStatus { initial, loading, success, failure }
 
 class ConvertState {
   const ConvertState({
@@ -10,44 +10,32 @@ class ConvertState {
     required this.fromCurrency,
     required this.amountText,
     required this.convertedAmounts,
+    required this.errorMessage,
   });
+
+  factory ConvertState.initial() {
+    return const ConvertState(
+      status: ConvertStatus.initial,
+      currencies: <String>[],
+      currencySymbols: <String, String>{},
+      currencyFlags: <String, String>{},
+      currencyRates: <String, double>{},
+      fromCurrency: 'USD',
+      amountText: '',
+      convertedAmounts: <String, double>{},
+      errorMessage: null,
+    );
+  }
 
   final ConvertStatus status;
   final List<String> currencies;
   final Map<String, String> currencySymbols;
   final Map<String, String> currencyFlags;
   final Map<String, double> currencyRates;
-  final String? fromCurrency;
+  final String fromCurrency;
   final String amountText;
   final Map<String, double> convertedAmounts;
-
-  factory ConvertState.initial() {
-    return const ConvertState(
-      status: ConvertStatus.initial,
-      currencies: <String>['USD', 'EUR', 'GBP', 'JPY'],
-      currencySymbols: <String, String>{
-        'USD': r'$',
-        'EUR': '\u20AC',
-        'GBP': '\u00A3',
-        'JPY': '\u00A5',
-      },
-      currencyFlags: <String, String>{
-        'USD': 'us',
-        'EUR': 'eu',
-        'GBP': 'gb',
-        'JPY': 'jp',
-      },
-      currencyRates: <String, double>{
-        'USD': 1,
-        'EUR': 0.92,
-        'GBP': 0.79,
-        'JPY': 156,
-      },
-      fromCurrency: 'USD',
-      amountText: '',
-      convertedAmounts: <String, double>{},
-    );
-  }
+  final String? errorMessage;
 
   ConvertState copyWith({
     ConvertStatus? status,
@@ -58,6 +46,7 @@ class ConvertState {
     String? fromCurrency,
     String? amountText,
     Map<String, double>? convertedAmounts,
+    String? errorMessage,
   }) {
     return ConvertState(
       status: status ?? this.status,
@@ -68,6 +57,7 @@ class ConvertState {
       fromCurrency: fromCurrency ?? this.fromCurrency,
       amountText: amountText ?? this.amountText,
       convertedAmounts: convertedAmounts ?? this.convertedAmounts,
+      errorMessage: errorMessage,
     );
   }
 }

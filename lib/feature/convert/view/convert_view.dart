@@ -23,6 +23,20 @@ class ConvertView extends StatelessWidget {
       ),
       body: BlocBuilder<ConvertCubit, ConvertState>(
         builder: (context, state) {
+          if (state.status == ConvertStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (state.status == ConvertStatus.failure) {
+            return Center(
+              child: Text(
+                state.errorMessage ?? 'Something went wrong.',
+              ),
+            );
+          }
+
           final targetCurrencies = state.currencies
               .where((currency) => currency != state.fromCurrency)
               .toList();
@@ -46,9 +60,11 @@ class ConvertView extends StatelessWidget {
                   const SizedBox(height: 32),
                   const SectionTitle(text: 'To'),
                   const SizedBox(height: 12),
-                  ToList(
-                    state: state,
-                    currencies: targetCurrencies,
+                  Expanded(
+                    child: ToList(
+                      state: state,
+                      currencies: targetCurrencies,
+                    ),
                   ),
                 ],
               ),

@@ -20,14 +20,10 @@ class ConversionCard extends StatelessWidget {
     final targetSymbol = state.currencySymbols[currency] ?? '';
     final displayValue =
         targetSymbol.isEmpty ? convertedText : '$targetSymbol $convertedText';
-    final fromCurrency = state.fromCurrency;
-    final rateFrom = state.currencyRates[fromCurrency] ?? 1;
-    final rateTo = state.currencyRates[currency] ?? 1;
-    final rateValue =
-        rateFrom == 0 ? null : (rateTo / rateFrom).toStringAsFixed(4);
-    final rateText = fromCurrency == null || rateValue == null
+    final rateValue = state.currencyRates[currency]?.toStringAsFixed(4);
+    final rateText = rateValue == null
         ? ''
-        : '1 $fromCurrency = $rateValue $currency';
+        : '1 ${state.fromCurrency} = $rateValue $currency';
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),

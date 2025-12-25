@@ -17,7 +17,8 @@ class FromRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final symbol = state.currencySymbols[state.fromCurrency] ?? '';
+    final symbol =
+        state.currencySymbols[state.fromCurrency] ?? state.fromCurrency;
 
     return Row(
       children: [
