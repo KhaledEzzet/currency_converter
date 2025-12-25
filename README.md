@@ -1,16 +1,42 @@
-# currency_converter
+# Currency Converter
 
-A new Flutter project.
+## Build Instructions
 
-## Getting Started
+1) Install dependencies:
+   - `flutter pub get`
+2) Regenerate envied files (after `.env` changes):
+   - `dart run build_runner build --delete-conflicting-outputs`
+3) Run the app:
+   - `flutter run`
+4) (Optional) Build release:
+   - `flutter build apk` or `flutter build ios`
 
-This project is a starting point for a Flutter application.
+## Architecture (Design Pattern)
 
-A few resources to get you started if this is your first Flutter project:
+The app uses a feature-based Clean Architecture with BLoC (Cubit):
+- **Presentation**: `view/` + `cubit/` for UI and state changes.
+- **Domain**: `entities/`, `repositories/`, `usecases/` for business logic.
+- **Data**: `datasources/`, `repositories/` for API access (Frankfurter).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Why this pattern**
+- Keeps the UI thin and testable.
+- Isolates API logic behind repositories and usecases.
+- Scales cleanly as features grow (Convert, Charts, etc.).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Image Loader Library
+
+**Current choice**: Flutter built-in `Image.network`.
+
+**Why**
+- Flags are small, static assets from a stable CDN.
+- Avoids extra dependencies and keeps startup light.
+- Easy to replace with caching later if needed.
+
+## Local Persistence / Database
+
+**Current choice**: `hydrated_bloc` storage (local key-value storage under the hood).
+
+**Why**
+- Lightweight persistence for simple state (currency list, selections).
+- Minimal setup compared to a full database (e.g., SQLite).
+- Fits the app’s current offline needs without extra complexity.
