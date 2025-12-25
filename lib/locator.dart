@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:currency_converter/app/environment/app_environment.dart';
 import 'package:currency_converter/core/clients/network/network_client.dart';
+import 'package:currency_converter/feature/charts/data/datasources/charts_remote_data_source.dart';
+import 'package:currency_converter/feature/charts/data/repositories/charts_repository_impl.dart';
+import 'package:currency_converter/feature/charts/domain/repositories/charts_repository.dart';
+import 'package:currency_converter/feature/charts/domain/usecases/get_charts_currencies_usecase.dart';
+import 'package:currency_converter/feature/charts/domain/usecases/get_timeseries_rates_usecase.dart';
 import 'package:currency_converter/feature/convert/data/datasources/convert_remote_data_source.dart';
 import 'package:currency_converter/feature/convert/data/repositories/convert_repository_impl.dart';
 import 'package:currency_converter/feature/convert/domain/repositories/convert_repository.dart';
@@ -26,6 +31,21 @@ abstract final class Locator {
       ..registerLazySingleton(() => NetworkClient(dio: instance(), baseUrl: environment.baseUrl))
       // Client Dependencies
       ..registerFactory(Dio.new)
+      // Charts Datasources
+      ..registerLazySingleton<ChartsRemoteDataSource>(
+        () => ChartsRemoteDataSourceImpl(networkClient: instance()),
+      )
+      // Charts Repositories
+      ..registerLazySingleton<ChartsRepository>(
+        () => ChartsRepositoryImpl(remoteDataSource: instance()),
+      )
+      // Charts Use Cases
+      ..registerLazySingleton(
+        () => GetChartsCurrenciesUseCase(repository: instance()),
+      )
+      ..registerLazySingleton(
+        () => GetTimeseriesRatesUseCase(repository: instance()),
+      )
       // Datasources
       ..registerLazySingleton<ConvertRemoteDataSource>(
         () => ConvertRemoteDataSourceImpl(networkClient: instance()),

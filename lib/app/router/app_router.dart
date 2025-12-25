@@ -1,6 +1,8 @@
 import 'package:currency_converter/app/router/app_shell.dart';
 import 'package:currency_converter/app/router/custom_route_observer.dart';
 import 'package:currency_converter/feature/charts/cubit/charts_cubit.dart';
+import 'package:currency_converter/feature/charts/domain/usecases/get_charts_currencies_usecase.dart';
+import 'package:currency_converter/feature/charts/domain/usecases/get_timeseries_rates_usecase.dart';
 import 'package:currency_converter/feature/charts/view/charts_view.dart';
 import 'package:currency_converter/feature/convert/cubit/convert_cubit.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
@@ -49,7 +51,12 @@ final class AppRouter {
                 name: 'charts',
                 builder: (context, state) {
                   return BlocProvider(
-                    create: (_) => ChartsCubit(),
+                    create: (_) => ChartsCubit(
+                      getChartsCurrenciesUseCase:
+                          Locator.instance<GetChartsCurrenciesUseCase>(),
+                      getTimeseriesRatesUseCase:
+                          Locator.instance<GetTimeseriesRatesUseCase>(),
+                    )..initialize(),
                     child: const ChartsView(),
                   );
                 },

@@ -1,13 +1,27 @@
+import 'package:currency_converter/feature/charts/cubit/charts_state.dart';
+import 'package:currency_converter/feature/charts/domain/entities/timeseries_rates.dart';
+import 'package:currency_converter/feature/charts/domain/usecases/get_charts_currencies_usecase.dart';
+import 'package:currency_converter/feature/charts/domain/usecases/get_timeseries_rates_usecase.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-import 'charts_state.dart';
-
 class ChartsCubit extends Cubit<ChartsState> {
-  ChartsCubit() : super(ChartsState.initial());
+  ChartsCubit({
+    required GetChartsCurrenciesUseCase getChartsCurrenciesUseCase,
+    required GetTimeseriesRatesUseCase getTimeseriesRatesUseCase,
+  })  : _getChartsCurrenciesUseCase = getChartsCurrenciesUseCase,
+        _getTimeseriesRatesUseCase = getTimeseriesRatesUseCase,
+        super(ChartsState.initial());
 
+  final GetChartsCurrenciesUseCase _getChartsCurrenciesUseCase;
+  final GetTimeseriesRatesUseCase _getTimeseriesRatesUseCase;
   final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
+
+  Future<void> initialize() async {
+    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    await _loadData(refreshCurrencies: true);
+  }
 
   void syncFormFields() {
     final formState = formKey.currentState;
@@ -26,87 +40,203 @@ class ChartsCubit extends Cubit<ChartsState> {
     }
   }
 
-  void updateFromCurrency(String? currency) {
+  Future<void> updateFromCurrency(String? currency) async {
     if (currency == null) {
       return;
     }
-    _emitUpdated(
+    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    await _loadData(
       fromCurrency: currency,
-      toCurrency: _resolveToCurrency(currency, state.toCurrency),
+      toCurrency: state.toCurrency,
     );
   }
 
-  void updateToCurrency(String? currency) {
+  Future<void> updateToCurrency(String? currency) async {
     if (currency == null) {
       return;
     }
-    _emitUpdated(toCurrency: currency);
+    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    await _loadData(toCurrency: currency);
   }
 
-  void swapCurrencies() {
-    _emitUpdated(
+  Future<void> swapCurrencies() async {
+    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    await _loadData(
       fromCurrency: state.toCurrency,
       toCurrency: state.fromCurrency,
     );
   }
 
-  void updateRange(String range) {
-    _emitUpdated(selectedRange: range);
+  Future<void> updateRange(String range) async {
+    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    await _loadData(selectedRange: range);
   }
 
-  void _emitUpdated({
+  Future<void> _loadData({
     String? fromCurrency,
     String? toCurrency,
     String? selectedRange,
-  }) {
-    final updatedFrom = fromCurrency ?? state.fromCurrency;
-    final updatedTo = toCurrency ?? state.toCurrency;
-    final updatedRange = selectedRange ?? state.selectedRange;
-    final rate = _rateForPair(updatedFrom, updatedTo);
-    final chartPoints = _buildChartPoints(rate, updatedRange);
-    final (minValue, maxValue, yInterval) =
-        ChartsState.calculateStats(chartPoints);
+    bool refreshCurrencies = false,
+  }) async {
+    try {
+      final shouldRefresh = refreshCurrencies || state.currencies.isEmpty;
+      final currencies =
+          shouldRefresh ? await _fetchCurrencies() : state.currencies;
+      if (currencies.isEmpty) {
+        emit(
+          state.copyWith(
+            status: ChartsStatus.failure,
+            errorMessage: 'No currencies available.',
+          ),
+        );
+        return;
+      }
 
-    emit(
-      state.copyWith(
-        status: ChartsStatus.updated,
-        fromCurrency: updatedFrom,
-        toCurrency: updatedTo,
-        selectedRange: updatedRange,
-        rate: rate,
-        chartPoints: chartPoints,
-        minValue: minValue,
-        maxValue: maxValue,
-        yInterval: yInterval,
-      ),
-    );
-  }
+      final resolvedFrom =
+          _resolveFromCurrency(currencies, fromCurrency ?? state.fromCurrency);
+      final resolvedTo =
+          _resolveToCurrency(resolvedFrom, toCurrency ?? state.toCurrency, currencies);
+      final range = selectedRange ?? state.selectedRange;
+      final endDate = DateTime.now();
+      final startDate = _rangeStartDate(endDate, range);
+      final timeseries = await _getTimeseriesRatesUseCase(
+        startDate: startDate,
+        endDate: endDate,
+        from: resolvedFrom,
+        to: resolvedTo,
+      );
+      final chartPoints = _mapToChartPoints(timeseries);
+      final rate = chartPoints.isNotEmpty ? chartPoints.last.value : 0.0;
+      final (changeValue, changePercent) = _calculateChange(chartPoints);
+      final (minValue, maxValue, yInterval) =
+          ChartsState.calculateStats(chartPoints);
+      final currencyFlags = _buildCurrencyFlags(currencies);
 
-  double _rateForPair(String fromCurrency, String toCurrency) {
-    final rateFrom = state.currencyRates[fromCurrency] ?? 1;
-    final rateTo = state.currencyRates[toCurrency] ?? 1;
-    if (rateFrom == 0) {
-      return 0;
+      emit(
+        state.copyWith(
+          status: ChartsStatus.success,
+          currencies: currencies,
+          currencyFlags: currencyFlags,
+          fromCurrency: resolvedFrom,
+          toCurrency: resolvedTo,
+          selectedRange: range,
+          rate: rate,
+          changeValue: changeValue,
+          changePercent: changePercent,
+          chartPoints: chartPoints,
+          minValue: minValue,
+          maxValue: maxValue,
+          yInterval: yInterval,
+          errorMessage: null,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: ChartsStatus.failure,
+          errorMessage: error.toString(),
+        ),
+      );
     }
-    return rateTo / rateFrom;
   }
 
-  List<ChartsPoint> _buildChartPoints(double baseRate, String range) {
-    final offsets = ChartsState.rangeOffsets(range);
-    return List<ChartsPoint>.generate(
-      offsets.length,
-      (index) => ChartsPoint(index, baseRate * (1 + offsets[index])),
-    );
+  Future<List<String>> _fetchCurrencies() async {
+    final result = await _getChartsCurrenciesUseCase();
+    final codes = result.keys.toList()..sort();
+    return codes;
   }
 
-  String _resolveToCurrency(String fromCurrency, String currentTo) {
-    if (currentTo != fromCurrency) {
+  String _resolveFromCurrency(List<String> currencies, String fromCurrency) {
+    if (currencies.contains(fromCurrency)) {
+      return fromCurrency;
+    }
+    return currencies.first;
+  }
+
+  String _resolveToCurrency(
+    String fromCurrency,
+    String currentTo,
+    List<String> currencies,
+  ) {
+    if (currentTo.isNotEmpty && currentTo != fromCurrency) {
       return currentTo;
     }
-
-    return state.currencies.firstWhere(
+    return currencies.firstWhere(
       (currency) => currency != fromCurrency,
       orElse: () => fromCurrency,
     );
+  }
+
+  List<ChartsPoint> _mapToChartPoints(TimeseriesRates timeseries) {
+    final entries = timeseries.rates.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    return List<ChartsPoint>.generate(
+      entries.length,
+      (index) => ChartsPoint(index, entries[index].value),
+    );
+  }
+
+  (double changeValue, double changePercent) _calculateChange(
+    List<ChartsPoint> points,
+  ) {
+    if (points.length < 2) {
+      return (0.0, 0.0);
+    }
+    final first = points.first.value;
+    final last = points.last.value;
+    final changeValue = last - first;
+    final changePercent = first == 0 ? 0.0 : (changeValue / first) * 100;
+    return (changeValue, changePercent);
+  }
+
+  DateTime _rangeStartDate(DateTime endDate, String range) {
+    switch (range) {
+      case '1M':
+        return _subtractMonths(endDate, 1);
+      case '3M':
+        return _subtractMonths(endDate, 3);
+      case '1Y':
+        return DateTime(endDate.year - 1, endDate.month, endDate.day);
+      case '5Y':
+        return DateTime(endDate.year - 5, endDate.month, endDate.day);
+      case '10Y':
+        return DateTime(endDate.year - 10, endDate.month, endDate.day);
+      case '1W':
+      default:
+        return endDate.subtract(const Duration(days: 7));
+    }
+  }
+
+  DateTime _subtractMonths(DateTime date, int months) {
+    var year = date.year;
+    var month = date.month - months;
+    while (month <= 0) {
+      month += 12;
+      year -= 1;
+    }
+    final day = date.day;
+    final lastDayOfMonth = DateTime(year, month + 1, 0).day;
+    return DateTime(year, month, day > lastDayOfMonth ? lastDayOfMonth : day);
+  }
+
+  Map<String, String> _buildCurrencyFlags(List<String> currencies) {
+    final flags = <String, String>{};
+    for (final currency in currencies) {
+      final code = _flagCodeForCurrency(currency);
+      if (code.isNotEmpty) {
+        flags[currency] = code;
+      }
+    }
+    return flags;
+  }
+
+  String _flagCodeForCurrency(String currency) {
+    if (currency == 'EUR') {
+      return 'eu';
+    }
+    if (currency.length < 2) {
+      return '';
+    }
+    return currency.substring(0, 2).toLowerCase();
   }
 }
