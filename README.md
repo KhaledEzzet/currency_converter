@@ -1,6 +1,6 @@
 # Currency Converter
 
-![Currency Converter Logo](assets/icons/logo.png)
+<img src="assets/icons/logo.png" alt="Currency Converter Logo" width="160" />
 
 ## Build Instructions
 
