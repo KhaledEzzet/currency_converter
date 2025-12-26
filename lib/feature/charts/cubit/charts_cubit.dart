@@ -3,10 +3,10 @@ import 'package:currency_converter/feature/charts/domain/entities/timeseries_rat
 import 'package:currency_converter/feature/charts/domain/usecases/get_charts_currencies_usecase.dart';
 import 'package:currency_converter/feature/charts/domain/usecases/get_timeseries_rates_usecase.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class ChartsCubit extends Cubit<ChartsState> {
+class ChartsCubit extends HydratedCubit<ChartsState> {
   ChartsCubit({
     required GetChartsCurrenciesUseCase getChartsCurrenciesUseCase,
     required GetTimeseriesRatesUseCase getTimeseriesRatesUseCase,
@@ -20,7 +20,7 @@ class ChartsCubit extends Cubit<ChartsState> {
 
   Future<void> initialize() async {
     emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
-    await _loadData(refreshCurrencies: true);
+    await _loadData(refreshCurrencies: state.currencies.isEmpty);
   }
 
   void syncFormFields() {
@@ -238,5 +238,53 @@ class ChartsCubit extends Cubit<ChartsState> {
       return '';
     }
     return currency.substring(0, 2).toLowerCase();
+  }
+
+  @override
+  ChartsState? fromJson(Map<String, dynamic> json) {
+    final rawCurrencies = json['currencies'];
+    final currencies = rawCurrencies is List
+        ? rawCurrencies.whereType<String>().toList()
+        : <String>[];
+    if (currencies.isEmpty) {
+      return null;
+    }
+
+    final rawFromCurrency = json['fromCurrency'];
+    final fromCurrency =
+        rawFromCurrency is String && currencies.contains(rawFromCurrency)
+            ? rawFromCurrency
+            : currencies.first;
+    final rawToCurrency = json['toCurrency'];
+    final toCurrency = rawToCurrency is String && currencies.contains(rawToCurrency)
+        ? rawToCurrency
+        : _resolveToCurrency(fromCurrency, '', currencies);
+    final rawRange = json['selectedRange'];
+    final selectedRange =
+        rawRange is String && rawRange.isNotEmpty ? rawRange : '1W';
+    final currencyFlags = _buildCurrencyFlags(currencies);
+
+    return ChartsState.initial().copyWith(
+      status: ChartsStatus.loading,
+      currencies: currencies,
+      currencyFlags: currencyFlags,
+      fromCurrency: fromCurrency,
+      toCurrency: toCurrency,
+      selectedRange: selectedRange,
+      errorMessage: null,
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(ChartsState state) {
+    if (state.currencies.isEmpty) {
+      return null;
+    }
+    return <String, dynamic>{
+      'currencies': state.currencies,
+      'fromCurrency': state.fromCurrency,
+      'toCurrency': state.toCurrency,
+      'selectedRange': state.selectedRange,
+    };
   }
 }

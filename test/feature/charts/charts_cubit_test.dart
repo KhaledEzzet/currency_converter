@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:currency_converter/feature/charts/cubit/charts_cubit.dart';
 import 'package:currency_converter/feature/charts/domain/entities/timeseries_rates.dart';
 import 'package:currency_converter/feature/charts/domain/repositories/charts_repository.dart';
 import 'package:currency_converter/feature/charts/domain/usecases/get_charts_currencies_usecase.dart';
 import 'package:currency_converter/feature/charts/domain/usecases/get_timeseries_rates_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class FakeChartsRepository implements ChartsRepository {
   FakeChartsRepository({
@@ -34,6 +37,13 @@ class FakeChartsRepository implements ChartsRepository {
 }
 
 void main() {
+  setUpAll(() async {
+    final dir = await Directory.systemTemp.createTemp('hydrated_bloc_test');
+    HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: dir,
+    );
+  });
+
   test('ChartsCubit initializes with timeseries data', () async {
     final repository = FakeChartsRepository(
       currencies: <String, String>{
