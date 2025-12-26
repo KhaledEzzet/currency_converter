@@ -1,5 +1,7 @@
 # Currency Converter
 
+![Currency Converter Logo](assets/icons/logo.png)
+
 ## Build Instructions
 
 1) Install dependencies:
