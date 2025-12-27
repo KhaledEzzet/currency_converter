@@ -14,6 +14,8 @@
    - `flutter run`
 4) (Optional) Build release:
    - `flutter build apk` or `flutter build ios`
+5) Download Android APK:
+   - Grab the latest APK from the Releases section.
 
 ## Testing
 
