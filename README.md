@@ -4,6 +4,13 @@
   <img src="assets/icons/logo.png" alt="Currency Converter Logo" width="300" />
 </div>
 
+## Screenshots
+
+<div align="center">
+  <img src='assets/icons/Screenshots/Screenshots_2025-12-27_16-41-19/en/English [en] | iPhone - 6.9" Display - 1 | 2025-12-27_16-41-19.jpeg' alt="Currency Converter screenshot 1" width="240" style="margin: 0 8px;" />
+  <img src='assets/icons/Screenshots/Screenshots_2025-12-27_16-41-19/en/English [en] | iPhone - 6.9" Display - 2 | 2025-12-27_16-41-19.jpeg' alt="Currency Converter screenshot 2" width="240" style="margin: 0 8px;" />
+</div>
+
 ## Build Instructions
 
 1) Install dependencies:
