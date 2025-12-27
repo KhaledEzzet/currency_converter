@@ -7,8 +7,9 @@
 ## Screenshots
 
 <div align="center">
-  <img src='assets/icons/Screenshots/Screenshots_2025-12-27_16-41-19/en/English [en] | iPhone - 6.9" Display - 1 | 2025-12-27_16-41-19.jpeg' alt="Currency Converter screenshot 1" width="240" style="margin: 0 8px;" />
-  <img src='assets/icons/Screenshots/Screenshots_2025-12-27_16-41-19/en/English [en] | iPhone - 6.9" Display - 2 | 2025-12-27_16-41-19.jpeg' alt="Currency Converter screenshot 2" width="240" style="margin: 0 8px;" />
+  <img src="assets/icons/Screenshots/Screenshots_2025-12-27_16-41-19/en/English%20%5Ben%5D%20%7C%20iPhone%20-%206.9%22%20Display%20-%201%20%7C%202025-12-27_16-41-19.jpeg" alt="Currency Converter screenshot 1" width="240" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="assets/icons/Screenshots/Screenshots_2025-12-27_16-41-19/en/English%20%5Ben%5D%20%7C%20iPhone%20-%206.9%22%20Display%20-%202%20%7C%202025-12-27_16-41-19.jpeg" alt="Currency Converter screenshot 2" width="240" />
 </div>
 
 ## Build Instructions
