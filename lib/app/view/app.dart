@@ -2,6 +2,7 @@ import 'package:currency_converter/app/constants/string_constants.dart';
 import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
 import 'package:currency_converter/app/router/app_router.dart';
+import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
 import 'package:currency_converter/app/theme/dark/dark_theme.dart';
 import 'package:currency_converter/app/theme/light/light_theme.dart';
 import 'package:flutter/material.dart';
@@ -24,25 +25,38 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => LocaleCubit(initialLocale: _resolveInitialLocale()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => LocaleCubit(initialLocale: _resolveInitialLocale()),
+        ),
+        BlocProvider(
+          create: (_) => ThemeCubit(),
+        ),
+      ],
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, locale) {
-          return MaterialApp.router(
-            // App Name
-            title: StringConstants.appName,
+          return BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, themeMode) {
+              return MaterialApp.router(
+                // App Name
+                title: StringConstants.appName,
 
-            // Theme
-            theme: LightTheme().theme,
-            darkTheme: DarkTheme().theme,
+                // Theme
+                theme: LightTheme().theme,
+                darkTheme: DarkTheme().theme,
+                themeMode: themeMode,
 
-            // Localization
-            locale: locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
+                // Localization
+                locale: locale,
+                localizationsDelegates:
+                    AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
 
-            // Routing
-            routerConfig: _appRouter.router,
+                // Routing
+                routerConfig: _appRouter.router,
+              );
+            },
           );
         },
       ),

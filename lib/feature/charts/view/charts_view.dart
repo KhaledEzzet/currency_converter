@@ -9,6 +9,7 @@ import 'package:currency_converter/feature/charts/view/widgets/rate_chart.dart';
 import 'package:currency_converter/feature/charts/view/widgets/rate_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ChartsView extends StatelessWidget {
   const ChartsView({super.key});
@@ -44,6 +45,13 @@ class ChartsView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => context.push('/settings'),
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+          ),
+        ],
       ),
       body: BlocConsumer<ChartsCubit, ChartsState>(
         listener: (context, state) => cubit.syncFormFields(),
