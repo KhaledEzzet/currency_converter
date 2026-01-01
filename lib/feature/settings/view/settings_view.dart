@@ -1,3 +1,5 @@
+import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
+import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,12 +7,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
+  String _languageLabel(AppLocalizations l10n, Locale locale) {
+    switch (locale.languageCode) {
+      case 'ar':
+        return l10n.languageArabic;
+      case 'en':
+        return l10n.languageEnglish;
+      default:
+        return locale.languageCode;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Settings',
+        title: Text(
+          l10n.titleSettings,
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -28,6 +42,34 @@ class SettingsView extends StatelessWidget {
                 secondary: const Icon(Icons.dark_mode),
                 title: const Text('Dark mode'),
                 subtitle: Text(isDarkMode ? 'On' : 'Off'),
+              );
+            },
+          ),
+          const Divider(height: 24),
+          BlocBuilder<LocaleCubit, Locale>(
+            builder: (context, locale) {
+              final currentLocale = Locale(locale.languageCode);
+              return ListTile(
+                leading: const Icon(Icons.language),
+                title: Text(l10n.labelLanguage),
+                trailing: DropdownButtonHideUnderline(
+                  child: DropdownButton<Locale>(
+                    value: currentLocale,
+                    isDense: true,
+                    items: AppLocalizations.supportedLocales.map((supported) {
+                      return DropdownMenuItem(
+                        value: supported,
+                        child: Text(_languageLabel(l10n, supported)),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
+                      }
+                      context.read<LocaleCubit>().updateLocale(value);
+                    },
+                  ),
+                ),
               );
             },
           ),
