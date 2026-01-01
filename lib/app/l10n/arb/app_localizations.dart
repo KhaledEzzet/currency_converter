@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_ar.dart';
 import 'app_localizations_en.dart';
-import 'app_localizations_tr.dart';
 
 // ignore_for_file: type=lint
 
@@ -94,8 +94,8 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
-    Locale('en'),
-    Locale('tr')
+    Locale('ar'),
+    Locale('en')
   ];
 
   /// Displays text Flutter
@@ -103,6 +103,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Flutter'**
   String get flutter;
+
+  /// No description provided for @tabConvert.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert'**
+  String get tabConvert;
+
+  /// No description provided for @tabCharts.
+  ///
+  /// In en, this message translates to:
+  /// **'Charts'**
+  String get tabCharts;
+
+  /// No description provided for @tabSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get tabSettings;
+
+  /// No description provided for @titleConverter.
+  ///
+  /// In en, this message translates to:
+  /// **'Converter'**
+  String get titleConverter;
+
+  /// No description provided for @titleCharts.
+  ///
+  /// In en, this message translates to:
+  /// **'Charts'**
+  String get titleCharts;
+
+  /// No description provided for @titleSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get titleSettings;
+
+  /// No description provided for @labelFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get labelFrom;
+
+  /// No description provided for @labelTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get labelTo;
+
+  /// No description provided for @labelLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get labelLanguage;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get languageArabic;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong.'**
+  String get errorGeneric;
+
+  /// No description provided for @rangePastWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Past week'**
+  String get rangePastWeek;
+
+  /// No description provided for @rangePastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Past month'**
+  String get rangePastMonth;
+
+  /// No description provided for @rangePastThreeMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'Past 3 months'**
+  String get rangePastThreeMonths;
+
+  /// No description provided for @rangePastYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Past year'**
+  String get rangePastYear;
+
+  /// No description provided for @rangePastFiveYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Past 5 years'**
+  String get rangePastFiveYears;
+
+  /// No description provided for @rangePastTenYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Past 10 years'**
+  String get rangePastTenYears;
 }
 
 class _AppLocalizationsDelegate
@@ -116,7 +224,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'tr'].contains(locale.languageCode);
+      <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -125,10 +233,10 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'ar':
+      return AppLocalizationsAr();
     case 'en':
       return AppLocalizationsEn();
-    case 'tr':
-      return AppLocalizationsTr();
   }
 
   throw FlutterError(

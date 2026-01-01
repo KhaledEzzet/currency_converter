@@ -1,3 +1,4 @@
+import 'package:currency_converter/app/l10n/l10n.dart';
 import 'package:currency_converter/feature/convert/cubit/convert_cubit.dart';
 import 'package:currency_converter/feature/convert/cubit/convert_state.dart';
 import 'package:currency_converter/feature/convert/view/widgets/from_row.dart';
@@ -12,11 +13,13 @@ class ConvertView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Converter',
-          style: TextStyle(
+        title: Text(
+          l10n.titleConverter,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -32,7 +35,7 @@ class ConvertView extends StatelessWidget {
           if (state.status == ConvertStatus.failure) {
             return Center(
               child: Text(
-                state.errorMessage ?? 'Something went wrong.',
+                state.errorMessage ?? l10n.errorGeneric,
               ),
             );
           }
@@ -47,7 +50,7 @@ class ConvertView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SectionTitle(text: 'From'),
+                  SectionTitle(text: l10n.labelFrom),
                   const SizedBox(height: 20),
                   FromRow(
                     state: state,
@@ -58,7 +61,7 @@ class ConvertView extends StatelessWidget {
                         .updateAmount(value),
                   ),
                   const SizedBox(height: 32),
-                  const SectionTitle(text: 'To'),
+                  SectionTitle(text: l10n.labelTo),
                   const SizedBox(height: 12),
                   Expanded(
                     child: ToList(

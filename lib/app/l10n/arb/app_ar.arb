@@ -1,0 +1,26 @@
+{
+  "flutter": "Flutter",
+  "@flutter": {
+    "description": "Displays text Flutter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tabConvert": "تحويل",
+  "tabCharts": "الرسوم البيانية",
+  "tabSettings": "الإعدادات",
+  "titleConverter": "محول العملات",
+  "titleCharts": "الرسوم البيانية",
+  "titleSettings": "الإعدادات",
+  "labelFrom": "من",
+  "labelTo": "إلى",
+  "labelLanguage": "اللغة",
+  "languageEnglish": "الإنجليزية",
+  "languageArabic": "العربية",
+  "errorGeneric": "حدث خطأ ما.",
+  "rangePastWeek": "الأسبوع الماضي",
+  "rangePastMonth": "الشهر الماضي",
+  "rangePastThreeMonths": "آخر 3 أشهر",
+  "rangePastYear": "العام الماضي",
+  "rangePastFiveYears": "آخر 5 سنوات",
+  "rangePastTenYears": "آخر 10 سنوات"
+}

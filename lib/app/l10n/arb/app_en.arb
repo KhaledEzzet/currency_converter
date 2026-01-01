@@ -4,5 +4,23 @@
     "description": "Displays text Flutter",
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "tabConvert": "Convert",
+  "tabCharts": "Charts",
+  "tabSettings": "Settings",
+  "titleConverter": "Converter",
+  "titleCharts": "Charts",
+  "titleSettings": "Settings",
+  "labelFrom": "From",
+  "labelTo": "To",
+  "labelLanguage": "Language",
+  "languageEnglish": "English",
+  "languageArabic": "Arabic",
+  "errorGeneric": "Something went wrong.",
+  "rangePastWeek": "Past week",
+  "rangePastMonth": "Past month",
+  "rangePastThreeMonths": "Past 3 months",
+  "rangePastYear": "Past year",
+  "rangePastFiveYears": "Past 5 years",
+  "rangePastTenYears": "Past 10 years"
 }

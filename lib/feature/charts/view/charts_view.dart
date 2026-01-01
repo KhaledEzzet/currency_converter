@@ -1,3 +1,5 @@
+import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
+import 'package:currency_converter/app/l10n/l10n.dart';
 import 'package:currency_converter/feature/charts/cubit/charts_cubit.dart';
 import 'package:currency_converter/feature/charts/cubit/charts_state.dart';
 import 'package:currency_converter/feature/charts/view/widgets/charts_currency_row.dart';
@@ -11,33 +13,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChartsView extends StatelessWidget {
   const ChartsView({super.key});
 
-  String _rangeLabel(String range) {
+  String _rangeLabel(AppLocalizations l10n, String range) {
     switch (range) {
       case '1M':
-        return 'Past month';
+        return l10n.rangePastMonth;
       case '3M':
-        return 'Past 3 months';
+        return l10n.rangePastThreeMonths;
       case '1Y':
-        return 'Past year';
+        return l10n.rangePastYear;
       case '5Y':
-        return 'Past 5 years';
+        return l10n.rangePastFiveYears;
       case '10Y':
-        return 'Past 10 years';
+        return l10n.rangePastTenYears;
       case '1W':
       default:
-        return 'Past week';
+        return l10n.rangePastWeek;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ChartsCubit>();
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Charts',
-          style: TextStyle(
+        title: Text(
+          l10n.titleCharts,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -56,7 +59,7 @@ class ChartsView extends StatelessWidget {
           if (state.status == ChartsStatus.failure) {
             return Center(
               child: Text(
-                state.errorMessage ?? 'Something went wrong.',
+                state.errorMessage ?? l10n.errorGeneric,
               ),
             );
           }
@@ -73,7 +76,7 @@ class ChartsView extends StatelessWidget {
             ..write(changePercent >= 0 ? '+' : '')
             ..write(changePercent.toStringAsFixed(2))
             ..write('%) ')
-            ..write(_rangeLabel(state.selectedRange));
+            ..write(_rangeLabel(l10n, state.selectedRange));
 
           return Padding(
             padding: const EdgeInsets.all(16),
