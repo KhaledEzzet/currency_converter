@@ -8,6 +8,7 @@ import 'package:currency_converter/feature/convert/cubit/convert_cubit.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_latest_rates_usecase.dart';
 import 'package:currency_converter/feature/convert/view/convert_view.dart';
+import 'package:currency_converter/feature/settings/view/settings_view.dart';
 import 'package:currency_converter/locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -64,6 +65,13 @@ final class AppRouter {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) {
+          return const SettingsView();
+        },
       ),
     ],
   );

@@ -6,6 +6,7 @@ import 'package:currency_converter/feature/convert/view/widgets/to_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:go_router/go_router.dart';
 
 class ConvertView extends StatelessWidget {
   const ConvertView({super.key});
@@ -20,6 +21,13 @@ class ConvertView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => context.push('/settings'),
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+          ),
+        ],
       ),
       body: BlocBuilder<ConvertCubit, ConvertState>(
         builder: (context, state) {
