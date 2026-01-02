@@ -8,6 +8,8 @@ class SettingsState {
     required this.baseSelectionInitialized,
     required this.displayCurrencies,
     required this.displaySelectionInitialized,
+    required this.showCurrencyFlags,
+    required this.useCurrencySymbols,
     required this.errorMessage,
   });
 
@@ -19,6 +21,8 @@ class SettingsState {
       baseSelectionInitialized: false,
       displayCurrencies: <String>[],
       displaySelectionInitialized: false,
+      showCurrencyFlags: true,
+      useCurrencySymbols: true,
       errorMessage: null,
     );
   }
@@ -29,6 +33,8 @@ class SettingsState {
   final bool baseSelectionInitialized;
   final List<String> displayCurrencies;
   final bool displaySelectionInitialized;
+  final bool showCurrencyFlags;
+  final bool useCurrencySymbols;
   final String? errorMessage;
 
   SettingsState copyWith({
@@ -38,6 +44,8 @@ class SettingsState {
     bool? baseSelectionInitialized,
     List<String>? displayCurrencies,
     bool? displaySelectionInitialized,
+    bool? showCurrencyFlags,
+    bool? useCurrencySymbols,
     String? errorMessage,
   }) {
     return SettingsState(
@@ -49,6 +57,8 @@ class SettingsState {
       displayCurrencies: displayCurrencies ?? this.displayCurrencies,
       displaySelectionInitialized:
           displaySelectionInitialized ?? this.displaySelectionInitialized,
+      showCurrencyFlags: showCurrencyFlags ?? this.showCurrencyFlags,
+      useCurrencySymbols: useCurrencySymbols ?? this.useCurrencySymbols,
       errorMessage: errorMessage,
     );
   }

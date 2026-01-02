@@ -42,6 +42,30 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     );
   }
 
+  void updateShowCurrencyFlags(bool value) {
+    if (value == state.showCurrencyFlags) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        showCurrencyFlags: value,
+        errorMessage: null,
+      ),
+    );
+  }
+
+  void updateUseCurrencySymbols(bool value) {
+    if (value == state.useCurrencySymbols) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        useCurrencySymbols: value,
+        errorMessage: null,
+      ),
+    );
+  }
+
   Future<void> _loadCurrencies() async {
     try {
       final currencies = await _fetchCurrencies();
@@ -122,6 +146,12 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     final hasDisplaySelection = rawDisplayInitialized is bool
         ? rawDisplayInitialized
         : json.containsKey('displayCurrencies');
+    final rawShowCurrencyFlags = json['showCurrencyFlags'];
+    final showCurrencyFlags =
+        rawShowCurrencyFlags is bool ? rawShowCurrencyFlags : true;
+    final rawUseCurrencySymbols = json['useCurrencySymbols'];
+    final useCurrencySymbols =
+        rawUseCurrencySymbols is bool ? rawUseCurrencySymbols : true;
 
     return SettingsState.initial().copyWith(
       currencies: currencies,
@@ -129,6 +159,8 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       baseSelectionInitialized: baseSelectionInitialized,
       displayCurrencies: displayCurrencies,
       displaySelectionInitialized: hasDisplaySelection,
+      showCurrencyFlags: showCurrencyFlags,
+      useCurrencySymbols: useCurrencySymbols,
     );
   }
 
@@ -140,6 +172,8 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       'baseSelectionInitialized': state.baseSelectionInitialized,
       'displayCurrencies': state.displayCurrencies,
       'displaySelectionInitialized': state.displaySelectionInitialized,
+      'showCurrencyFlags': state.showCurrencyFlags,
+      'useCurrencySymbols': state.useCurrencySymbols,
     };
   }
 }

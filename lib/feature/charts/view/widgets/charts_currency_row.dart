@@ -13,6 +13,7 @@ class ChartsCurrencyRow extends StatelessWidget {
     required this.onFromChanged,
     required this.onToChanged,
     required this.onSwap,
+    required this.showCurrencyFlags,
   });
 
   final GlobalKey<FormBuilderState> formKey;
@@ -23,6 +24,7 @@ class ChartsCurrencyRow extends StatelessWidget {
   final ValueChanged<String?> onFromChanged;
   final ValueChanged<String?> onToChanged;
   final VoidCallback onSwap;
+  final bool showCurrencyFlags;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class ChartsCurrencyRow extends StatelessWidget {
               name: 'chart_from_currency',
               currencies: currencies,
               currencyFlags: currencyFlags,
+              showFlags: showCurrencyFlags,
               initialValue: fromCurrency,
               onChanged: onFromChanged,
             ),
@@ -53,6 +56,7 @@ class ChartsCurrencyRow extends StatelessWidget {
               name: 'chart_to_currency',
               currencies: currencies,
               currencyFlags: currencyFlags,
+              showFlags: showCurrencyFlags,
               initialValue: toCurrency,
               onChanged: onToChanged,
             ),

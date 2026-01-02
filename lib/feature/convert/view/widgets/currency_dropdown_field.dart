@@ -11,6 +11,7 @@ class CurrencyDropdownField extends StatelessWidget {
     required this.currencyFlags,
     required this.onChanged,
     this.initialValue,
+    this.showFlags = true,
   });
 
   final String name;
@@ -18,6 +19,7 @@ class CurrencyDropdownField extends StatelessWidget {
   final Map<String, String> currencyFlags;
   final ValueChanged<String?> onChanged;
   final String? initialValue;
+  final bool showFlags;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,10 @@ class CurrencyDropdownField extends StatelessWidget {
               value: currency,
               child: Row(
                 children: [
-                  CurrencyFlag(code: currencyFlags[currency]),
-                  const SizedBox(width: 8),
+                  if (showFlags) ...[
+                    CurrencyFlag(code: currencyFlags[currency]),
+                    const SizedBox(width: 8),
+                  ],
                   Text(currency),
                 ],
               ),

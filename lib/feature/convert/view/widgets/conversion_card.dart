@@ -6,18 +6,23 @@ class ConversionCard extends StatelessWidget {
   const ConversionCard({
     required this.state,
     required this.currency,
+    required this.showCurrencyFlags,
+    required this.useCurrencySymbols,
     super.key,
   });
 
   final ConvertState state;
   final String currency;
+  final bool showCurrencyFlags;
+  final bool useCurrencySymbols;
 
   @override
   Widget build(BuildContext context) {
     final converted = state.convertedAmounts[currency];
     final convertedText =
         converted == null ? '--' : converted.toStringAsFixed(2);
-    final targetSymbol = state.currencySymbols[currency] ?? '';
+    final targetSymbol =
+        useCurrencySymbols ? state.currencySymbols[currency] ?? '' : '';
     final displayValue =
         targetSymbol.isEmpty ? convertedText : '$targetSymbol $convertedText';
     final rateValue = state.currencyRates[currency]?.toStringAsFixed(4);
@@ -41,8 +46,10 @@ class ConversionCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            CurrencyFlag(code: state.currencyFlags[currency]),
-            const SizedBox(width: 10),
+            if (showCurrencyFlags) ...[
+              CurrencyFlag(code: state.currencyFlags[currency]),
+              const SizedBox(width: 10),
+            ],
             Expanded(
               child: Text(
                 currency,

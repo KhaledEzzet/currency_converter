@@ -76,6 +76,8 @@ class ConvertView extends StatelessWidget {
                         .toList();
                   }()
                 : state.currencies;
+            final showCurrencyFlags = settingsState.showCurrencyFlags;
+            final useCurrencySymbols = settingsState.useCurrencySymbols;
             final targetCurrencies = displayCurrencies
                 .where((currency) => currency != state.fromCurrency)
                 .toList();
@@ -90,6 +92,8 @@ class ConvertView extends StatelessWidget {
                     const SizedBox(height: 20),
                     FromRow(
                       state: state,
+                      showCurrencyFlags: showCurrencyFlags,
+                      useCurrencySymbols: useCurrencySymbols,
                       onCurrencyChanged: (currency) {
                         if (currency == null) {
                           return;
@@ -115,6 +119,8 @@ class ConvertView extends StatelessWidget {
                           : ToList(
                               state: state,
                               currencies: targetCurrencies,
+                              showCurrencyFlags: showCurrencyFlags,
+                              useCurrencySymbols: useCurrencySymbols,
                             ),
                     ),
                   ],

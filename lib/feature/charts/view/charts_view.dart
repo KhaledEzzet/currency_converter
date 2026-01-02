@@ -91,6 +91,8 @@ class ChartsView extends StatelessWidget {
               );
             }
 
+            final settingsState = context.watch<SettingsCubit>().state;
+            final showCurrencyFlags = settingsState.showCurrencyFlags;
             final rateText =
                 state.rate == 0 ? '--' : state.rate.toStringAsFixed(4);
             final changeValue = state.changeValue;
@@ -110,31 +112,32 @@ class ChartsView extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                ChartsCurrencyRow(
-                  formKey: cubit.formKey,
-                  currencies: state.currencies,
-                  currencyFlags: state.currencyFlags,
-                  fromCurrency: state.fromCurrency,
-                  toCurrency: state.toCurrency,
-                  onFromChanged: (currency) {
-                    if (currency == null) {
-                      return;
-                    }
-                    context
-                        .read<SettingsCubit>()
-                        .updateBaseCurrency(currency);
-                  },
-                  onToChanged: cubit.updateToCurrency,
-                  onSwap: () async {
-                    await cubit.swapCurrencies();
-                    final baseCurrency = cubit.state.fromCurrency;
-                    if (baseCurrency.isNotEmpty) {
+                  ChartsCurrencyRow(
+                    formKey: cubit.formKey,
+                    currencies: state.currencies,
+                    currencyFlags: state.currencyFlags,
+                    fromCurrency: state.fromCurrency,
+                    toCurrency: state.toCurrency,
+                    onFromChanged: (currency) {
+                      if (currency == null) {
+                        return;
+                      }
                       context
                           .read<SettingsCubit>()
-                          .updateBaseCurrency(baseCurrency);
-                    }
-                  },
-                ),
+                          .updateBaseCurrency(currency);
+                    },
+                    onToChanged: cubit.updateToCurrency,
+                    onSwap: () async {
+                      await cubit.swapCurrencies();
+                      final baseCurrency = cubit.state.fromCurrency;
+                      if (baseCurrency.isNotEmpty) {
+                        context
+                            .read<SettingsCubit>()
+                            .updateBaseCurrency(baseCurrency);
+                      }
+                    },
+                    showCurrencyFlags: showCurrencyFlags,
+                  ),
                   const SizedBox(height: 20),
                   RateHeader(
                     fromCurrency: state.fromCurrency,

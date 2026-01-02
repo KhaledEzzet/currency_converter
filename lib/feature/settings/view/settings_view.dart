@@ -199,6 +199,36 @@ class SettingsView extends StatelessWidget {
             title: Text('General'),
             subtitle: Text('App behavior and preferences'),
           ),
+          BlocBuilder<SettingsCubit, SettingsState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  SwitchListTile(
+                    value: state.showCurrencyFlags,
+                    onChanged: (value) {
+                      context
+                          .read<SettingsCubit>()
+                          .updateShowCurrencyFlags(value);
+                    },
+                    secondary: const Icon(Icons.flag_outlined),
+                    title: const Text('Show currency flags'),
+                    subtitle: Text(state.showCurrencyFlags ? 'On' : 'Off'),
+                  ),
+                  SwitchListTile(
+                    value: state.useCurrencySymbols,
+                    onChanged: (value) {
+                      context
+                          .read<SettingsCubit>()
+                          .updateUseCurrencySymbols(value);
+                    },
+                    secondary: const Icon(Icons.payments_outlined),
+                    title: const Text('Use currency symbols'),
+                    subtitle: Text(state.useCurrencySymbols ? 'On' : 'Off'),
+                  ),
+                ],
+              );
+            },
+          ),
           const Divider(height: 24),
           const ListTile(
             leading: Icon(Icons.currency_exchange),

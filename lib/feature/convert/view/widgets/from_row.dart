@@ -9,16 +9,21 @@ class FromRow extends StatelessWidget {
     required this.state,
     required this.onCurrencyChanged,
     required this.onAmountChanged,
+    required this.showCurrencyFlags,
+    required this.useCurrencySymbols,
   });
 
   final ConvertState state;
   final ValueChanged<String?> onCurrencyChanged;
   final ValueChanged<String> onAmountChanged;
+  final bool showCurrencyFlags;
+  final bool useCurrencySymbols;
 
   @override
   Widget build(BuildContext context) {
-    final symbol =
-        state.currencySymbols[state.fromCurrency] ?? state.fromCurrency;
+    final symbol = useCurrencySymbols
+        ? (state.currencySymbols[state.fromCurrency] ?? state.fromCurrency)
+        : state.fromCurrency;
 
     return Row(
       children: [
@@ -28,6 +33,7 @@ class FromRow extends StatelessWidget {
             name: 'from_currency',
             currencies: state.currencies,
             currencyFlags: state.currencyFlags,
+            showFlags: showCurrencyFlags,
             initialValue: state.fromCurrency,
             onChanged: onCurrencyChanged,
           ),
