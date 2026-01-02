@@ -45,6 +45,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageArabic => 'Arabic';
 
   @override
+  String get languageFrench => 'French';
+
+  @override
+  String get languageRussian => 'Russian';
+
+  @override
+  String get languageGerman => 'German';
+
+  @override
+  String get languageHindi => 'Hindi';
+
+  @override
+  String get languagePolish => 'Polish';
+
+  @override
   String get errorGeneric => 'Something went wrong.';
 
   @override

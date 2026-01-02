@@ -1,0 +1,31 @@
+{
+  "flutter": "Flutter",
+  "@flutter": {
+    "description": "Displays text Flutter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tabConvert": "Convertir",
+  "tabCharts": "Graphiques",
+  "tabSettings": "Paramètres",
+  "titleConverter": "Convertisseur",
+  "titleCharts": "Graphiques",
+  "titleSettings": "Paramètres",
+  "labelFrom": "De",
+  "labelTo": "À",
+  "labelLanguage": "Langue",
+  "languageEnglish": "Anglais",
+  "languageArabic": "Arabe",
+  "languageFrench": "Français",
+  "languageRussian": "Russe",
+  "languageGerman": "Allemand",
+  "languageHindi": "Hindi",
+  "languagePolish": "Polonais",
+  "errorGeneric": "Une erreur s'est produite.",
+  "rangePastWeek": "Semaine dernière",
+  "rangePastMonth": "Mois dernier",
+  "rangePastThreeMonths": "3 derniers mois",
+  "rangePastYear": "Année dernière",
+  "rangePastFiveYears": "5 dernières années",
+  "rangePastTenYears": "10 dernières années"
+}

@@ -1,0 +1,31 @@
+{
+  "flutter": "Flutter",
+  "@flutter": {
+    "description": "Displays text Flutter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tabConvert": "रूपांतरण",
+  "tabCharts": "चार्ट",
+  "tabSettings": "सेटिंग्स",
+  "titleConverter": "मुद्रा परिवर्तक",
+  "titleCharts": "चार्ट",
+  "titleSettings": "सेटिंग्स",
+  "labelFrom": "से",
+  "labelTo": "तक",
+  "labelLanguage": "भाषा",
+  "languageEnglish": "अंग्रेज़ी",
+  "languageArabic": "अरबी",
+  "languageFrench": "फ़्रेंच",
+  "languageRussian": "रूसी",
+  "languageGerman": "जर्मन",
+  "languageHindi": "हिंदी",
+  "languagePolish": "पोलिश",
+  "errorGeneric": "कुछ गलत हो गया.",
+  "rangePastWeek": "पिछला सप्ताह",
+  "rangePastMonth": "पिछला महीना",
+  "rangePastThreeMonths": "पिछले 3 महीने",
+  "rangePastYear": "पिछला साल",
+  "rangePastFiveYears": "पिछले 5 साल",
+  "rangePastTenYears": "पिछले 10 साल"
+}

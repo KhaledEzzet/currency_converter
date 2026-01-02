@@ -45,6 +45,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get languageArabic => 'العربية';
 
   @override
+  String get languageFrench => 'الفرنسية';
+
+  @override
+  String get languageRussian => 'الروسية';
+
+  @override
+  String get languageGerman => 'الألمانية';
+
+  @override
+  String get languageHindi => 'الهندية';
+
+  @override
+  String get languagePolish => 'البولندية';
+
+  @override
   String get errorGeneric => 'حدث خطأ ما.';
 
   @override

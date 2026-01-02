@@ -1,0 +1,31 @@
+{
+  "flutter": "Flutter",
+  "@flutter": {
+    "description": "Displays text Flutter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tabConvert": "Przelicz",
+  "tabCharts": "Wykresy",
+  "tabSettings": "Ustawienia",
+  "titleConverter": "Przelicznik",
+  "titleCharts": "Wykresy",
+  "titleSettings": "Ustawienia",
+  "labelFrom": "Z",
+  "labelTo": "Na",
+  "labelLanguage": "Język",
+  "languageEnglish": "Angielski",
+  "languageArabic": "Arabski",
+  "languageFrench": "Francuski",
+  "languageRussian": "Rosyjski",
+  "languageGerman": "Niemiecki",
+  "languageHindi": "Hindi",
+  "languagePolish": "Polski",
+  "errorGeneric": "Coś poszło nie tak.",
+  "rangePastWeek": "Ostatni tydzień",
+  "rangePastMonth": "Ostatni miesiąc",
+  "rangePastThreeMonths": "Ostatnie 3 miesiące",
+  "rangePastYear": "Ostatni rok",
+  "rangePastFiveYears": "Ostatnie 5 lat",
+  "rangePastTenYears": "Ostatnie 10 lat"
+}
