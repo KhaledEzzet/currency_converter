@@ -1,6 +1,7 @@
 import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
+import 'package:currency_converter/core/utils/package_info/package_info_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +22,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final appVersion = PackageInfoUtils.getAppVersion();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -84,6 +86,12 @@ class SettingsView extends StatelessWidget {
             leading: Icon(Icons.currency_exchange),
             title: Text('Currencies'),
             subtitle: Text('Default base and display options'),
+          ),
+          const Divider(height: 24),
+          ListTile(
+            leading: const Icon(Icons.info_outline),
+            title: const Text('Version'),
+            subtitle: Text(appVersion),
           ),
         ],
       ),
