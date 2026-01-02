@@ -2,6 +2,7 @@ import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
 import 'package:currency_converter/core/utils/package_info/package_info_utils.dart';
+import 'package:currency_converter/feature/convert/view/widgets/currency_flag.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,76 @@ class SettingsView extends StatelessWidget {
     switch (locale.languageCode) {
       case 'ar':
         return l10n.languageArabic;
+      case 'de':
+        return l10n.languageGerman;
       case 'en':
         return l10n.languageEnglish;
+      case 'fr':
+        return l10n.languageFrench;
+      case 'hi':
+        return l10n.languageHindi;
+      case 'pl':
+        return l10n.languagePolish;
+      case 'ru':
+        return l10n.languageRussian;
       default:
         return locale.languageCode;
     }
+  }
+
+  String? _languageFlagCode(Locale locale) {
+    switch (locale.languageCode) {
+      case 'ar':
+        return 'sa';
+      case 'de':
+        return 'de';
+      case 'en':
+        return 'us';
+      case 'fr':
+        return 'fr';
+      case 'hi':
+        return 'in';
+      case 'pl':
+        return 'pl';
+      case 'ru':
+        return 'ru';
+      default:
+        return null;
+    }
+  }
+
+  String _currencyFlagCode(String currency) {
+    if (currency == 'EUR') {
+      return 'eu';
+    }
+    if (currency.length < 2) {
+      return '';
+    }
+    return currency.substring(0, 2).toLowerCase();
+  }
+
+  Widget _buildCurrencyLabel(String currency, bool showFlags) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (showFlags) ...[
+          CurrencyFlag(code: _currencyFlagCode(currency)),
+          const SizedBox(width: 8),
+        ],
+        Text(currency),
+      ],
+    );
+  }
+
+  Widget _buildLanguageLabel(AppLocalizations l10n, Locale locale) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CurrencyFlag(code: _languageFlagCode(locale)),
+        const SizedBox(width: 8),
+        Text(_languageLabel(l10n, locale)),
+      ],
+    );
   }
 
   String _displaySelectionLabel(SettingsState state) {
@@ -93,7 +159,10 @@ class SettingsView extends StatelessWidget {
                             final currency = state.currencies[index];
                             return CheckboxListTile(
                               value: selected.contains(currency),
-                              title: Text(currency),
+                              title: _buildCurrencyLabel(
+                                currency,
+                                state.showCurrencyFlags,
+                              ),
                               onChanged: (value) {
                                 setSheetState(() {
                                   if (value == true) {
@@ -179,7 +248,7 @@ class SettingsView extends StatelessWidget {
                     items: AppLocalizations.supportedLocales.map((supported) {
                       return DropdownMenuItem(
                         value: supported,
-                        child: Text(_languageLabel(l10n, supported)),
+                        child: _buildLanguageLabel(l10n, supported),
                       );
                     }).toList(),
                     onChanged: (value) {
@@ -271,7 +340,10 @@ class SettingsView extends StatelessWidget {
                             .map(
                               (currency) => DropdownMenuItem<String>(
                                 value: currency,
-                                child: Text(currency),
+                                child: _buildCurrencyLabel(
+                                  currency,
+                                  state.showCurrencyFlags,
+                                ),
                               ),
                             )
                             .toList(),
