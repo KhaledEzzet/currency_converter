@@ -5,6 +5,7 @@ import 'package:currency_converter/core/utils/package_info/package_info_utils.da
 import 'package:currency_converter/feature/convert/view/widgets/currency_flag.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
+import 'package:currency_converter/feature/settings/view/widgets/display_currencies_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,29 +54,6 @@ class SettingsView extends StatelessWidget {
     }
   }
 
-  String _currencyFlagCode(String currency) {
-    if (currency == 'EUR') {
-      return 'eu';
-    }
-    if (currency.length < 2) {
-      return '';
-    }
-    return currency.substring(0, 2).toLowerCase();
-  }
-
-  Widget _buildCurrencyLabel(String currency, bool showFlags) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showFlags) ...[
-          CurrencyFlag(code: _currencyFlagCode(currency)),
-          const SizedBox(width: 8),
-        ],
-        Text(currency),
-      ],
-    );
-  }
-
   Widget _buildLanguageLabel(AppLocalizations l10n, Locale locale) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -100,110 +78,6 @@ class SettingsView extends StatelessWidget {
     final visible = state.displayCurrencies.take(3).join(', ');
     final remaining = state.displayCurrencies.length - 3;
     return '$visible +$remaining more';
-  }
-
-  void _showDisplayCurrenciesSheet(
-    BuildContext context,
-    SettingsState state,
-  ) {
-    final selected = state.displaySelectionInitialized
-        ? state.displayCurrencies.toSet()
-        : state.currencies.toSet();
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        final theme = Theme.of(context);
-        return SafeArea(
-          child: StatefulBuilder(
-            builder: (context, setSheetState) {
-              return Padding(
-                padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.75,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Display currencies',
-                        style: theme.textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              setSheetState(() {
-                                selected
-                                  ..clear()
-                                  ..addAll(state.currencies);
-                              });
-                            },
-                            child: const Text('Select all'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setSheetState(() {
-                                selected.clear();
-                              });
-                            },
-                            child: const Text('Clear'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: state.currencies.length,
-                          itemBuilder: (context, index) {
-                            final currency = state.currencies[index];
-                            return CheckboxListTile(
-                              value: selected.contains(currency),
-                              title: _buildCurrencyLabel(
-                                currency,
-                                state.showCurrencyFlags,
-                              ),
-                              onChanged: (value) {
-                                setSheetState(() {
-                                  if (value == true) {
-                                    selected.add(currency);
-                                  } else {
-                                    selected.remove(currency);
-                                  }
-                                });
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('Cancel'),
-                          ),
-                          const Spacer(),
-                          ElevatedButton(
-                            onPressed: () {
-                              context
-                                  .read<SettingsCubit>()
-                                  .updateDisplayCurrencies(selected.toList());
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Save'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -340,7 +214,7 @@ class SettingsView extends StatelessWidget {
                             .map(
                               (currency) => DropdownMenuItem<String>(
                                 value: currency,
-                                child: _buildCurrencyLabel(
+                                child: buildCurrencyLabel(
                                   currency,
                                   state.showCurrencyFlags,
                                 ),
@@ -359,7 +233,7 @@ class SettingsView extends StatelessWidget {
                     subtitle: Text(_displaySelectionLabel(state)),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: hasCurrencies
-                        ? () => _showDisplayCurrenciesSheet(context, state)
+                        ? () => showDisplayCurrenciesSheet(context, state)
                         : null,
                   ),
                 ],

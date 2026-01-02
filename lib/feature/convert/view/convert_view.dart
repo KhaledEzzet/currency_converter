@@ -6,6 +6,7 @@ import 'package:currency_converter/feature/convert/view/widgets/section_title.da
 import 'package:currency_converter/feature/convert/view/widgets/to_list.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
+import 'package:currency_converter/feature/settings/view/widgets/display_currencies_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -33,6 +34,18 @@ class ConvertView extends StatelessWidget {
             tooltip: 'Settings',
           ),
         ],
+      ),
+      floatingActionButton: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (context, state) {
+          final hasCurrencies = state.currencies.isNotEmpty;
+          return FloatingActionButton(
+            onPressed: hasCurrencies
+                ? () => showDisplayCurrenciesSheet(context, state)
+                : null,
+            tooltip: 'Display currencies',
+            child: const Icon(Icons.view_list),
+          );
+        },
       ),
       body: BlocListener<SettingsCubit, SettingsState>(
         listenWhen: (previous, current) =>
