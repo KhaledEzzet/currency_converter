@@ -10,17 +10,23 @@ class ChartsCubit extends HydratedCubit<ChartsState> {
   ChartsCubit({
     required GetChartsCurrenciesUseCase getChartsCurrenciesUseCase,
     required GetTimeseriesRatesUseCase getTimeseriesRatesUseCase,
+    String? preferredBaseCurrency,
   })  : _getChartsCurrenciesUseCase = getChartsCurrenciesUseCase,
         _getTimeseriesRatesUseCase = getTimeseriesRatesUseCase,
+        _preferredBaseCurrency = preferredBaseCurrency,
         super(ChartsState.initial());
 
   final GetChartsCurrenciesUseCase _getChartsCurrenciesUseCase;
   final GetTimeseriesRatesUseCase _getTimeseriesRatesUseCase;
+  final String? _preferredBaseCurrency;
   final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
 
   Future<void> initialize() async {
     emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
-    await _loadData(refreshCurrencies: state.currencies.isEmpty);
+    await _loadData(
+      refreshCurrencies: state.currencies.isEmpty,
+      fromCurrency: _preferredBaseCurrency,
+    );
   }
 
   void syncFormFields() {
