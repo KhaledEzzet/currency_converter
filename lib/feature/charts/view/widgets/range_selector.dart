@@ -6,11 +6,13 @@ class RangeSelector extends StatelessWidget {
     required this.ranges,
     required this.selectedRange,
     required this.onSelected,
+    this.labelBuilder,
   });
 
   final List<String> ranges;
   final String selectedRange;
   final ValueChanged<String> onSelected;
+  final String Function(String range)? labelBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class RangeSelector extends StatelessWidget {
         children: [
           for (final range in ranges)
             ChoiceChip(
-              label: Text(range),
+              label: Text(labelBuilder?.call(range) ?? range),
               selected: selectedRange == range,
               onSelected: (_) => onSelected(range),
               selectedColor: const Color(0xFF3B5B87),

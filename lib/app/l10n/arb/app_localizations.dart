@@ -252,6 +252,42 @@ abstract class AppLocalizations {
   /// **'Past 10 years'**
   String get rangePastTenYears;
 
+  /// No description provided for @rangeShortWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'1W'**
+  String get rangeShortWeek;
+
+  /// No description provided for @rangeShortMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'1M'**
+  String get rangeShortMonth;
+
+  /// No description provided for @rangeShortThreeMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'3M'**
+  String get rangeShortThreeMonths;
+
+  /// No description provided for @rangeShortYear.
+  ///
+  /// In en, this message translates to:
+  /// **'1Y'**
+  String get rangeShortYear;
+
+  /// No description provided for @rangeShortFiveYears.
+  ///
+  /// In en, this message translates to:
+  /// **'5Y'**
+  String get rangeShortFiveYears;
+
+  /// No description provided for @rangeShortTenYears.
+  ///
+  /// In en, this message translates to:
+  /// **'10Y'**
+  String get rangeShortTenYears;
+
   /// No description provided for @settingsDarkMode.
   ///
   /// In en, this message translates to:

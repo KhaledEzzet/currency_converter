@@ -81,6 +81,24 @@ class AppLocalizationsPl extends AppLocalizations {
   String get rangePastTenYears => 'Ostatnie 10 lat';
 
   @override
+  String get rangeShortWeek => '1 tydz.';
+
+  @override
+  String get rangeShortMonth => '1 mies.';
+
+  @override
+  String get rangeShortThreeMonths => '3 mies.';
+
+  @override
+  String get rangeShortYear => '1 rok';
+
+  @override
+  String get rangeShortFiveYears => '5 lat';
+
+  @override
+  String get rangeShortTenYears => '10 lat';
+
+  @override
   String get settingsDarkMode => 'Tryb ciemny';
 
   @override

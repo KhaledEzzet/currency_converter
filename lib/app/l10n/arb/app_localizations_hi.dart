@@ -81,6 +81,24 @@ class AppLocalizationsHi extends AppLocalizations {
   String get rangePastTenYears => 'पिछले 10 साल';
 
   @override
+  String get rangeShortWeek => '1 सप्ताह';
+
+  @override
+  String get rangeShortMonth => '1 महीना';
+
+  @override
+  String get rangeShortThreeMonths => '3 महीने';
+
+  @override
+  String get rangeShortYear => '1 साल';
+
+  @override
+  String get rangeShortFiveYears => '5 साल';
+
+  @override
+  String get rangeShortTenYears => '10 साल';
+
+  @override
   String get settingsDarkMode => 'डार्क मोड';
 
   @override

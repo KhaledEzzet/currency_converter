@@ -12,6 +12,7 @@ import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ChartsView extends StatelessWidget {
   const ChartsView({super.key});
@@ -31,6 +32,24 @@ class ChartsView extends StatelessWidget {
       case '1W':
       default:
         return l10n.rangePastWeek;
+    }
+  }
+
+  String _rangeShortLabel(AppLocalizations l10n, String range) {
+    switch (range) {
+      case '1M':
+        return l10n.rangeShortMonth;
+      case '3M':
+        return l10n.rangeShortThreeMonths;
+      case '1Y':
+        return l10n.rangeShortYear;
+      case '5Y':
+        return l10n.rangeShortFiveYears;
+      case '10Y':
+        return l10n.rangeShortTenYears;
+      case '1W':
+      default:
+        return l10n.rangeShortWeek;
     }
   }
 
@@ -75,14 +94,6 @@ class ChartsView extends StatelessWidget {
         child: BlocConsumer<ChartsCubit, ChartsState>(
           listener: (context, state) => cubit.syncFormFields(),
           builder: (context, state) {
-            if (state.status == ChartsStatus.loading ||
-                (state.status == ChartsStatus.initial &&
-                    state.currencies.isEmpty)) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
             if (state.status == ChartsStatus.failure) {
               return Center(
                 child: Text(
@@ -91,6 +102,9 @@ class ChartsView extends StatelessWidget {
               );
             }
 
+            final isLoading = state.status == ChartsStatus.loading ||
+                (state.status == ChartsStatus.initial &&
+                    state.currencies.isEmpty);
             final settingsState = context.watch<SettingsCubit>().state;
             final showCurrencyFlags = settingsState.showCurrencyFlags;
             final rateText =
@@ -107,6 +121,32 @@ class ChartsView extends StatelessWidget {
               ..write(changePercent.toStringAsFixed(2))
               ..write('%) ')
               ..write(_rangeLabel(l10n, state.selectedRange));
+            final mockChartPoints = List<ChartsPoint>.generate(
+              20,
+              (index) => ChartsPoint(
+                index,
+                1.2 + (index % 5) * 0.15,
+              ),
+            );
+            final (mockMinValue, mockMaxValue, mockInterval) =
+                ChartsState.calculateStats(mockChartPoints);
+            final chartPoints = isLoading ? mockChartPoints : state.chartPoints;
+            final minValue = isLoading ? mockMinValue : state.minValue;
+            final maxValue = isLoading ? mockMaxValue : state.maxValue;
+            final yInterval = isLoading ? mockInterval : state.yInterval;
+            final fromCurrency =
+                isLoading ? BoneMock.chars(3) : state.fromCurrency;
+            final toCurrency = isLoading ? BoneMock.chars(3) : state.toCurrency;
+            final fromFlagCode = isLoading
+                ? null
+                : state.currencyFlags[state.fromCurrency];
+            final toFlagCode =
+                isLoading ? null : state.currencyFlags[state.toCurrency];
+            final displayRateText = isLoading ? BoneMock.chars(6) : rateText;
+            final performanceText = isLoading
+                ? '${BoneMock.chars(6)} (${BoneMock.chars(5)}%) '
+                    '${_rangeLabel(l10n, state.selectedRange)}'
+                : changeText.toString();
 
             return Padding(
               padding: const EdgeInsets.all(16),
@@ -139,30 +179,43 @@ class ChartsView extends StatelessWidget {
                     showCurrencyFlags: showCurrencyFlags,
                   ),
                   const SizedBox(height: 20),
-                  RateHeader(
-                    fromCurrency: state.fromCurrency,
-                    toCurrency: state.toCurrency,
-                    rateText: rateText,
-                    dotColor: changeColor,
+                  Skeletonizer(
+                    enabled: isLoading,
+                    child: RateHeader(
+                      fromCurrency: fromCurrency,
+                      toCurrency: toCurrency,
+                      rateText: displayRateText,
+                      dotColor: changeColor,
+                      fromFlagCode: fromFlagCode,
+                      toFlagCode: toFlagCode,
+                      showFlags: showCurrencyFlags,
+                    ),
                   ),
                   const SizedBox(height: 6),
-                  PerformanceSummary(
-                    text: changeText.toString(),
-                    color: changeColor,
+                  Skeletonizer(
+                    enabled: isLoading,
+                    child: PerformanceSummary(
+                      text: performanceText,
+                      color: changeColor,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   RangeSelector(
                     ranges: const ['1W', '1M', '3M', '1Y', '5Y', '10Y'],
                     selectedRange: state.selectedRange,
                     onSelected: cubit.updateRange,
+                    labelBuilder: (range) => _rangeShortLabel(l10n, range),
                   ),
                   const SizedBox(height: 24),
                   Expanded(
-                    child: RateChart(
-                      points: state.chartPoints,
-                      minValue: state.minValue,
-                      maxValue: state.maxValue,
-                      yInterval: state.yInterval,
+                    child: Skeletonizer(
+                      enabled: isLoading,
+                      child: RateChart(
+                        points: chartPoints,
+                        minValue: minValue,
+                        maxValue: maxValue,
+                        yInterval: yInterval,
+                      ),
                     ),
                   ),
                 ],

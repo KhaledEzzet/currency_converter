@@ -81,6 +81,24 @@ class AppLocalizationsRu extends AppLocalizations {
   String get rangePastTenYears => 'Последние 10 лет';
 
   @override
+  String get rangeShortWeek => '1 нед.';
+
+  @override
+  String get rangeShortMonth => '1 мес.';
+
+  @override
+  String get rangeShortThreeMonths => '3 мес.';
+
+  @override
+  String get rangeShortYear => '1 год';
+
+  @override
+  String get rangeShortFiveYears => '5 лет';
+
+  @override
+  String get rangeShortTenYears => '10 лет';
+
+  @override
   String get settingsDarkMode => 'Темный режим';
 
   @override

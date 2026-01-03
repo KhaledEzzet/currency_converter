@@ -81,6 +81,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get rangePastTenYears => 'آخر 10 سنوات';
 
   @override
+  String get rangeShortWeek => '1 أسبوع';
+
+  @override
+  String get rangeShortMonth => '1 شهر';
+
+  @override
+  String get rangeShortThreeMonths => '3 أشهر';
+
+  @override
+  String get rangeShortYear => '1 سنة';
+
+  @override
+  String get rangeShortFiveYears => '5 سنوات';
+
+  @override
+  String get rangeShortTenYears => '10 سنوات';
+
+  @override
   String get settingsDarkMode => 'الوضع الداكن';
 
   @override

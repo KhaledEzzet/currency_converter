@@ -81,6 +81,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rangePastTenYears => 'Past 10 years';
 
   @override
+  String get rangeShortWeek => '1W';
+
+  @override
+  String get rangeShortMonth => '1M';
+
+  @override
+  String get rangeShortThreeMonths => '3M';
+
+  @override
+  String get rangeShortYear => '1Y';
+
+  @override
+  String get rangeShortFiveYears => '5Y';
+
+  @override
+  String get rangeShortTenYears => '10Y';
+
+  @override
   String get settingsDarkMode => 'Dark mode';
 
   @override
