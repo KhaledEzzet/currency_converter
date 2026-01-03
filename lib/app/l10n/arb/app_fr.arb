@@ -27,5 +27,31 @@
   "rangePastThreeMonths": "3 derniers mois",
   "rangePastYear": "Année dernière",
   "rangePastFiveYears": "5 dernières années",
-  "rangePastTenYears": "10 dernières années"
+  "rangePastTenYears": "10 dernières années",
+  "settingsDarkMode": "Mode sombre",
+  "settingsOn": "Activé",
+  "settingsOff": "Désactivé",
+  "settingsGeneralTitle": "Général",
+  "settingsGeneralSubtitle": "Comportement et préférences de l'application",
+  "settingsShowCurrencyFlags": "Afficher les drapeaux des devises",
+  "settingsUseCurrencySymbols": "Utiliser les symboles monétaires",
+  "settingsCurrenciesTitle": "Devises",
+  "settingsCurrenciesSubtitle": "Devise de base et options d'affichage",
+  "settingsDefaultBase": "Devise de base",
+  "settingsDisplayCurrencies": "Devises affichées",
+  "settingsUnableToLoadCurrencies": "Impossible de charger les devises",
+  "settingsAllCurrencies": "Toutes les devises",
+  "settingsNoCurrenciesSelected": "Aucune devise sélectionnée",
+  "settingsSelectedCurrenciesMore": "{visible} +{remaining} de plus",
+  "@settingsSelectedCurrenciesMore": {
+    "placeholders": {
+      "visible": {},
+      "remaining": {}
+    }
+  },
+  "settingsVersion": "Version",
+  "settingsSelectAll": "Tout sélectionner",
+  "settingsClear": "Effacer",
+  "settingsCancel": "Annuler",
+  "settingsSave": "Enregistrer"
 }

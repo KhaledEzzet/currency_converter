@@ -79,4 +79,67 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get rangePastTenYears => 'Letzte 10 Jahre';
+
+  @override
+  String get settingsDarkMode => 'Dunkelmodus';
+
+  @override
+  String get settingsOn => 'An';
+
+  @override
+  String get settingsOff => 'Aus';
+
+  @override
+  String get settingsGeneralTitle => 'Allgemein';
+
+  @override
+  String get settingsGeneralSubtitle => 'App-Verhalten und Einstellungen';
+
+  @override
+  String get settingsShowCurrencyFlags => 'Währungsflaggen anzeigen';
+
+  @override
+  String get settingsUseCurrencySymbols => 'Währungssymbole verwenden';
+
+  @override
+  String get settingsCurrenciesTitle => 'Währungen';
+
+  @override
+  String get settingsCurrenciesSubtitle => 'Standardbasis und Anzeigeoptionen';
+
+  @override
+  String get settingsDefaultBase => 'Standardbasis';
+
+  @override
+  String get settingsDisplayCurrencies => 'Angezeigte Währungen';
+
+  @override
+  String get settingsUnableToLoadCurrencies =>
+      'Währungen konnten nicht geladen werden';
+
+  @override
+  String get settingsAllCurrencies => 'Alle Währungen';
+
+  @override
+  String get settingsNoCurrenciesSelected => 'Keine Währungen ausgewählt';
+
+  @override
+  String settingsSelectedCurrenciesMore(Object visible, Object remaining) {
+    return '$visible +$remaining weitere';
+  }
+
+  @override
+  String get settingsVersion => 'Version';
+
+  @override
+  String get settingsSelectAll => 'Alle auswählen';
+
+  @override
+  String get settingsClear => 'Leeren';
+
+  @override
+  String get settingsCancel => 'Abbrechen';
+
+  @override
+  String get settingsSave => 'Speichern';
 }

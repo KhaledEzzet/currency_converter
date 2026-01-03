@@ -79,4 +79,67 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rangePastTenYears => 'Последние 10 лет';
+
+  @override
+  String get settingsDarkMode => 'Темный режим';
+
+  @override
+  String get settingsOn => 'Вкл.';
+
+  @override
+  String get settingsOff => 'Выкл.';
+
+  @override
+  String get settingsGeneralTitle => 'Общие';
+
+  @override
+  String get settingsGeneralSubtitle => 'Поведение приложения и настройки';
+
+  @override
+  String get settingsShowCurrencyFlags => 'Показывать флаги валют';
+
+  @override
+  String get settingsUseCurrencySymbols => 'Использовать символы валют';
+
+  @override
+  String get settingsCurrenciesTitle => 'Валюты';
+
+  @override
+  String get settingsCurrenciesSubtitle =>
+      'Базовая валюта и параметры отображения';
+
+  @override
+  String get settingsDefaultBase => 'Базовая валюта';
+
+  @override
+  String get settingsDisplayCurrencies => 'Отображаемые валюты';
+
+  @override
+  String get settingsUnableToLoadCurrencies => 'Не удалось загрузить валюты';
+
+  @override
+  String get settingsAllCurrencies => 'Все валюты';
+
+  @override
+  String get settingsNoCurrenciesSelected => 'Валюты не выбраны';
+
+  @override
+  String settingsSelectedCurrenciesMore(Object visible, Object remaining) {
+    return '$visible +$remaining еще';
+  }
+
+  @override
+  String get settingsVersion => 'Версия';
+
+  @override
+  String get settingsSelectAll => 'Выбрать все';
+
+  @override
+  String get settingsClear => 'Очистить';
+
+  @override
+  String get settingsCancel => 'Отмена';
+
+  @override
+  String get settingsSave => 'Сохранить';
 }

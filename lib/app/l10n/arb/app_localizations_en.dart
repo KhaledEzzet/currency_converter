@@ -79,4 +79,66 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rangePastTenYears => 'Past 10 years';
+
+  @override
+  String get settingsDarkMode => 'Dark mode';
+
+  @override
+  String get settingsOn => 'On';
+
+  @override
+  String get settingsOff => 'Off';
+
+  @override
+  String get settingsGeneralTitle => 'General';
+
+  @override
+  String get settingsGeneralSubtitle => 'App behavior and preferences';
+
+  @override
+  String get settingsShowCurrencyFlags => 'Show currency flags';
+
+  @override
+  String get settingsUseCurrencySymbols => 'Use currency symbols';
+
+  @override
+  String get settingsCurrenciesTitle => 'Currencies';
+
+  @override
+  String get settingsCurrenciesSubtitle => 'Default base and display options';
+
+  @override
+  String get settingsDefaultBase => 'Default base';
+
+  @override
+  String get settingsDisplayCurrencies => 'Display currencies';
+
+  @override
+  String get settingsUnableToLoadCurrencies => 'Unable to load currencies';
+
+  @override
+  String get settingsAllCurrencies => 'All currencies';
+
+  @override
+  String get settingsNoCurrenciesSelected => 'No currencies selected';
+
+  @override
+  String settingsSelectedCurrenciesMore(Object visible, Object remaining) {
+    return '$visible +$remaining more';
+  }
+
+  @override
+  String get settingsVersion => 'Version';
+
+  @override
+  String get settingsSelectAll => 'Select all';
+
+  @override
+  String get settingsClear => 'Clear';
+
+  @override
+  String get settingsCancel => 'Cancel';
+
+  @override
+  String get settingsSave => 'Save';
 }

@@ -251,6 +251,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Past 10 years'**
   String get rangePastTenYears;
+
+  /// No description provided for @settingsDarkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get settingsDarkMode;
+
+  /// No description provided for @settingsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get settingsOn;
+
+  /// No description provided for @settingsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get settingsOff;
+
+  /// No description provided for @settingsGeneralTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsGeneralTitle;
+
+  /// No description provided for @settingsGeneralSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App behavior and preferences'**
+  String get settingsGeneralSubtitle;
+
+  /// No description provided for @settingsShowCurrencyFlags.
+  ///
+  /// In en, this message translates to:
+  /// **'Show currency flags'**
+  String get settingsShowCurrencyFlags;
+
+  /// No description provided for @settingsUseCurrencySymbols.
+  ///
+  /// In en, this message translates to:
+  /// **'Use currency symbols'**
+  String get settingsUseCurrencySymbols;
+
+  /// No description provided for @settingsCurrenciesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Currencies'**
+  String get settingsCurrenciesTitle;
+
+  /// No description provided for @settingsCurrenciesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Default base and display options'**
+  String get settingsCurrenciesSubtitle;
+
+  /// No description provided for @settingsDefaultBase.
+  ///
+  /// In en, this message translates to:
+  /// **'Default base'**
+  String get settingsDefaultBase;
+
+  /// No description provided for @settingsDisplayCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Display currencies'**
+  String get settingsDisplayCurrencies;
+
+  /// No description provided for @settingsUnableToLoadCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load currencies'**
+  String get settingsUnableToLoadCurrencies;
+
+  /// No description provided for @settingsAllCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'All currencies'**
+  String get settingsAllCurrencies;
+
+  /// No description provided for @settingsNoCurrenciesSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No currencies selected'**
+  String get settingsNoCurrenciesSelected;
+
+  /// No description provided for @settingsSelectedCurrenciesMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{visible} +{remaining} more'**
+  String settingsSelectedCurrenciesMore(Object visible, Object remaining);
+
+  /// No description provided for @settingsVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsVersion;
+
+  /// No description provided for @settingsSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get settingsSelectAll;
+
+  /// No description provided for @settingsClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get settingsClear;
+
+  /// No description provided for @settingsCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get settingsCancel;
+
+  /// No description provided for @settingsSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get settingsSave;
 }
 
 class _AppLocalizationsDelegate

@@ -79,4 +79,66 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get rangePastTenYears => 'पिछले 10 साल';
+
+  @override
+  String get settingsDarkMode => 'डार्क मोड';
+
+  @override
+  String get settingsOn => 'चालू';
+
+  @override
+  String get settingsOff => 'बंद';
+
+  @override
+  String get settingsGeneralTitle => 'सामान्य';
+
+  @override
+  String get settingsGeneralSubtitle => 'ऐप व्यवहार और प्राथमिकताएं';
+
+  @override
+  String get settingsShowCurrencyFlags => 'मुद्रा झंडे दिखाएं';
+
+  @override
+  String get settingsUseCurrencySymbols => 'मुद्रा चिह्न उपयोग करें';
+
+  @override
+  String get settingsCurrenciesTitle => 'मुद्राएँ';
+
+  @override
+  String get settingsCurrenciesSubtitle => 'डिफ़ॉल्ट आधार और प्रदर्शन विकल्प';
+
+  @override
+  String get settingsDefaultBase => 'डिफ़ॉल्ट आधार मुद्रा';
+
+  @override
+  String get settingsDisplayCurrencies => 'दिखाई जाने वाली मुद्राएँ';
+
+  @override
+  String get settingsUnableToLoadCurrencies => 'मुद्राएँ लोड नहीं हो सकीं';
+
+  @override
+  String get settingsAllCurrencies => 'सभी मुद्राएँ';
+
+  @override
+  String get settingsNoCurrenciesSelected => 'कोई मुद्रा चयनित नहीं है';
+
+  @override
+  String settingsSelectedCurrenciesMore(Object visible, Object remaining) {
+    return '$visible +$remaining और';
+  }
+
+  @override
+  String get settingsVersion => 'संस्करण';
+
+  @override
+  String get settingsSelectAll => 'सभी चुनें';
+
+  @override
+  String get settingsClear => 'साफ़ करें';
+
+  @override
+  String get settingsCancel => 'रद्द करें';
+
+  @override
+  String get settingsSave => 'सहेजें';
 }

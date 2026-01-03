@@ -65,19 +65,19 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  String _displaySelectionLabel(SettingsState state) {
+  String _displaySelectionLabel(AppLocalizations l10n, SettingsState state) {
     if (!state.displaySelectionInitialized) {
-      return 'All currencies';
+      return l10n.settingsAllCurrencies;
     }
     if (state.displayCurrencies.isEmpty) {
-      return 'No currencies selected';
+      return l10n.settingsNoCurrenciesSelected;
     }
     if (state.displayCurrencies.length <= 3) {
       return state.displayCurrencies.join(', ');
     }
     final visible = state.displayCurrencies.take(3).join(', ');
     final remaining = state.displayCurrencies.length - 3;
-    return '$visible +$remaining more';
+    return l10n.settingsSelectedCurrenciesMore(visible, remaining);
   }
 
   @override
@@ -103,8 +103,9 @@ class SettingsView extends StatelessWidget {
                 value: isDarkMode,
                 onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
                 secondary: const Icon(Icons.dark_mode),
-                title: const Text('Dark mode'),
-                subtitle: Text(isDarkMode ? 'On' : 'Off'),
+                title: Text(l10n.settingsDarkMode),
+                subtitle:
+                    Text(isDarkMode ? l10n.settingsOn : l10n.settingsOff),
               );
             },
           ),
@@ -137,10 +138,10 @@ class SettingsView extends StatelessWidget {
             },
           ),
           const Divider(height: 24),
-          const ListTile(
-            leading: Icon(Icons.tune),
-            title: Text('General'),
-            subtitle: Text('App behavior and preferences'),
+          ListTile(
+            leading: const Icon(Icons.tune),
+            title: Text(l10n.settingsGeneralTitle),
+            subtitle: Text(l10n.settingsGeneralSubtitle),
           ),
           BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) {
@@ -154,8 +155,10 @@ class SettingsView extends StatelessWidget {
                           .updateShowCurrencyFlags(value);
                     },
                     secondary: const Icon(Icons.flag_outlined),
-                    title: const Text('Show currency flags'),
-                    subtitle: Text(state.showCurrencyFlags ? 'On' : 'Off'),
+                    title: Text(l10n.settingsShowCurrencyFlags),
+                    subtitle: Text(state.showCurrencyFlags
+                        ? l10n.settingsOn
+                        : l10n.settingsOff),
                   ),
                   SwitchListTile(
                     value: state.useCurrencySymbols,
@@ -165,18 +168,20 @@ class SettingsView extends StatelessWidget {
                           .updateUseCurrencySymbols(value);
                     },
                     secondary: const Icon(Icons.payments_outlined),
-                    title: const Text('Use currency symbols'),
-                    subtitle: Text(state.useCurrencySymbols ? 'On' : 'Off'),
+                    title: Text(l10n.settingsUseCurrencySymbols),
+                    subtitle: Text(state.useCurrencySymbols
+                        ? l10n.settingsOn
+                        : l10n.settingsOff),
                   ),
                 ],
               );
             },
           ),
           const Divider(height: 24),
-          const ListTile(
-            leading: Icon(Icons.currency_exchange),
-            title: Text('Currencies'),
-            subtitle: Text('Default base and display options'),
+          ListTile(
+            leading: const Icon(Icons.currency_exchange),
+            title: Text(l10n.settingsCurrenciesTitle),
+            subtitle: Text(l10n.settingsCurrenciesSubtitle),
           ),
           BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) {
@@ -193,7 +198,7 @@ class SettingsView extends StatelessWidget {
               if (state.status == SettingsStatus.failure && !hasCurrencies) {
                 return ListTile(
                   leading: const Icon(Icons.error_outline),
-                  title: const Text('Unable to load currencies'),
+                  title: Text(l10n.settingsUnableToLoadCurrencies),
                   subtitle: Text(state.errorMessage ?? l10n.errorGeneric),
                 );
               }
@@ -202,7 +207,7 @@ class SettingsView extends StatelessWidget {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.account_balance_wallet),
-                    title: const Text('Default base'),
+                    title: Text(l10n.settingsDefaultBase),
                     trailing: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         value: hasCurrencies &&
@@ -229,8 +234,8 @@ class SettingsView extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.view_list),
-                    title: const Text('Display currencies'),
-                    subtitle: Text(_displaySelectionLabel(state)),
+                    title: Text(l10n.settingsDisplayCurrencies),
+                    subtitle: Text(_displaySelectionLabel(l10n, state)),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: hasCurrencies
                         ? () => showDisplayCurrenciesSheet(context, state)
@@ -243,7 +248,7 @@ class SettingsView extends StatelessWidget {
           const Divider(height: 24),
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: const Text('Version'),
+            title: Text(l10n.settingsVersion),
             subtitle: Text(appVersion),
           ),
         ],

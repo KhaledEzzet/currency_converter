@@ -1,6 +1,7 @@
 import 'package:currency_converter/feature/convert/view/widgets/currency_flag.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
+import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,6 +40,7 @@ Future<void> showDisplayCurrenciesSheet(
     isScrollControlled: true,
     builder: (context) {
       final theme = Theme.of(context);
+      final l10n = AppLocalizations.of(context);
       return SafeArea(
         child: StatefulBuilder(
           builder: (context, setSheetState) {
@@ -50,7 +52,7 @@ Future<void> showDisplayCurrenciesSheet(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Display currencies',
+                      l10n.settingsDisplayCurrencies,
                       style: theme.textTheme.titleMedium,
                     ),
                     const SizedBox(height: 12),
@@ -64,7 +66,7 @@ Future<void> showDisplayCurrenciesSheet(
                                 ..addAll(state.currencies);
                             });
                           },
-                          child: const Text('Select all'),
+                          child: Text(l10n.settingsSelectAll),
                         ),
                         TextButton(
                           onPressed: () {
@@ -72,7 +74,7 @@ Future<void> showDisplayCurrenciesSheet(
                               selected.clear();
                             });
                           },
-                          child: const Text('Clear'),
+                          child: Text(l10n.settingsClear),
                         ),
                       ],
                     ),
@@ -106,7 +108,7 @@ Future<void> showDisplayCurrenciesSheet(
                       children: [
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: const Text('Cancel'),
+                          child: Text(l10n.settingsCancel),
                         ),
                         const Spacer(),
                         ElevatedButton(
@@ -116,7 +118,7 @@ Future<void> showDisplayCurrenciesSheet(
                                 .updateDisplayCurrencies(selected.toList());
                             Navigator.pop(context);
                           },
-                          child: const Text('Save'),
+                          child: Text(l10n.settingsSave),
                         ),
                       ],
                     ),

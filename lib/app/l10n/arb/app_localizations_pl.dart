@@ -79,4 +79,66 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get rangePastTenYears => 'Ostatnie 10 lat';
+
+  @override
+  String get settingsDarkMode => 'Tryb ciemny';
+
+  @override
+  String get settingsOn => 'Włączone';
+
+  @override
+  String get settingsOff => 'Wyłączone';
+
+  @override
+  String get settingsGeneralTitle => 'Ogólne';
+
+  @override
+  String get settingsGeneralSubtitle => 'Zachowanie aplikacji i preferencje';
+
+  @override
+  String get settingsShowCurrencyFlags => 'Pokaż flagi walut';
+
+  @override
+  String get settingsUseCurrencySymbols => 'Używaj symboli walut';
+
+  @override
+  String get settingsCurrenciesTitle => 'Waluty';
+
+  @override
+  String get settingsCurrenciesSubtitle => 'Waluta bazowa i opcje wyświetlania';
+
+  @override
+  String get settingsDefaultBase => 'Waluta bazowa';
+
+  @override
+  String get settingsDisplayCurrencies => 'Wyświetlane waluty';
+
+  @override
+  String get settingsUnableToLoadCurrencies => 'Nie udało się załadować walut';
+
+  @override
+  String get settingsAllCurrencies => 'Wszystkie waluty';
+
+  @override
+  String get settingsNoCurrenciesSelected => 'Nie wybrano walut';
+
+  @override
+  String settingsSelectedCurrenciesMore(Object visible, Object remaining) {
+    return '$visible +$remaining więcej';
+  }
+
+  @override
+  String get settingsVersion => 'Wersja';
+
+  @override
+  String get settingsSelectAll => 'Zaznacz wszystko';
+
+  @override
+  String get settingsClear => 'Wyczyść';
+
+  @override
+  String get settingsCancel => 'Anuluj';
+
+  @override
+  String get settingsSave => 'Zapisz';
 }

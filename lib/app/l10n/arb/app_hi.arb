@@ -27,5 +27,31 @@
   "rangePastThreeMonths": "पिछले 3 महीने",
   "rangePastYear": "पिछला साल",
   "rangePastFiveYears": "पिछले 5 साल",
-  "rangePastTenYears": "पिछले 10 साल"
+  "rangePastTenYears": "पिछले 10 साल",
+  "settingsDarkMode": "डार्क मोड",
+  "settingsOn": "चालू",
+  "settingsOff": "बंद",
+  "settingsGeneralTitle": "सामान्य",
+  "settingsGeneralSubtitle": "ऐप व्यवहार और प्राथमिकताएं",
+  "settingsShowCurrencyFlags": "मुद्रा झंडे दिखाएं",
+  "settingsUseCurrencySymbols": "मुद्रा चिह्न उपयोग करें",
+  "settingsCurrenciesTitle": "मुद्राएँ",
+  "settingsCurrenciesSubtitle": "डिफ़ॉल्ट आधार और प्रदर्शन विकल्प",
+  "settingsDefaultBase": "डिफ़ॉल्ट आधार मुद्रा",
+  "settingsDisplayCurrencies": "दिखाई जाने वाली मुद्राएँ",
+  "settingsUnableToLoadCurrencies": "मुद्राएँ लोड नहीं हो सकीं",
+  "settingsAllCurrencies": "सभी मुद्राएँ",
+  "settingsNoCurrenciesSelected": "कोई मुद्रा चयनित नहीं है",
+  "settingsSelectedCurrenciesMore": "{visible} +{remaining} और",
+  "@settingsSelectedCurrenciesMore": {
+    "placeholders": {
+      "visible": {},
+      "remaining": {}
+    }
+  },
+  "settingsVersion": "संस्करण",
+  "settingsSelectAll": "सभी चुनें",
+  "settingsClear": "साफ़ करें",
+  "settingsCancel": "रद्द करें",
+  "settingsSave": "सहेजें"
 }

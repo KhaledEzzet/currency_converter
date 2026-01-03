@@ -27,5 +27,31 @@
   "rangePastThreeMonths": "Letzte 3 Monate",
   "rangePastYear": "Letztes Jahr",
   "rangePastFiveYears": "Letzte 5 Jahre",
-  "rangePastTenYears": "Letzte 10 Jahre"
+  "rangePastTenYears": "Letzte 10 Jahre",
+  "settingsDarkMode": "Dunkelmodus",
+  "settingsOn": "An",
+  "settingsOff": "Aus",
+  "settingsGeneralTitle": "Allgemein",
+  "settingsGeneralSubtitle": "App-Verhalten und Einstellungen",
+  "settingsShowCurrencyFlags": "Währungsflaggen anzeigen",
+  "settingsUseCurrencySymbols": "Währungssymbole verwenden",
+  "settingsCurrenciesTitle": "Währungen",
+  "settingsCurrenciesSubtitle": "Standardbasis und Anzeigeoptionen",
+  "settingsDefaultBase": "Standardbasis",
+  "settingsDisplayCurrencies": "Angezeigte Währungen",
+  "settingsUnableToLoadCurrencies": "Währungen konnten nicht geladen werden",
+  "settingsAllCurrencies": "Alle Währungen",
+  "settingsNoCurrenciesSelected": "Keine Währungen ausgewählt",
+  "settingsSelectedCurrenciesMore": "{visible} +{remaining} weitere",
+  "@settingsSelectedCurrenciesMore": {
+    "placeholders": {
+      "visible": {},
+      "remaining": {}
+    }
+  },
+  "settingsVersion": "Version",
+  "settingsSelectAll": "Alle auswählen",
+  "settingsClear": "Leeren",
+  "settingsCancel": "Abbrechen",
+  "settingsSave": "Speichern"
 }

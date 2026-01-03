@@ -27,5 +27,31 @@
   "rangePastThreeMonths": "Последние 3 месяца",
   "rangePastYear": "Прошлый год",
   "rangePastFiveYears": "Последние 5 лет",
-  "rangePastTenYears": "Последние 10 лет"
+  "rangePastTenYears": "Последние 10 лет",
+  "settingsDarkMode": "Темный режим",
+  "settingsOn": "Вкл.",
+  "settingsOff": "Выкл.",
+  "settingsGeneralTitle": "Общие",
+  "settingsGeneralSubtitle": "Поведение приложения и настройки",
+  "settingsShowCurrencyFlags": "Показывать флаги валют",
+  "settingsUseCurrencySymbols": "Использовать символы валют",
+  "settingsCurrenciesTitle": "Валюты",
+  "settingsCurrenciesSubtitle": "Базовая валюта и параметры отображения",
+  "settingsDefaultBase": "Базовая валюта",
+  "settingsDisplayCurrencies": "Отображаемые валюты",
+  "settingsUnableToLoadCurrencies": "Не удалось загрузить валюты",
+  "settingsAllCurrencies": "Все валюты",
+  "settingsNoCurrenciesSelected": "Валюты не выбраны",
+  "settingsSelectedCurrenciesMore": "{visible} +{remaining} еще",
+  "@settingsSelectedCurrenciesMore": {
+    "placeholders": {
+      "visible": {},
+      "remaining": {}
+    }
+  },
+  "settingsVersion": "Версия",
+  "settingsSelectAll": "Выбрать все",
+  "settingsClear": "Очистить",
+  "settingsCancel": "Отмена",
+  "settingsSave": "Сохранить"
 }

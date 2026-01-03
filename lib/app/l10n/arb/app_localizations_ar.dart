@@ -79,4 +79,66 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get rangePastTenYears => 'آخر 10 سنوات';
+
+  @override
+  String get settingsDarkMode => 'الوضع الداكن';
+
+  @override
+  String get settingsOn => 'تشغيل';
+
+  @override
+  String get settingsOff => 'إيقاف';
+
+  @override
+  String get settingsGeneralTitle => 'عام';
+
+  @override
+  String get settingsGeneralSubtitle => 'سلوك التطبيق والتفضيلات';
+
+  @override
+  String get settingsShowCurrencyFlags => 'إظهار أعلام العملات';
+
+  @override
+  String get settingsUseCurrencySymbols => 'استخدام رموز العملات';
+
+  @override
+  String get settingsCurrenciesTitle => 'العملات';
+
+  @override
+  String get settingsCurrenciesSubtitle => 'العملة الأساسية وخيارات العرض';
+
+  @override
+  String get settingsDefaultBase => 'العملة الأساسية';
+
+  @override
+  String get settingsDisplayCurrencies => 'عرض العملات';
+
+  @override
+  String get settingsUnableToLoadCurrencies => 'تعذر تحميل العملات';
+
+  @override
+  String get settingsAllCurrencies => 'جميع العملات';
+
+  @override
+  String get settingsNoCurrenciesSelected => 'لم يتم تحديد عملات';
+
+  @override
+  String settingsSelectedCurrenciesMore(Object visible, Object remaining) {
+    return '$visible +$remaining أخرى';
+  }
+
+  @override
+  String get settingsVersion => 'الإصدار';
+
+  @override
+  String get settingsSelectAll => 'تحديد الكل';
+
+  @override
+  String get settingsClear => 'مسح';
+
+  @override
+  String get settingsCancel => 'إلغاء';
+
+  @override
+  String get settingsSave => 'حفظ';
 }
