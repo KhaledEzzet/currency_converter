@@ -8,17 +8,21 @@ class ConvertCubit extends HydratedCubit<ConvertState> {
   ConvertCubit({
     required GetLatestRatesUseCase getLatestRatesUseCase,
     required GetCurrenciesUseCase getCurrenciesUseCase,
+    String? preferredBaseCurrency,
   })  : _getLatestRatesUseCase = getLatestRatesUseCase,
         _getCurrenciesUseCase = getCurrenciesUseCase,
+        _preferredBaseCurrency = preferredBaseCurrency,
         super(ConvertState.initial());
 
   final GetLatestRatesUseCase _getLatestRatesUseCase;
   final GetCurrenciesUseCase _getCurrenciesUseCase;
+  final String? _preferredBaseCurrency;
 
   Future<void> initialize() async {
     emit(state.copyWith(status: ConvertStatus.loading, errorMessage: null));
+    final fromCurrency = _preferredBaseCurrency ?? state.fromCurrency;
     await _loadRates(
-      fromCurrency: state.fromCurrency,
+      fromCurrency: fromCurrency,
       refreshCurrencies: state.currencies.isEmpty,
     );
   }

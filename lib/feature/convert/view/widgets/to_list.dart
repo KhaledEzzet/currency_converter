@@ -7,10 +7,14 @@ class ToList extends StatelessWidget {
     super.key,
     required this.state,
     required this.currencies,
+    required this.showCurrencyFlags,
+    required this.useCurrencySymbols,
   });
 
   final ConvertState state;
   final List<String> currencies;
+  final bool showCurrencyFlags;
+  final bool useCurrencySymbols;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,8 @@ class ToList extends StatelessWidget {
         return ConversionCard(
           state: state,
           currency: currency,
+          showCurrencyFlags: showCurrencyFlags,
+          useCurrencySymbols: useCurrencySymbols,
         );
       },
     );
