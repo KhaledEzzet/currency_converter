@@ -5,7 +5,7 @@
 </div>
 
 <div align="center">
-  <a href="https://chromewebstore.google.com/detail/currency-converter/hhglagljalhhfhomjdmefjdcjhdklaja">
+  <a href="https://chromewebstore.google.com/detail/currency-converter/hhglagljalhhfhomjdmefjdcjhdklaja" target="_blank" rel="noopener noreferrer">
     <img src="assets/icons/192px.svg" alt="Get Currency Converter on Chrome Web Store" width="192" />
   </a>
 </div>
