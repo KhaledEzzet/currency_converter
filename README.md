@@ -4,6 +4,12 @@
   <img src="assets/icons/logo.png" alt="Currency Converter Logo" width="300" />
 </div>
 
+<div align="center">
+  <a href="https://chromewebstore.google.com/detail/currency-converter/hhglagljalhhfhomjdmefjdcjhdklaja">
+    <img src="assets/icons/192px.svg" alt="Get Currency Converter on Chrome Web Store" width="192" />
+  </a>
+</div>
+
 ## Screenshots
 
 <div align="center">
