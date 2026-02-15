@@ -151,7 +151,7 @@ class SettingsView extends StatelessWidget {
                     onChanged: (value) {
                       context
                           .read<SettingsCubit>()
-                          .updateShowCurrencyFlags(value);
+                          .updateShowCurrencyFlags(value: value);
                     },
                     secondary: const Icon(Icons.flag_outlined),
                     title: Text(l10n.settingsShowCurrencyFlags),
@@ -166,7 +166,7 @@ class SettingsView extends StatelessWidget {
                     onChanged: (value) {
                       context
                           .read<SettingsCubit>()
-                          .updateUseCurrencySymbols(value);
+                          .updateUseCurrencySymbols(value: value);
                     },
                     secondary: const Icon(Icons.payments_outlined),
                     title: Text(l10n.settingsUseCurrencySymbols),

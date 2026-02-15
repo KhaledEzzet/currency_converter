@@ -8,11 +8,6 @@ class TimeseriesRatesModel {
     required this.rates,
   });
 
-  final String base;
-  final DateTime startDate;
-  final DateTime endDate;
-  final Map<DateTime, double> rates;
-
   factory TimeseriesRatesModel.fromJson(
     Map<String, dynamic> json, {
     required String target,
@@ -42,6 +37,11 @@ class TimeseriesRatesModel {
       rates: ratesMap,
     );
   }
+
+  final String base;
+  final DateTime startDate;
+  final DateTime endDate;
+  final Map<DateTime, double> rates;
 
   TimeseriesRates toEntity() {
     return TimeseriesRates(

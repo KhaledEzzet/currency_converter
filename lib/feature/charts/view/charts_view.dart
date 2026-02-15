@@ -137,9 +137,8 @@ class ChartsView extends StatelessWidget {
             final fromCurrency =
                 isLoading ? BoneMock.chars(3) : state.fromCurrency;
             final toCurrency = isLoading ? BoneMock.chars(3) : state.toCurrency;
-            final fromFlagCode = isLoading
-                ? null
-                : state.currencyFlags[state.fromCurrency];
+            final fromFlagCode =
+                isLoading ? null : state.currencyFlags[state.fromCurrency];
             final toFlagCode =
                 isLoading ? null : state.currencyFlags[state.toCurrency];
             final displayRateText = isLoading ? BoneMock.chars(6) : rateText;
@@ -168,12 +167,11 @@ class ChartsView extends StatelessWidget {
                     },
                     onToChanged: cubit.updateToCurrency,
                     onSwap: () async {
+                      final settingsCubit = context.read<SettingsCubit>();
                       await cubit.swapCurrencies();
                       final baseCurrency = cubit.state.fromCurrency;
                       if (baseCurrency.isNotEmpty) {
-                        context
-                            .read<SettingsCubit>()
-                            .updateBaseCurrency(baseCurrency);
+                        settingsCubit.updateBaseCurrency(baseCurrency);
                       }
                     },
                     showCurrencyFlags: showCurrencyFlags,

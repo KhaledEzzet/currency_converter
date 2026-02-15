@@ -8,11 +8,6 @@ class LatestRatesModel {
     required this.rates,
   });
 
-  final double amount;
-  final String base;
-  final String date;
-  final Map<String, double> rates;
-
   factory LatestRatesModel.fromJson(Map<String, dynamic> json) {
     final ratesMap = <String, double>{};
     final rawRates = json['rates'];
@@ -32,6 +27,11 @@ class LatestRatesModel {
       rates: ratesMap,
     );
   }
+
+  final double amount;
+  final String base;
+  final String date;
+  final Map<String, double> rates;
 
   LatestRates toEntity() {
     return LatestRates(

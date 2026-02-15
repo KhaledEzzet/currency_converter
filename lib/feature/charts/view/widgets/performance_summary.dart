@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class PerformanceSummary extends StatelessWidget {
   const PerformanceSummary({
-    super.key,
-    required this.text,
+    required this.text, super.key,
     this.color = Colors.redAccent,
   });
 

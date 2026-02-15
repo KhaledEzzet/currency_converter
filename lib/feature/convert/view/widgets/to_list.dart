@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 
 class ToList extends StatelessWidget {
   const ToList({
-    super.key,
-    required this.state,
-    required this.currencies,
-    required this.showCurrencyFlags,
-    required this.useCurrencySymbols,
+    required this.state, required this.currencies, required this.showCurrencyFlags, required this.useCurrencySymbols, super.key,
   });
 
   final ConvertState state;

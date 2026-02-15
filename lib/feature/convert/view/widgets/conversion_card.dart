@@ -41,7 +41,7 @@ class ConversionCard extends StatelessWidget {
           color: Theme.of(context)
               .colorScheme
               .surfaceContainerHighest
-              .withOpacity(0.25),
+              .withValues(alpha: 0.25),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

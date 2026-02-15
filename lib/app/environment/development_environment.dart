@@ -1,5 +1,5 @@
-import 'package:envied/envied.dart';
 import 'package:currency_converter/app/environment/app_environment.dart';
+import 'package:envied/envied.dart';
 
 part 'development_environment.g.dart';
 

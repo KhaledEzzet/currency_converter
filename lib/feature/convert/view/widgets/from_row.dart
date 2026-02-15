@@ -5,12 +5,7 @@ import 'package:flutter/material.dart';
 
 class FromRow extends StatelessWidget {
   const FromRow({
-    super.key,
-    required this.state,
-    required this.onCurrencyChanged,
-    required this.onAmountChanged,
-    required this.showCurrencyFlags,
-    required this.useCurrencySymbols,
+    required this.state, required this.onCurrencyChanged, required this.onAmountChanged, required this.showCurrencyFlags, required this.useCurrencySymbols, super.key,
   });
 
   final ConvertState state;

@@ -4,9 +4,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 
 class AmountField extends StatelessWidget {
   const AmountField({
-    super.key,
-    required this.symbol,
-    required this.onChanged,
+    required this.symbol, required this.onChanged, super.key,
   });
 
   final String symbol;

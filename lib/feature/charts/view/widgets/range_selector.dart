@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 
 class RangeSelector extends StatelessWidget {
   const RangeSelector({
-    super.key,
-    required this.ranges,
-    required this.selectedRange,
-    required this.onSelected,
+    required this.ranges, required this.selectedRange, required this.onSelected, super.key,
     this.labelBuilder,
   });
 

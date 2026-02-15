@@ -43,7 +43,7 @@ void main() {
       final dataSource = ChartsRemoteDataSourceImpl(networkClient: client);
 
       final result = await dataSource.fetchTimeseries(
-        startDate: DateTime(2024, 1, 1),
+        startDate: DateTime(2024),
         endDate: DateTime(2024, 1, 7),
         from: 'USD',
         to: 'EUR',

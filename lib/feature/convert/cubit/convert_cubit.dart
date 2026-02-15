@@ -19,7 +19,7 @@ class ConvertCubit extends HydratedCubit<ConvertState> {
   final String? _preferredBaseCurrency;
 
   Future<void> initialize() async {
-    emit(state.copyWith(status: ConvertStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: ConvertStatus.loading));
     final fromCurrency = _preferredBaseCurrency ?? state.fromCurrency;
     await _loadRates(
       fromCurrency: fromCurrency,
@@ -36,7 +36,6 @@ class ConvertCubit extends HydratedCubit<ConvertState> {
       state.copyWith(
         status: ConvertStatus.loading,
         fromCurrency: currency,
-        errorMessage: null,
       ),
     );
 
@@ -53,7 +52,6 @@ class ConvertCubit extends HydratedCubit<ConvertState> {
         status: ConvertStatus.success,
         amountText: amountText,
         convertedAmounts: convertedAmounts,
-        errorMessage: null,
       ),
     );
   }
@@ -91,7 +89,6 @@ class ConvertCubit extends HydratedCubit<ConvertState> {
           convertedAmounts: convertedAmounts,
           currencySymbols: currencySymbols,
           currencyFlags: currencyFlags,
-          errorMessage: null,
         ),
       );
     } catch (error) {

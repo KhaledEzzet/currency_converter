@@ -49,9 +49,9 @@ class _EuroFlag extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(2),
-      child: CustomPaint(
-        size: const Size(_flagWidth, _flagHeight),
-        painter: const _EuroFlagPainter(),
+      child: const CustomPaint(
+        size: Size(_flagWidth, _flagHeight),
+        painter: _EuroFlagPainter(),
       ),
     );
   }

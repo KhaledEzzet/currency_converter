@@ -5,11 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 
 class CurrencyDropdownField extends StatelessWidget {
   const CurrencyDropdownField({
-    super.key,
-    required this.name,
-    required this.currencies,
-    required this.currencyFlags,
-    required this.onChanged,
+    required this.name, required this.currencies, required this.currencyFlags, required this.onChanged, super.key,
     this.initialValue,
     this.showFlags = true,
   });

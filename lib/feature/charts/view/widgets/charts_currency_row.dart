@@ -4,16 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ChartsCurrencyRow extends StatelessWidget {
   const ChartsCurrencyRow({
-    super.key,
-    required this.formKey,
-    required this.currencies,
-    required this.currencyFlags,
-    required this.fromCurrency,
-    required this.toCurrency,
-    required this.onFromChanged,
-    required this.onToChanged,
-    required this.onSwap,
-    required this.showCurrencyFlags,
+    required this.formKey, required this.currencies, required this.currencyFlags, required this.fromCurrency, required this.toCurrency, required this.onFromChanged, required this.onToChanged, required this.onSwap, required this.showCurrencyFlags, super.key,
   });
 
   final GlobalKey<FormBuilderState> formKey;

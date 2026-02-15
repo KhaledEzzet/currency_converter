@@ -52,10 +52,10 @@ void main() {
       },
       timeseries: TimeseriesRates(
         base: 'USD',
-        startDate: DateTime(2024, 1, 1),
+        startDate: DateTime(2024),
         endDate: DateTime(2024, 1, 2),
         rates: <DateTime, double>{
-          DateTime(2024, 1, 1): 0.9,
+          DateTime(2024): 0.9,
           DateTime(2024, 1, 2): 1.0,
         },
       ),

@@ -4,11 +4,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class RateChart extends StatelessWidget {
   const RateChart({
-    super.key,
-    required this.points,
-    required this.minValue,
-    required this.maxValue,
-    required this.yInterval,
+    required this.points, required this.minValue, required this.maxValue, required this.yInterval, super.key,
   });
 
   final List<ChartsPoint> points;

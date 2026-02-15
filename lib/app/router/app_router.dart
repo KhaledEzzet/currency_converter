@@ -26,7 +26,7 @@ final class AppRouter {
         builder: (context, state, child) {
           return BlocProvider(
             create: (_) => SettingsCubit(
-              getCurrenciesUseCase: Locator.instance<GetCurrenciesUseCase>(),
+              getCurrenciesUseCase: Locator.resolve<GetCurrenciesUseCase>(),
             )..initialize(),
             child: child,
           );
@@ -43,14 +43,13 @@ final class AppRouter {
                     path: '/convert',
                     name: 'convert',
                     builder: (context, state) {
-                      final settingsState =
-                          context.read<SettingsCubit>().state;
+                      final settingsState = context.read<SettingsCubit>().state;
                       return BlocProvider(
                         create: (_) => ConvertCubit(
                           getLatestRatesUseCase:
-                              Locator.instance<GetLatestRatesUseCase>(),
+                              Locator.resolve<GetLatestRatesUseCase>(),
                           getCurrenciesUseCase:
-                              Locator.instance<GetCurrenciesUseCase>(),
+                              Locator.resolve<GetCurrenciesUseCase>(),
                           preferredBaseCurrency:
                               settingsState.baseSelectionInitialized
                                   ? settingsState.baseCurrency
@@ -68,14 +67,13 @@ final class AppRouter {
                     path: '/charts',
                     name: 'charts',
                     builder: (context, state) {
-                      final settingsState =
-                          context.read<SettingsCubit>().state;
+                      final settingsState = context.read<SettingsCubit>().state;
                       return BlocProvider(
                         create: (_) => ChartsCubit(
                           getChartsCurrenciesUseCase:
-                              Locator.instance<GetChartsCurrenciesUseCase>(),
+                              Locator.resolve<GetChartsCurrenciesUseCase>(),
                           getTimeseriesRatesUseCase:
-                              Locator.instance<GetTimeseriesRatesUseCase>(),
+                              Locator.resolve<GetTimeseriesRatesUseCase>(),
                           preferredBaseCurrency:
                               settingsState.baseSelectionInitialized
                                   ? settingsState.baseCurrency

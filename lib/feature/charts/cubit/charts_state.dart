@@ -25,23 +25,8 @@ class ChartsState {
     required this.errorMessage,
   });
 
-  final ChartsStatus status;
-  final List<String> currencies;
-  final Map<String, String> currencyFlags;
-  final String fromCurrency;
-  final String toCurrency;
-  final String selectedRange;
-  final double rate;
-  final double changeValue;
-  final double changePercent;
-  final List<ChartsPoint> chartPoints;
-  final double minValue;
-  final double maxValue;
-  final double yInterval;
-  final String? errorMessage;
-
   factory ChartsState.initial() {
-    return ChartsState(
+    return const ChartsState(
       status: ChartsStatus.initial,
       currencies: <String>[],
       currencyFlags: <String, String>{},
@@ -58,6 +43,21 @@ class ChartsState {
       errorMessage: null,
     );
   }
+
+  final ChartsStatus status;
+  final List<String> currencies;
+  final Map<String, String> currencyFlags;
+  final String fromCurrency;
+  final String toCurrency;
+  final String selectedRange;
+  final double rate;
+  final double changeValue;
+  final double changePercent;
+  final List<ChartsPoint> chartPoints;
+  final double minValue;
+  final double maxValue;
+  final double yInterval;
+  final String? errorMessage;
 
   ChartsState copyWith({
     ChartsStatus? status,

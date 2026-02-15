@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 
 class RateHeader extends StatelessWidget {
   const RateHeader({
-    super.key,
-    required this.fromCurrency,
-    required this.toCurrency,
-    required this.rateText,
+    required this.fromCurrency, required this.toCurrency, required this.rateText, super.key,
     this.dotColor = Colors.redAccent,
     this.fromFlagCode,
     this.toFlagCode,

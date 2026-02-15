@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:currency_converter/app/l10n/l10n.dart';
+import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

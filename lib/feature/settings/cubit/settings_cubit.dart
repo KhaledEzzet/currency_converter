@@ -11,7 +11,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   final GetCurrenciesUseCase _getCurrenciesUseCase;
 
   Future<void> initialize() async {
-    emit(state.copyWith(status: SettingsStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: SettingsStatus.loading));
     await _loadCurrencies();
   }
 
@@ -26,7 +26,6 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       state.copyWith(
         baseCurrency: currency,
         baseSelectionInitialized: true,
-        errorMessage: null,
       ),
     );
   }
@@ -37,31 +36,28 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       state.copyWith(
         displayCurrencies: ordered,
         displaySelectionInitialized: true,
-        errorMessage: null,
       ),
     );
   }
 
-  void updateShowCurrencyFlags(bool value) {
+  void updateShowCurrencyFlags({required bool value}) {
     if (value == state.showCurrencyFlags) {
       return;
     }
     emit(
       state.copyWith(
         showCurrencyFlags: value,
-        errorMessage: null,
       ),
     );
   }
 
-  void updateUseCurrencySymbols(bool value) {
+  void updateUseCurrencySymbols({required bool value}) {
     if (value == state.useCurrencySymbols) {
       return;
     }
     emit(
       state.copyWith(
         useCurrencySymbols: value,
-        errorMessage: null,
       ),
     );
   }
@@ -92,7 +88,6 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
           currencies: currencies,
           baseCurrency: baseCurrency,
           displayCurrencies: displayCurrencies,
-          errorMessage: null,
         ),
       );
     } catch (error) {
@@ -148,10 +143,10 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
         : json.containsKey('displayCurrencies');
     final rawShowCurrencyFlags = json['showCurrencyFlags'];
     final showCurrencyFlags =
-        rawShowCurrencyFlags is bool ? rawShowCurrencyFlags : true;
+        rawShowCurrencyFlags is! bool || rawShowCurrencyFlags;
     final rawUseCurrencySymbols = json['useCurrencySymbols'];
     final useCurrencySymbols =
-        rawUseCurrencySymbols is bool ? rawUseCurrencySymbols : true;
+        rawUseCurrencySymbols is! bool || rawUseCurrencySymbols;
 
     return SettingsState.initial().copyWith(
       currencies: currencies,

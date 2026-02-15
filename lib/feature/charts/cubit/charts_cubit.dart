@@ -22,7 +22,7 @@ class ChartsCubit extends HydratedCubit<ChartsState> {
   final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
 
   Future<void> initialize() async {
-    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: ChartsStatus.loading));
     await _loadData(
       refreshCurrencies: state.currencies.isEmpty,
       fromCurrency: _preferredBaseCurrency,
@@ -50,7 +50,7 @@ class ChartsCubit extends HydratedCubit<ChartsState> {
     if (currency == null) {
       return;
     }
-    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: ChartsStatus.loading));
     await _loadData(
       fromCurrency: currency,
       toCurrency: state.toCurrency,
@@ -61,12 +61,12 @@ class ChartsCubit extends HydratedCubit<ChartsState> {
     if (currency == null) {
       return;
     }
-    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: ChartsStatus.loading));
     await _loadData(toCurrency: currency);
   }
 
   Future<void> swapCurrencies() async {
-    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: ChartsStatus.loading));
     await _loadData(
       fromCurrency: state.toCurrency,
       toCurrency: state.fromCurrency,
@@ -74,7 +74,7 @@ class ChartsCubit extends HydratedCubit<ChartsState> {
   }
 
   Future<void> updateRange(String range) async {
-    emit(state.copyWith(status: ChartsStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: ChartsStatus.loading));
     await _loadData(selectedRange: range);
   }
 
@@ -133,7 +133,6 @@ class ChartsCubit extends HydratedCubit<ChartsState> {
           minValue: minValue,
           maxValue: maxValue,
           yInterval: yInterval,
-          errorMessage: null,
         ),
       );
     } catch (error) {
@@ -277,7 +276,6 @@ class ChartsCubit extends HydratedCubit<ChartsState> {
       fromCurrency: fromCurrency,
       toCurrency: toCurrency,
       selectedRange: selectedRange,
-      errorMessage: null,
     );
   }
 
