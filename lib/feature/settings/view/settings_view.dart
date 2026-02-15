@@ -88,7 +88,7 @@ class SettingsView extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           l10n.titleSettings,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -104,8 +104,7 @@ class SettingsView extends StatelessWidget {
                 onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
                 secondary: const Icon(Icons.dark_mode),
                 title: Text(l10n.settingsDarkMode),
-                subtitle:
-                    Text(isDarkMode ? l10n.settingsOn : l10n.settingsOff),
+                subtitle: Text(isDarkMode ? l10n.settingsOn : l10n.settingsOff),
               );
             },
           ),
@@ -156,9 +155,11 @@ class SettingsView extends StatelessWidget {
                     },
                     secondary: const Icon(Icons.flag_outlined),
                     title: Text(l10n.settingsShowCurrencyFlags),
-                    subtitle: Text(state.showCurrencyFlags
-                        ? l10n.settingsOn
-                        : l10n.settingsOff),
+                    subtitle: Text(
+                      state.showCurrencyFlags
+                          ? l10n.settingsOn
+                          : l10n.settingsOff,
+                    ),
                   ),
                   SwitchListTile(
                     value: state.useCurrencySymbols,
@@ -169,9 +170,11 @@ class SettingsView extends StatelessWidget {
                     },
                     secondary: const Icon(Icons.payments_outlined),
                     title: Text(l10n.settingsUseCurrencySymbols),
-                    subtitle: Text(state.useCurrencySymbols
-                        ? l10n.settingsOn
-                        : l10n.settingsOff),
+                    subtitle: Text(
+                      state.useCurrencySymbols
+                          ? l10n.settingsOn
+                          : l10n.settingsOff,
+                    ),
                   ),
                 ],
               );
@@ -221,7 +224,7 @@ class SettingsView extends StatelessWidget {
                                 value: currency,
                                 child: buildCurrencyLabel(
                                   currency,
-                                  state.showCurrencyFlags,
+                                  showFlags: state.showCurrencyFlags,
                                 ),
                               ),
                             )
