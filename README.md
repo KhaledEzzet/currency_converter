@@ -31,9 +31,9 @@ Use it to quickly convert amounts, compare multiple currencies, and follow excha
   &nbsp;&nbsp;
   <img src="assets/icons/Screenshots/Screenshots_2025-12-27_16-41-19/en/English%20%5Ben%5D%20%7C%20iPhone%20-%206.9%22%20Display%20-%202%20%7C%202025-12-27_16-41-19.jpeg" alt="Currency Converter app showing historical exchange rate charts" width="180" />
   &nbsp;&nbsp;
-  <img src="assets/icons/Screenshots/Unlinked%20Picasso%20App/Unlinked%20Picasso%20App_2026-02-15_13-45-49/en/English%20%5Ben%5D%20%7C%20iPhone%20-%206.9%22%20Display%20-%201%20%7C%202026-02-15_13-45-49.jpeg" alt="Currency Converter app showing updated iPhone screenshot 1" width="180" />
+  <img src="assets/icons/Screenshots/Screenshots_2026-02-15_13-45-49/en/iphone-6-9-display-1-2026-02-15.jpeg" alt="Currency Converter app showing updated iPhone screenshot 1" width="180" />
   &nbsp;&nbsp;
-  <img src="assets/icons/Screenshots/Unlinked%20Picasso%20App/Unlinked%20Picasso%20App_2026-02-15_13-45-49/en/English%20%5Ben%5D%20%7C%20iPhone%20-%206.9%22%20Display%20-%202%20%7C%202026-02-15_13-45-49.jpeg" alt="Currency Converter app showing updated iPhone screenshot 2" width="180" />
+  <img src="assets/icons/Screenshots/Screenshots_2026-02-15_13-45-49/en/iphone-6-9-display-2-2026-02-15.jpeg" alt="Currency Converter app showing updated iPhone screenshot 2" width="180" />
 </div>
 
 ## About the App
