@@ -9,7 +9,6 @@ abstract class BaseTheme {
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colorScheme,
-      //TODO: Customize widgets here
       typography: Typography.material2021(),
     );
   }
