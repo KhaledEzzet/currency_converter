@@ -35,18 +35,6 @@ class ConvertView extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: BlocBuilder<SettingsCubit, SettingsState>(
-        builder: (context, state) {
-          final hasCurrencies = state.currencies.isNotEmpty;
-          return FloatingActionButton(
-            onPressed: hasCurrencies
-                ? () => showDisplayCurrenciesSheet(context, state)
-                : null,
-            tooltip: 'Display currencies',
-            child: const Icon(Icons.view_list),
-          );
-        },
-      ),
       body: BlocListener<SettingsCubit, SettingsState>(
         listenWhen: (previous, current) =>
             previous.baseCurrency != current.baseCurrency ||
@@ -82,11 +70,8 @@ class ConvertView extends StatelessWidget {
             final settingsState = context.watch<SettingsCubit>().state;
             final displayCurrencies = settingsState.displaySelectionInitialized
                 ? () {
-                    final selected =
-                        settingsState.displayCurrencies.toSet();
-                    return state.currencies
-                        .where(selected.contains)
-                        .toList();
+                    final selected = settingsState.displayCurrencies.toSet();
+                    return state.currencies.where(selected.contains).toList();
                   }()
                 : state.currencies;
             final showCurrencyFlags = settingsState.showCurrencyFlags;
@@ -115,12 +100,27 @@ class ConvertView extends StatelessWidget {
                             .read<SettingsCubit>()
                             .updateBaseCurrency(currency);
                       },
-                      onAmountChanged: (value) => context
-                          .read<ConvertCubit>()
-                          .updateAmount(value),
+                      onAmountChanged: (value) =>
+                          context.read<ConvertCubit>().updateAmount(value),
                     ),
                     const SizedBox(height: 32),
-                    SectionTitle(text: l10n.labelTo),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SectionTitle(text: l10n.labelTo),
+                        ),
+                        IconButton(
+                          onPressed: settingsState.currencies.isNotEmpty
+                              ? () => showDisplayCurrenciesSheet(
+                                    context,
+                                    settingsState,
+                                  )
+                              : null,
+                          tooltip: l10n.settingsDisplayCurrencies,
+                          icon: const Icon(Icons.view_list),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 12),
                     Expanded(
                       child: targetCurrencies.isEmpty
