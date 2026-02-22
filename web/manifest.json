@@ -1,11 +1,11 @@
 {
-    "name": "currency_converter",
-    "short_name": "currency_converter",
+    "name": "Currency Converter – Live Rates, Charts & Multi-Currency Tracking",
+    "short_name": "Currency Converter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Real-time currency converter with live exchange rates, historical currency charts, and a fast multi-currency calculator.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
