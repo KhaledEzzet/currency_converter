@@ -12,8 +12,111 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 
-class ConvertView extends StatelessWidget {
+enum _CurrencySortOption {
+  alphabeticalAsc,
+  alphabeticalDesc,
+  lowPrice,
+  highPrice,
+}
+
+extension _CurrencySortOptionLabel on _CurrencySortOption {
+  String get label {
+    switch (this) {
+      case _CurrencySortOption.alphabeticalAsc:
+        return 'A to Z';
+      case _CurrencySortOption.alphabeticalDesc:
+        return 'Z to A';
+      case _CurrencySortOption.lowPrice:
+        return 'Low price';
+      case _CurrencySortOption.highPrice:
+        return 'High price';
+    }
+  }
+
+  String get buttonLabel {
+    switch (this) {
+      case _CurrencySortOption.alphabeticalAsc:
+        return 'A-Z';
+      case _CurrencySortOption.alphabeticalDesc:
+        return 'Z-A';
+      case _CurrencySortOption.lowPrice:
+        return 'Low';
+      case _CurrencySortOption.highPrice:
+        return 'High';
+    }
+  }
+}
+
+class ConvertView extends StatefulWidget {
   const ConvertView({super.key});
+
+  @override
+  State<ConvertView> createState() => _ConvertViewState();
+}
+
+class _ConvertViewState extends State<ConvertView> {
+  _CurrencySortOption _sortOption = _CurrencySortOption.alphabeticalAsc;
+
+  List<String> _sortedCurrencies({
+    required List<String> currencies,
+    required Map<String, double> values,
+  }) {
+    final sorted = [...currencies];
+
+    switch (_sortOption) {
+      case _CurrencySortOption.alphabeticalAsc:
+        sorted.sort((a, b) => a.compareTo(b));
+      case _CurrencySortOption.alphabeticalDesc:
+        sorted.sort((a, b) => b.compareTo(a));
+      case _CurrencySortOption.lowPrice:
+        sorted.sort(
+          (a, b) => _compareByValue(
+            a,
+            b,
+            values,
+            ascending: true,
+          ),
+        );
+      case _CurrencySortOption.highPrice:
+        sorted.sort(
+          (a, b) => _compareByValue(
+            a,
+            b,
+            values,
+            ascending: false,
+          ),
+        );
+    }
+
+    return sorted;
+  }
+
+  int _compareByValue(
+    String first,
+    String second,
+    Map<String, double> values, {
+    required bool ascending,
+  }) {
+    final firstRate = values[first];
+    final secondRate = values[second];
+
+    if (firstRate == null && secondRate == null) {
+      return first.compareTo(second);
+    }
+    if (firstRate == null) {
+      return 1;
+    }
+    if (secondRate == null) {
+      return -1;
+    }
+
+    final byRate = firstRate.compareTo(secondRate);
+    if (byRate == 0) {
+      return first.compareTo(second);
+    }
+
+    return ascending ? byRate : -byRate;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +182,13 @@ class ConvertView extends StatelessWidget {
             final targetCurrencies = displayCurrencies
                 .where((currency) => currency != state.fromCurrency)
                 .toList();
+            final sortValues = state.convertedAmounts.isNotEmpty
+                ? state.convertedAmounts
+                : state.currencyRates;
+            final sortedTargetCurrencies = _sortedCurrencies(
+              currencies: targetCurrencies,
+              values: sortValues,
+            );
 
             return Padding(
               padding: const EdgeInsets.all(16),
@@ -109,6 +219,78 @@ class ConvertView extends StatelessWidget {
                         Expanded(
                           child: SectionTitle(text: l10n.labelTo),
                         ),
+                        SizedBox(
+                          width: 92,
+                          height: 34,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.outline,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: DropdownButton<_CurrencySortOption>(
+                                value: _sortOption,
+                                isExpanded: true,
+                                isDense: true,
+                                alignment: Alignment.center,
+                                underline: const SizedBox.shrink(),
+                                iconSize: 18,
+                                borderRadius: BorderRadius.circular(10),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                items: _CurrencySortOption.values
+                                    .map(
+                                      (option) =>
+                                          DropdownMenuItem<_CurrencySortOption>(
+                                        value: option,
+                                        child: Center(
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 2),
+                                            child: Text(
+                                              option.label,
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                selectedItemBuilder: (context) {
+                                  return _CurrencySortOption.values
+                                      .map(
+                                        (option) => Center(
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 2),
+                                            child: Text(
+                                              option.buttonLabel,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList();
+                                },
+                                onChanged: (option) {
+                                  if (option == null) {
+                                    return;
+                                  }
+                                  setState(() => _sortOption = option);
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
                         IconButton(
                           onPressed: settingsState.currencies.isNotEmpty
                               ? () => showDisplayCurrenciesSheet(
@@ -123,7 +305,7 @@ class ConvertView extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Expanded(
-                      child: targetCurrencies.isEmpty
+                      child: sortedTargetCurrencies.isEmpty
                           ? const Center(
                               child: Text(
                                 'No display currencies selected.',
@@ -131,7 +313,7 @@ class ConvertView extends StatelessWidget {
                             )
                           : ToList(
                               state: state,
-                              currencies: targetCurrencies,
+                              currencies: sortedTargetCurrencies,
                               showCurrencyFlags: showCurrencyFlags,
                               useCurrencySymbols: useCurrencySymbols,
                             ),
