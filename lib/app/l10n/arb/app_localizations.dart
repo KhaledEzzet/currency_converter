@@ -407,6 +407,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get settingsSave;
+
+  /// No description provided for @onboardingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get onboardingTitle;
+
+  /// No description provided for @onboardingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert instantly, compare multiple currencies, and follow exchange-rate trends in one place.'**
+  String get onboardingSubtitle;
+
+  /// No description provided for @onboardingFeatureRatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live exchange rates'**
+  String get onboardingFeatureRatesTitle;
+
+  /// No description provided for @onboardingFeatureRatesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Get up-to-date rates powered by Frankfurter every time you convert.'**
+  String get onboardingFeatureRatesBody;
+
+  /// No description provided for @onboardingFeatureTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-currency tracking'**
+  String get onboardingFeatureTrackingTitle;
+
+  /// No description provided for @onboardingFeatureTrackingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare one base amount against the currencies you care about most.'**
+  String get onboardingFeatureTrackingBody;
+
+  /// No description provided for @onboardingFeatureChartsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Historical charts'**
+  String get onboardingFeatureChartsTitle;
+
+  /// No description provided for @onboardingFeatureChartsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore price moves across 1W, 1M, 3M, 1Y, 5Y, and 10Y ranges.'**
+  String get onboardingFeatureChartsBody;
+
+  /// No description provided for @onboardingFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Your base currency, display list, language, and theme are saved automatically.'**
+  String get onboardingFooter;
+
+  /// No description provided for @onboardingContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingContinue;
 }
 
 class _AppLocalizationsDelegate

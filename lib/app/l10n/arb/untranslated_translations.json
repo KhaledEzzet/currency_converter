@@ -1,1 +1,79 @@
-{}
+{
+  "ar": [
+    "onboardingTitle",
+    "onboardingSubtitle",
+    "onboardingFeatureRatesTitle",
+    "onboardingFeatureRatesBody",
+    "onboardingFeatureTrackingTitle",
+    "onboardingFeatureTrackingBody",
+    "onboardingFeatureChartsTitle",
+    "onboardingFeatureChartsBody",
+    "onboardingFooter",
+    "onboardingContinue"
+  ],
+
+  "de": [
+    "onboardingTitle",
+    "onboardingSubtitle",
+    "onboardingFeatureRatesTitle",
+    "onboardingFeatureRatesBody",
+    "onboardingFeatureTrackingTitle",
+    "onboardingFeatureTrackingBody",
+    "onboardingFeatureChartsTitle",
+    "onboardingFeatureChartsBody",
+    "onboardingFooter",
+    "onboardingContinue"
+  ],
+
+  "fr": [
+    "onboardingTitle",
+    "onboardingSubtitle",
+    "onboardingFeatureRatesTitle",
+    "onboardingFeatureRatesBody",
+    "onboardingFeatureTrackingTitle",
+    "onboardingFeatureTrackingBody",
+    "onboardingFeatureChartsTitle",
+    "onboardingFeatureChartsBody",
+    "onboardingFooter",
+    "onboardingContinue"
+  ],
+
+  "hi": [
+    "onboardingTitle",
+    "onboardingSubtitle",
+    "onboardingFeatureRatesTitle",
+    "onboardingFeatureRatesBody",
+    "onboardingFeatureTrackingTitle",
+    "onboardingFeatureTrackingBody",
+    "onboardingFeatureChartsTitle",
+    "onboardingFeatureChartsBody",
+    "onboardingFooter",
+    "onboardingContinue"
+  ],
+
+  "pl": [
+    "onboardingTitle",
+    "onboardingSubtitle",
+    "onboardingFeatureRatesTitle",
+    "onboardingFeatureRatesBody",
+    "onboardingFeatureTrackingTitle",
+    "onboardingFeatureTrackingBody",
+    "onboardingFeatureChartsTitle",
+    "onboardingFeatureChartsBody",
+    "onboardingFooter",
+    "onboardingContinue"
+  ],
+
+  "ru": [
+    "onboardingTitle",
+    "onboardingSubtitle",
+    "onboardingFeatureRatesTitle",
+    "onboardingFeatureRatesBody",
+    "onboardingFeatureTrackingTitle",
+    "onboardingFeatureTrackingBody",
+    "onboardingFeatureChartsTitle",
+    "onboardingFeatureChartsBody",
+    "onboardingFooter",
+    "onboardingContinue"
+  ]
+}

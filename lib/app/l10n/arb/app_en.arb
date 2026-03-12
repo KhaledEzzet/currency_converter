@@ -59,5 +59,15 @@
   "settingsSelectAll": "Select all",
   "settingsClear": "Clear",
   "settingsCancel": "Cancel",
-  "settingsSave": "Save"
+  "settingsSave": "Save",
+  "onboardingTitle": "What's New",
+  "onboardingSubtitle": "Convert instantly, compare multiple currencies, and follow exchange-rate trends in one place.",
+  "onboardingFeatureRatesTitle": "Live exchange rates",
+  "onboardingFeatureRatesBody": "Get up-to-date rates powered by Frankfurter every time you convert.",
+  "onboardingFeatureTrackingTitle": "Multi-currency tracking",
+  "onboardingFeatureTrackingBody": "Compare one base amount against the currencies you care about most.",
+  "onboardingFeatureChartsTitle": "Historical charts",
+  "onboardingFeatureChartsBody": "Explore price moves across 1W, 1M, 3M, 1Y, 5Y, and 10Y ranges.",
+  "onboardingFooter": "Your base currency, display list, language, and theme are saved automatically.",
+  "onboardingContinue": "Continue"
 }

@@ -159,4 +159,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsSave => 'Save';
+
+  @override
+  String get onboardingTitle => 'What\'s New';
+
+  @override
+  String get onboardingSubtitle =>
+      'Convert instantly, compare multiple currencies, and follow exchange-rate trends in one place.';
+
+  @override
+  String get onboardingFeatureRatesTitle => 'Live exchange rates';
+
+  @override
+  String get onboardingFeatureRatesBody =>
+      'Get up-to-date rates powered by Frankfurter every time you convert.';
+
+  @override
+  String get onboardingFeatureTrackingTitle => 'Multi-currency tracking';
+
+  @override
+  String get onboardingFeatureTrackingBody =>
+      'Compare one base amount against the currencies you care about most.';
+
+  @override
+  String get onboardingFeatureChartsTitle => 'Historical charts';
+
+  @override
+  String get onboardingFeatureChartsBody =>
+      'Explore price moves across 1W, 1M, 3M, 1Y, 5Y, and 10Y ranges.';
+
+  @override
+  String get onboardingFooter =>
+      'Your base currency, display list, language, and theme are saved automatically.';
+
+  @override
+  String get onboardingContinue => 'Continue';
 }

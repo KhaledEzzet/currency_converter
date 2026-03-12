@@ -5,6 +5,8 @@ import 'package:currency_converter/app/router/app_router.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
 import 'package:currency_converter/app/theme/dark/dark_theme.dart';
 import 'package:currency_converter/app/theme/light/light_theme.dart';
+import 'package:currency_converter/feature/onboarding/cubit/onboarding_cubit.dart';
+import 'package:currency_converter/feature/onboarding/view/onboarding_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +35,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (_) => ThemeCubit(),
         ),
+        BlocProvider(
+          create: (_) => OnboardingCubit(),
+        ),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, locale) {
@@ -55,6 +60,9 @@ class App extends StatelessWidget {
 
                 // Routing
                 routerConfig: _appRouter.router,
+                builder: (context, child) {
+                  return OnboardingGate(child: child);
+                },
               );
             },
           );
