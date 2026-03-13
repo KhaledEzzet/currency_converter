@@ -56,14 +56,21 @@ class ConvertCubit extends HydratedCubit<ConvertState> {
     );
   }
 
+  void updateSortOption(CurrencySortOption sortOption) {
+    if (sortOption == state.sortOption) {
+      return;
+    }
+
+    emit(state.copyWith(sortOption: sortOption));
+  }
+
   Future<void> _loadRates({
     required String fromCurrency,
     bool refreshCurrencies = false,
   }) async {
     try {
-      final currencies = refreshCurrencies
-          ? await _refreshCurrencies()
-          : state.currencies;
+      final currencies =
+          refreshCurrencies ? await _refreshCurrencies() : state.currencies;
       final resolvedFrom = currencies.contains(fromCurrency)
           ? fromCurrency
           : (currencies.isNotEmpty ? currencies.first : fromCurrency);

@@ -1,3 +1,10 @@
+enum CurrencySortOption {
+  alphabeticalAsc,
+  alphabeticalDesc,
+  lowPrice,
+  highPrice,
+}
+
 enum ConvertStatus { initial, loading, success, failure }
 
 class ConvertState {
@@ -10,6 +17,7 @@ class ConvertState {
     required this.fromCurrency,
     required this.amountText,
     required this.convertedAmounts,
+    required this.sortOption,
     required this.errorMessage,
   });
 
@@ -23,6 +31,7 @@ class ConvertState {
       fromCurrency: 'USD',
       amountText: '',
       convertedAmounts: <String, double>{},
+      sortOption: CurrencySortOption.alphabeticalAsc,
       errorMessage: null,
     );
   }
@@ -35,6 +44,7 @@ class ConvertState {
   final String fromCurrency;
   final String amountText;
   final Map<String, double> convertedAmounts;
+  final CurrencySortOption sortOption;
   final String? errorMessage;
 
   ConvertState copyWith({
@@ -46,6 +56,7 @@ class ConvertState {
     String? fromCurrency,
     String? amountText,
     Map<String, double>? convertedAmounts,
+    CurrencySortOption? sortOption,
     String? errorMessage,
   }) {
     return ConvertState(
@@ -57,6 +68,7 @@ class ConvertState {
       fromCurrency: fromCurrency ?? this.fromCurrency,
       amountText: amountText ?? this.amountText,
       convertedAmounts: convertedAmounts ?? this.convertedAmounts,
+      sortOption: sortOption ?? this.sortOption,
       errorMessage: errorMessage,
     );
   }

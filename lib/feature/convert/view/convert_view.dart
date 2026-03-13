@@ -12,63 +12,50 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 
-enum _CurrencySortOption {
-  alphabeticalAsc,
-  alphabeticalDesc,
-  lowPrice,
-  highPrice,
-}
-
-extension _CurrencySortOptionLabel on _CurrencySortOption {
+extension _CurrencySortOptionLabel on CurrencySortOption {
   String get label {
     switch (this) {
-      case _CurrencySortOption.alphabeticalAsc:
+      case CurrencySortOption.alphabeticalAsc:
         return 'A to Z';
-      case _CurrencySortOption.alphabeticalDesc:
+      case CurrencySortOption.alphabeticalDesc:
         return 'Z to A';
-      case _CurrencySortOption.lowPrice:
+      case CurrencySortOption.lowPrice:
         return 'Low price';
-      case _CurrencySortOption.highPrice:
+      case CurrencySortOption.highPrice:
         return 'High price';
     }
   }
 
   String get buttonLabel {
     switch (this) {
-      case _CurrencySortOption.alphabeticalAsc:
+      case CurrencySortOption.alphabeticalAsc:
         return 'A-Z';
-      case _CurrencySortOption.alphabeticalDesc:
+      case CurrencySortOption.alphabeticalDesc:
         return 'Z-A';
-      case _CurrencySortOption.lowPrice:
+      case CurrencySortOption.lowPrice:
         return 'Low';
-      case _CurrencySortOption.highPrice:
+      case CurrencySortOption.highPrice:
         return 'High';
     }
   }
 }
 
-class ConvertView extends StatefulWidget {
+class ConvertView extends StatelessWidget {
   const ConvertView({super.key});
-
-  @override
-  State<ConvertView> createState() => _ConvertViewState();
-}
-
-class _ConvertViewState extends State<ConvertView> {
-  _CurrencySortOption _sortOption = _CurrencySortOption.alphabeticalAsc;
 
   List<String> _sortedCurrencies({
     required List<String> currencies,
     required Map<String, double> values,
+    required CurrencySortOption sortOption,
   }) {
     final sorted = [...currencies];
 
-    switch (_sortOption) {
-      case _CurrencySortOption.alphabeticalAsc:
+    switch (sortOption) {
+      case CurrencySortOption.alphabeticalAsc:
         sorted.sort((a, b) => a.compareTo(b));
-      case _CurrencySortOption.alphabeticalDesc:
+      case CurrencySortOption.alphabeticalDesc:
         sorted.sort((a, b) => b.compareTo(a));
-      case _CurrencySortOption.lowPrice:
+      case CurrencySortOption.lowPrice:
         sorted.sort(
           (a, b) => _compareByValue(
             a,
@@ -77,7 +64,7 @@ class _ConvertViewState extends State<ConvertView> {
             ascending: true,
           ),
         );
-      case _CurrencySortOption.highPrice:
+      case CurrencySortOption.highPrice:
         sorted.sort(
           (a, b) => _compareByValue(
             a,
@@ -188,6 +175,7 @@ class _ConvertViewState extends State<ConvertView> {
             final sortedTargetCurrencies = _sortedCurrencies(
               currencies: targetCurrencies,
               values: sortValues,
+              sortOption: state.sortOption,
             );
 
             return Padding(
@@ -232,23 +220,25 @@ class _ConvertViewState extends State<ConvertView> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
-                              child: DropdownButton<_CurrencySortOption>(
-                                value: _sortOption,
+                              child: DropdownButton<CurrencySortOption>(
+                                value: state.sortOption,
                                 isExpanded: true,
                                 isDense: true,
                                 alignment: Alignment.center,
                                 underline: const SizedBox.shrink(),
                                 iconSize: 18,
                                 borderRadius: BorderRadius.circular(10),
-                                style: Theme.of(context).textTheme.bodyMedium
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
                                     ?.copyWith(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                items: _CurrencySortOption.values
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                items: CurrencySortOption.values
                                     .map(
                                       (option) =>
-                                          DropdownMenuItem<_CurrencySortOption>(
+                                          DropdownMenuItem<CurrencySortOption>(
                                         value: option,
                                         child: Center(
                                           child: Padding(
@@ -265,7 +255,7 @@ class _ConvertViewState extends State<ConvertView> {
                                     )
                                     .toList(),
                                 selectedItemBuilder: (context) {
-                                  return _CurrencySortOption.values
+                                  return CurrencySortOption.values
                                       .map(
                                         (option) => Center(
                                           child: Padding(
@@ -284,7 +274,9 @@ class _ConvertViewState extends State<ConvertView> {
                                   if (option == null) {
                                     return;
                                   }
-                                  setState(() => _sortOption = option);
+                                  context
+                                      .read<ConvertCubit>()
+                                      .updateSortOption(option);
                                 },
                               ),
                             ),

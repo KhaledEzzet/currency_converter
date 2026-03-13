@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:currency_converter/feature/convert/cubit/convert_cubit.dart';
+import 'package:currency_converter/feature/convert/cubit/convert_state.dart';
 import 'package:currency_converter/feature/convert/domain/entities/latest_rates.dart';
 import 'package:currency_converter/feature/convert/domain/repositories/convert_repository.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
@@ -66,6 +67,28 @@ void main() {
     expect(cubit.state.currencyRates['EUR'], 0.9);
     expect(cubit.state.currencySymbols['EUR'], '€');
     expect(cubit.state.currencyFlags['USD'], 'us');
+
+    await cubit.close();
+  });
+
+  test('ConvertCubit updates the selected sort option', () async {
+    final repository = FakeConvertRepository(
+      currencies: const <String, String>{},
+      latestRates: const LatestRates(
+        amount: 1,
+        base: 'USD',
+        date: '2024-01-01',
+        rates: <String, double>{},
+      ),
+    );
+    final cubit = ConvertCubit(
+      getLatestRatesUseCase: GetLatestRatesUseCase(repository: repository),
+      getCurrenciesUseCase: GetCurrenciesUseCase(repository: repository),
+    );
+
+    cubit.updateSortOption(CurrencySortOption.highPrice);
+
+    expect(cubit.state.sortOption, CurrencySortOption.highPrice);
 
     await cubit.close();
   });
