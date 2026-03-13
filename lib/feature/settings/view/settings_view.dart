@@ -2,6 +2,7 @@ import 'package:currency_converter/app/constants/string_constants.dart';
 import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
+import 'package:currency_converter/core/utils/browser/open_url_in_new_tab.dart';
 import 'package:currency_converter/core/utils/feedback/feedback_utils.dart';
 import 'package:currency_converter/core/utils/logger/logger_utils.dart';
 import 'package:currency_converter/core/utils/package_info/package_info_utils.dart';
@@ -13,7 +14,6 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -128,9 +128,8 @@ class SettingsView extends StatelessWidget {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     try {
-      final didOpen = await launchUrl(
-        Uri.parse(StringConstants.chromeWebStoreReviewsUrl),
-        webOnlyWindowName: '_blank',
+      final didOpen = await openUrlInNewTab(
+        StringConstants.chromeWebStoreReviewsUrl,
       );
       if (didOpen || !scaffoldMessenger.mounted) {
         return;
