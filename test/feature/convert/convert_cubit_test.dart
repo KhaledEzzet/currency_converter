@@ -84,9 +84,7 @@ void main() {
     final cubit = ConvertCubit(
       getLatestRatesUseCase: GetLatestRatesUseCase(repository: repository),
       getCurrenciesUseCase: GetCurrenciesUseCase(repository: repository),
-    );
-
-    cubit.updateSortOption(CurrencySortOption.highPrice);
+    )..updateSortOption(CurrencySortOption.highPrice);
 
     expect(cubit.state.sortOption, CurrencySortOption.highPrice);
 

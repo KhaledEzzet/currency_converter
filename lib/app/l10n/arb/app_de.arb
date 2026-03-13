@@ -56,6 +56,10 @@
     }
   },
   "settingsVersion": "Version",
+  "settingsSendFeedback": "Feedback senden",
+  "settingsSendFeedbackSubtitle": "Sende eine Nachricht und einen kommentierten Screenshot per E-Mail",
+  "settingsFeedbackShared": "Dein E-Mail-Entwurf ist bereit.",
+  "settingsFeedbackShareFailed": "Die E-Mail-App konnte nicht geöffnet werden.",
   "settingsSelectAll": "Alle auswählen",
   "settingsClear": "Leeren",
   "settingsCancel": "Abbrechen",

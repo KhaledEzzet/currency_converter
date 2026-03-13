@@ -149,6 +149,20 @@ class AppLocalizationsPl extends AppLocalizations {
   String get settingsVersion => 'Wersja';
 
   @override
+  String get settingsSendFeedback => 'Wyślij opinię';
+
+  @override
+  String get settingsSendFeedbackSubtitle =>
+      'Wyślij wiadomość i zrzut ekranu z adnotacjami e-mailem';
+
+  @override
+  String get settingsFeedbackShared => 'Szkic e-maila jest gotowy.';
+
+  @override
+  String get settingsFeedbackShareFailed =>
+      'Nie udało się otworzyć aplikacji e-mail.';
+
+  @override
   String get settingsSelectAll => 'Zaznacz wszystko';
 
   @override

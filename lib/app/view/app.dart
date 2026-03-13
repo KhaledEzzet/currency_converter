@@ -7,6 +7,7 @@ import 'package:currency_converter/app/theme/dark/dark_theme.dart';
 import 'package:currency_converter/app/theme/light/light_theme.dart';
 import 'package:currency_converter/feature/onboarding/cubit/onboarding_cubit.dart';
 import 'package:currency_converter/feature/onboarding/view/onboarding_view.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,51 @@ class App extends StatelessWidget {
       }
     }
     return const Locale('en');
+  }
+
+  List<Color> _buildFeedbackDrawColors(ColorScheme colorScheme) {
+    // The feedback package keys swatches by color value, so duplicates in the
+    // active theme crash the picker. Dark theme currently reuses one accent.
+    final uniqueColors = <Color>[];
+    final candidates = [
+      colorScheme.primary,
+      colorScheme.secondary,
+      colorScheme.tertiary,
+      colorScheme.error,
+      colorScheme.inversePrimary,
+      colorScheme.onSurface,
+    ];
+
+    for (final color in candidates) {
+      if (uniqueColors.contains(color)) {
+        continue;
+      }
+      uniqueColors.add(color);
+    }
+
+    return uniqueColors;
+  }
+
+  FeedbackThemeData _buildFeedbackTheme(ThemeData theme) {
+    final colorScheme = theme.colorScheme;
+    final onSurfaceColor = colorScheme.onSurface;
+
+    return FeedbackThemeData(
+      background: colorScheme.outlineVariant,
+      feedbackSheetColor: colorScheme.surface,
+      activeFeedbackModeColor: colorScheme.primary,
+      drawColors: _buildFeedbackDrawColors(colorScheme),
+      bottomSheetDescriptionStyle: theme.textTheme.titleMedium?.copyWith(
+            color: onSurfaceColor,
+          ) ??
+          TextStyle(color: onSurfaceColor),
+      bottomSheetTextInputStyle: theme.textTheme.bodyLarge?.copyWith(
+            color: onSurfaceColor,
+          ) ??
+          TextStyle(color: onSurfaceColor),
+      colorScheme: colorScheme,
+      brightness: theme.brightness,
+    );
   }
 
   @override
@@ -43,26 +89,39 @@ class App extends StatelessWidget {
         builder: (context, locale) {
           return BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, themeMode) {
-              return MaterialApp.router(
-                // App Name
-                title: StringConstants.appName,
+              final lightTheme = LightTheme().theme;
+              final darkTheme = DarkTheme().theme;
 
-                // Theme
-                theme: LightTheme().theme,
-                darkTheme: DarkTheme().theme,
+              return BetterFeedback(
                 themeMode: themeMode,
+                theme: _buildFeedbackTheme(lightTheme),
+                darkTheme: _buildFeedbackTheme(darkTheme),
+                localeOverride: locale,
+                localizationsDelegates: [
+                  ...AppLocalizations.localizationsDelegates,
+                  GlobalFeedbackLocalizationsDelegate.delegate,
+                ],
+                child: MaterialApp.router(
+                  // App Name
+                  title: StringConstants.appName,
 
-                // Localization
-                locale: locale,
-                localizationsDelegates:
-                    AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
+                  // Theme
+                  theme: lightTheme,
+                  darkTheme: darkTheme,
+                  themeMode: themeMode,
 
-                // Routing
-                routerConfig: _appRouter.router,
-                builder: (context, child) {
-                  return OnboardingGate(child: child);
-                },
+                  // Localization
+                  locale: locale,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+
+                  // Routing
+                  routerConfig: _appRouter.router,
+                  builder: (context, child) {
+                    return OnboardingGate(child: child);
+                  },
+                ),
               );
             },
           );

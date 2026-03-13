@@ -1,11 +1,14 @@
 import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
+import 'package:currency_converter/core/utils/feedback/feedback_utils.dart';
+import 'package:currency_converter/core/utils/logger/logger_utils.dart';
 import 'package:currency_converter/core/utils/package_info/package_info_utils.dart';
 import 'package:currency_converter/feature/convert/view/widgets/currency_flag.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
 import 'package:currency_converter/feature/settings/view/widgets/display_currencies_sheet.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -78,6 +81,43 @@ class SettingsView extends StatelessWidget {
     final visible = state.displayCurrencies.take(3).join(', ');
     final remaining = state.displayCurrencies.length - 3;
     return l10n.settingsSelectedCurrenciesMore(visible, remaining);
+  }
+
+  Future<void> _openFeedbackFlow(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final localeTag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
+    final sharedMessage = l10n.settingsFeedbackShared;
+    final shareFailedMessage = l10n.settingsFeedbackShareFailed;
+
+    BetterFeedback.of(context).show((feedback) async {
+      try {
+        final didOpenComposer = await FeedbackUtils.composeFeedbackEmail(
+          feedback: feedback,
+          localeTag: localeTag,
+        );
+        if (!didOpenComposer || !scaffoldMessenger.mounted) {
+          return;
+        }
+
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text(sharedMessage),
+          ),
+        );
+      } catch (error) {
+        LoggerUtils.instance.logError('Unable to share feedback: $error');
+        if (!scaffoldMessenger.mounted) {
+          return;
+        }
+
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text(shareFailedMessage),
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -247,6 +287,14 @@ class SettingsView extends StatelessWidget {
                 ],
               );
             },
+          ),
+          const Divider(height: 24),
+          ListTile(
+            leading: const Icon(Icons.feedback_outlined),
+            title: Text(l10n.settingsSendFeedback),
+            subtitle: Text(l10n.settingsSendFeedbackSubtitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => _openFeedbackFlow(context),
           ),
           const Divider(height: 24),
           ListTile(

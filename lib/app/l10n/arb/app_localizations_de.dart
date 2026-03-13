@@ -150,6 +150,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsVersion => 'Version';
 
   @override
+  String get settingsSendFeedback => 'Feedback senden';
+
+  @override
+  String get settingsSendFeedbackSubtitle =>
+      'Sende eine Nachricht und einen kommentierten Screenshot per E-Mail';
+
+  @override
+  String get settingsFeedbackShared => 'Dein E-Mail-Entwurf ist bereit.';
+
+  @override
+  String get settingsFeedbackShareFailed =>
+      'Die E-Mail-App konnte nicht geöffnet werden.';
+
+  @override
   String get settingsSelectAll => 'Alle auswählen';
 
   @override

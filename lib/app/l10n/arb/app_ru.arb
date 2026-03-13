@@ -56,6 +56,10 @@
     }
   },
   "settingsVersion": "Версия",
+  "settingsSendFeedback": "Отправить отзыв",
+  "settingsSendFeedbackSubtitle": "Отправьте сообщение и аннотированный снимок экрана по электронной почте",
+  "settingsFeedbackShared": "Черновик письма готов.",
+  "settingsFeedbackShareFailed": "Не удалось открыть почтовое приложение.",
   "settingsSelectAll": "Выбрать все",
   "settingsClear": "Очистить",
   "settingsCancel": "Отмена",

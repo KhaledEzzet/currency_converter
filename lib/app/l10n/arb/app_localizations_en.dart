@@ -149,6 +149,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsVersion => 'Version';
 
   @override
+  String get settingsSendFeedback => 'Send feedback';
+
+  @override
+  String get settingsSendFeedbackSubtitle =>
+      'Send a note and annotated screenshot by email';
+
+  @override
+  String get settingsFeedbackShared => 'Your email draft is ready.';
+
+  @override
+  String get settingsFeedbackShareFailed => 'We couldn\'t open your email app.';
+
+  @override
   String get settingsSelectAll => 'Select all';
 
   @override

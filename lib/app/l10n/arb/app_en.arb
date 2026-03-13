@@ -56,6 +56,10 @@
     }
   },
   "settingsVersion": "Version",
+  "settingsSendFeedback": "Send feedback",
+  "settingsSendFeedbackSubtitle": "Send a note and annotated screenshot by email",
+  "settingsFeedbackShared": "Your email draft is ready.",
+  "settingsFeedbackShareFailed": "We couldn't open your email app.",
   "settingsSelectAll": "Select all",
   "settingsClear": "Clear",
   "settingsCancel": "Cancel",

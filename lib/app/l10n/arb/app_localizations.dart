@@ -384,6 +384,30 @@ abstract class AppLocalizations {
   /// **'Version'**
   String get settingsVersion;
 
+  /// No description provided for @settingsSendFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get settingsSendFeedback;
+
+  /// No description provided for @settingsSendFeedbackSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a note and annotated screenshot by email'**
+  String get settingsSendFeedbackSubtitle;
+
+  /// No description provided for @settingsFeedbackShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email draft is ready.'**
+  String get settingsFeedbackShared;
+
+  /// No description provided for @settingsFeedbackShareFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t open your email app.'**
+  String get settingsFeedbackShareFailed;
+
   /// No description provided for @settingsSelectAll.
   ///
   /// In en, this message translates to:

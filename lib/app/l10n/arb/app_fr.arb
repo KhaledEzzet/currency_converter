@@ -56,6 +56,10 @@
     }
   },
   "settingsVersion": "Version",
+  "settingsSendFeedback": "Envoyer un retour",
+  "settingsSendFeedbackSubtitle": "Envoyez un message et une capture d'écran annotée par e-mail",
+  "settingsFeedbackShared": "Votre brouillon d'e-mail est prêt.",
+  "settingsFeedbackShareFailed": "Impossible d'ouvrir votre application e-mail.",
   "settingsSelectAll": "Tout sélectionner",
   "settingsClear": "Effacer",
   "settingsCancel": "Annuler",

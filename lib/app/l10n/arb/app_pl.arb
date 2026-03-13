@@ -56,6 +56,10 @@
     }
   },
   "settingsVersion": "Wersja",
+  "settingsSendFeedback": "Wyślij opinię",
+  "settingsSendFeedbackSubtitle": "Wyślij wiadomość i zrzut ekranu z adnotacjami e-mailem",
+  "settingsFeedbackShared": "Szkic e-maila jest gotowy.",
+  "settingsFeedbackShareFailed": "Nie udało się otworzyć aplikacji e-mail.",
   "settingsSelectAll": "Zaznacz wszystko",
   "settingsClear": "Wyczyść",
   "settingsCancel": "Anuluj",

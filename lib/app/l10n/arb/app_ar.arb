@@ -56,6 +56,10 @@
     }
   },
   "settingsVersion": "الإصدار",
+  "settingsSendFeedback": "إرسال الملاحظات",
+  "settingsSendFeedbackSubtitle": "أرسل ملاحظة ولقطة شاشة مع تعليقات توضيحية عبر البريد الإلكتروني",
+  "settingsFeedbackShared": "تم تجهيز مسودة البريد الإلكتروني.",
+  "settingsFeedbackShareFailed": "تعذر فتح تطبيق البريد الإلكتروني.",
   "settingsSelectAll": "تحديد الكل",
   "settingsClear": "مسح",
   "settingsCancel": "إلغاء",

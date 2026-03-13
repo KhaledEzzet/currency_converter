@@ -152,6 +152,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsVersion => 'Version';
 
   @override
+  String get settingsSendFeedback => 'Envoyer un retour';
+
+  @override
+  String get settingsSendFeedbackSubtitle =>
+      'Envoyez un message et une capture d\'écran annotée par e-mail';
+
+  @override
+  String get settingsFeedbackShared => 'Votre brouillon d\'e-mail est prêt.';
+
+  @override
+  String get settingsFeedbackShareFailed =>
+      'Impossible d\'ouvrir votre application e-mail.';
+
+  @override
   String get settingsSelectAll => 'Tout sélectionner';
 
   @override

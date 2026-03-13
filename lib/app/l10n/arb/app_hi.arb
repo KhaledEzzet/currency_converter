@@ -56,6 +56,10 @@
     }
   },
   "settingsVersion": "संस्करण",
+  "settingsSendFeedback": "फ़ीडबैक भेजें",
+  "settingsSendFeedbackSubtitle": "ईमेल से नोट और टिप्पणी वाला स्क्रीनशॉट भेजें",
+  "settingsFeedbackShared": "आपका ईमेल ड्राफ्ट तैयार है.",
+  "settingsFeedbackShareFailed": "आपका ईमेल ऐप खोला नहीं जा सका.",
   "settingsSelectAll": "सभी चुनें",
   "settingsClear": "साफ़ करें",
   "settingsCancel": "रद्द करें",

@@ -150,6 +150,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsVersion => 'Версия';
 
   @override
+  String get settingsSendFeedback => 'Отправить отзыв';
+
+  @override
+  String get settingsSendFeedbackSubtitle =>
+      'Отправьте сообщение и аннотированный снимок экрана по электронной почте';
+
+  @override
+  String get settingsFeedbackShared => 'Черновик письма готов.';
+
+  @override
+  String get settingsFeedbackShareFailed =>
+      'Не удалось открыть почтовое приложение.';
+
+  @override
   String get settingsSelectAll => 'Выбрать все';
 
   @override

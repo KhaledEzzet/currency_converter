@@ -149,6 +149,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsVersion => 'الإصدار';
 
   @override
+  String get settingsSendFeedback => 'إرسال الملاحظات';
+
+  @override
+  String get settingsSendFeedbackSubtitle =>
+      'أرسل ملاحظة ولقطة شاشة مع تعليقات توضيحية عبر البريد الإلكتروني';
+
+  @override
+  String get settingsFeedbackShared => 'تم تجهيز مسودة البريد الإلكتروني.';
+
+  @override
+  String get settingsFeedbackShareFailed => 'تعذر فتح تطبيق البريد الإلكتروني.';
+
+  @override
   String get settingsSelectAll => 'تحديد الكل';
 
   @override

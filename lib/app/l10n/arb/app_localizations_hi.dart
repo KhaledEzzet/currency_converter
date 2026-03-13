@@ -149,6 +149,19 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settingsVersion => 'संस्करण';
 
   @override
+  String get settingsSendFeedback => 'फ़ीडबैक भेजें';
+
+  @override
+  String get settingsSendFeedbackSubtitle =>
+      'ईमेल से नोट और टिप्पणी वाला स्क्रीनशॉट भेजें';
+
+  @override
+  String get settingsFeedbackShared => 'आपका ईमेल ड्राफ्ट तैयार है.';
+
+  @override
+  String get settingsFeedbackShareFailed => 'आपका ईमेल ऐप खोला नहीं जा सका.';
+
+  @override
   String get settingsSelectAll => 'सभी चुनें';
 
   @override
