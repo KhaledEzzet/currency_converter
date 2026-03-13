@@ -164,6 +164,17 @@ class AppLocalizationsRu extends AppLocalizations {
       'Не удалось открыть почтовое приложение.';
 
   @override
+  String get settingsLeaveReview => 'Оставить отзыв';
+
+  @override
+  String get settingsLeaveReviewSubtitle =>
+      'Оцените расширение в Chrome Web Store';
+
+  @override
+  String get settingsLeaveReviewOpenFailed =>
+      'Не удалось открыть страницу отзывов.';
+
+  @override
   String get settingsSelectAll => 'Выбрать все';
 
   @override

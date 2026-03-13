@@ -1,3 +1,4 @@
+import 'package:currency_converter/app/constants/string_constants.dart';
 import 'package:currency_converter/app/l10n/arb/app_localizations.dart';
 import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
@@ -9,8 +10,10 @@ import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
 import 'package:currency_converter/feature/settings/view/widgets/display_currencies_sheet.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -118,6 +121,32 @@ class SettingsView extends StatelessWidget {
         );
       }
     });
+  }
+
+  Future<void> _openReviewPage(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    try {
+      final didOpen = await launchUrl(
+        Uri.parse(StringConstants.chromeWebStoreReviewsUrl),
+        webOnlyWindowName: '_blank',
+      );
+      if (didOpen || !scaffoldMessenger.mounted) {
+        return;
+      }
+    } catch (error) {
+      LoggerUtils.instance.logError('Unable to open review page: $error');
+      if (!scaffoldMessenger.mounted) {
+        return;
+      }
+    }
+
+    scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: Text(l10n.settingsLeaveReviewOpenFailed),
+      ),
+    );
   }
 
   @override
@@ -296,6 +325,16 @@ class SettingsView extends StatelessWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _openFeedbackFlow(context),
           ),
+          if (kIsWeb) ...[
+            const Divider(height: 24),
+            ListTile(
+              leading: const Icon(Icons.star_outline),
+              title: Text(l10n.settingsLeaveReview),
+              subtitle: Text(l10n.settingsLeaveReviewSubtitle),
+              trailing: const Icon(Icons.open_in_new),
+              onTap: () => _openReviewPage(context),
+            ),
+          ],
           const Divider(height: 24),
           ListTile(
             leading: const Icon(Icons.info_outline),

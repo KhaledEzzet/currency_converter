@@ -162,6 +162,16 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settingsFeedbackShareFailed => 'आपका ईमेल ऐप खोला नहीं जा सका.';
 
   @override
+  String get settingsLeaveReview => 'रिव्यू दें';
+
+  @override
+  String get settingsLeaveReviewSubtitle =>
+      'Chrome Web Store पर एक्सटेंशन को रेट करें';
+
+  @override
+  String get settingsLeaveReviewOpenFailed => 'हम रिव्यू पेज नहीं खोल सके।';
+
+  @override
   String get settingsSelectAll => 'सभी चुनें';
 
   @override

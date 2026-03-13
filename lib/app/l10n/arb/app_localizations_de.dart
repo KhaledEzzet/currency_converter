@@ -164,6 +164,17 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die E-Mail-App konnte nicht geöffnet werden.';
 
   @override
+  String get settingsLeaveReview => 'Bewertung abgeben';
+
+  @override
+  String get settingsLeaveReviewSubtitle =>
+      'Bewerte die Erweiterung im Chrome Web Store';
+
+  @override
+  String get settingsLeaveReviewOpenFailed =>
+      'Die Bewertungsseite konnte nicht geöffnet werden.';
+
+  @override
   String get settingsSelectAll => 'Alle auswählen';
 
   @override

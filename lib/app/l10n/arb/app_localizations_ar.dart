@@ -162,6 +162,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsFeedbackShareFailed => 'تعذر فتح تطبيق البريد الإلكتروني.';
 
   @override
+  String get settingsLeaveReview => 'اترك تقييمًا';
+
+  @override
+  String get settingsLeaveReviewSubtitle => 'قيّم الإضافة على Chrome Web Store';
+
+  @override
+  String get settingsLeaveReviewOpenFailed => 'تعذر فتح صفحة التقييم.';
+
+  @override
   String get settingsSelectAll => 'تحديد الكل';
 
   @override

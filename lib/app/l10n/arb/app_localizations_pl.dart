@@ -163,6 +163,17 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nie udało się otworzyć aplikacji e-mail.';
 
   @override
+  String get settingsLeaveReview => 'Zostaw opinię';
+
+  @override
+  String get settingsLeaveReviewSubtitle =>
+      'Oceń rozszerzenie w Chrome Web Store';
+
+  @override
+  String get settingsLeaveReviewOpenFailed =>
+      'Nie udało się otworzyć strony opinii.';
+
+  @override
   String get settingsSelectAll => 'Zaznacz wszystko';
 
   @override

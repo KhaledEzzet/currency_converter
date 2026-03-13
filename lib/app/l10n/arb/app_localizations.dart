@@ -408,6 +408,24 @@ abstract class AppLocalizations {
   /// **'We couldn\'t open your email app.'**
   String get settingsFeedbackShareFailed;
 
+  /// No description provided for @settingsLeaveReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave a review'**
+  String get settingsLeaveReview;
+
+  /// No description provided for @settingsLeaveReviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate the extension on the Chrome Web Store'**
+  String get settingsLeaveReviewSubtitle;
+
+  /// No description provided for @settingsLeaveReviewOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t open the review page.'**
+  String get settingsLeaveReviewOpenFailed;
+
   /// No description provided for @settingsSelectAll.
   ///
   /// In en, this message translates to:

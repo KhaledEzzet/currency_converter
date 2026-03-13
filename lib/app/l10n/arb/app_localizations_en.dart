@@ -162,6 +162,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsFeedbackShareFailed => 'We couldn\'t open your email app.';
 
   @override
+  String get settingsLeaveReview => 'Leave a review';
+
+  @override
+  String get settingsLeaveReviewSubtitle =>
+      'Rate the extension on the Chrome Web Store';
+
+  @override
+  String get settingsLeaveReviewOpenFailed =>
+      'We couldn\'t open the review page.';
+
+  @override
   String get settingsSelectAll => 'Select all';
 
   @override
