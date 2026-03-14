@@ -5,7 +5,14 @@ import 'package:flutter/material.dart';
 
 class FromRow extends StatelessWidget {
   const FromRow({
-    required this.state, required this.onCurrencyChanged, required this.onAmountChanged, required this.showCurrencyFlags, required this.useCurrencySymbols, super.key,
+    required this.state,
+    required this.onCurrencyChanged,
+    required this.onAmountChanged,
+    required this.showCurrencyFlags,
+    required this.useCurrencySymbols,
+    super.key,
+    this.currencyFieldWrapper,
+    this.amountFieldWrapper,
   });
 
   final ConvertState state;
@@ -13,6 +20,8 @@ class FromRow extends StatelessWidget {
   final ValueChanged<String> onAmountChanged;
   final bool showCurrencyFlags;
   final bool useCurrencySymbols;
+  final Widget Function(Widget child)? currencyFieldWrapper;
+  final Widget Function(Widget child)? amountFieldWrapper;
 
   @override
   Widget build(BuildContext context) {
@@ -24,24 +33,30 @@ class FromRow extends StatelessWidget {
       children: [
         Expanded(
           flex: 4,
-          child: CurrencyDropdownField(
-            name: 'from_currency',
-            currencies: state.currencies,
-            currencyFlags: state.currencyFlags,
-            showFlags: showCurrencyFlags,
-            initialValue: state.fromCurrency,
-            onChanged: onCurrencyChanged,
+          child: (currencyFieldWrapper ?? _identity)(
+            CurrencyDropdownField(
+              name: 'from_currency',
+              currencies: state.currencies,
+              currencyFlags: state.currencyFlags,
+              showFlags: showCurrencyFlags,
+              initialValue: state.fromCurrency,
+              onChanged: onCurrencyChanged,
+            ),
           ),
         ),
         const SizedBox(width: 12),
         Expanded(
           flex: 7,
-          child: AmountField(
-            symbol: symbol,
-            onChanged: onAmountChanged,
+          child: (amountFieldWrapper ?? _identity)(
+            AmountField(
+              symbol: symbol,
+              onChanged: onAmountChanged,
+            ),
           ),
         ),
       ],
     );
   }
 }
+
+Widget _identity(Widget child) => child;

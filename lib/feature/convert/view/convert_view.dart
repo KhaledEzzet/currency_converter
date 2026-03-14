@@ -4,6 +4,7 @@ import 'package:currency_converter/feature/convert/cubit/convert_state.dart';
 import 'package:currency_converter/feature/convert/view/widgets/from_row.dart';
 import 'package:currency_converter/feature/convert/view/widgets/section_title.dart';
 import 'package:currency_converter/feature/convert/view/widgets/to_list.dart';
+import 'package:currency_converter/feature/onboarding/cubit/onboarding_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
 import 'package:currency_converter/feature/settings/view/widgets/display_currencies_sheet.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 extension _CurrencySortOptionLabel on CurrencySortOption {
   String get label {
@@ -40,8 +42,45 @@ extension _CurrencySortOptionLabel on CurrencySortOption {
   }
 }
 
-class ConvertView extends StatelessWidget {
+class ConvertView extends StatefulWidget {
   const ConvertView({super.key});
+
+  @override
+  State<ConvertView> createState() => _ConvertViewState();
+}
+
+class _ConvertViewState extends State<ConvertView> {
+  static const _showcaseScope = 'convert_view_showcase';
+
+  final GlobalKey _baseCurrencyShowcaseKey = GlobalKey();
+  final GlobalKey _amountShowcaseKey = GlobalKey();
+  final GlobalKey _displayCurrenciesShowcaseKey = GlobalKey();
+  final GlobalKey _sortingShowcaseKey = GlobalKey();
+
+  late final ShowcaseView _showcaseView;
+  bool _showcaseScheduled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _showcaseView = ShowcaseView.register(
+      scope: _showcaseScope,
+      enableAutoScroll: true,
+      onFinish: _markConvertShowcaseSeen,
+      onDismiss: (_) => _markConvertShowcaseSeen(),
+      globalTooltipActionConfig: const TooltipActionConfig(),
+      globalTooltipActions: const [
+        TooltipActionButton(type: TooltipDefaultActionType.skip),
+        TooltipActionButton(type: TooltipDefaultActionType.next),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _showcaseView.unregister();
+    super.dispose();
+  }
 
   List<String> _sortedCurrencies({
     required List<String> currencies,
@@ -105,6 +144,79 @@ class ConvertView extends StatelessWidget {
     return ascending ? byRate : -byRate;
   }
 
+  void _markConvertShowcaseSeen() {
+    if (!mounted) {
+      return;
+    }
+    context.read<SettingsCubit>().markConvertShowcaseSeen();
+  }
+
+  void _maybeStartShowcase({
+    required ConvertState convertState,
+    required SettingsState settingsState,
+    required bool hasCompletedOnboarding,
+  }) {
+    if (_showcaseScheduled ||
+        !hasCompletedOnboarding ||
+        convertState.status != ConvertStatus.success ||
+        settingsState.status != SettingsStatus.success ||
+        settingsState.convertShowcaseSeen ||
+        convertState.currencies.isEmpty ||
+        settingsState.currencies.isEmpty) {
+      return;
+    }
+
+    _showcaseScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      _showcaseView.startShowCase(
+        [
+          _baseCurrencyShowcaseKey,
+          _amountShowcaseKey,
+          _displayCurrenciesShowcaseKey,
+          _sortingShowcaseKey,
+        ],
+        delay: const Duration(milliseconds: 300),
+      );
+    });
+  }
+
+  Widget _buildShowcase(
+    BuildContext context, {
+    required GlobalKey key,
+    required String title,
+    required String description,
+    required Widget child,
+    TooltipPosition? tooltipPosition,
+  }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Showcase(
+      key: key,
+      title: title,
+      description: description,
+      tooltipPosition: tooltipPosition,
+      tooltipBackgroundColor: colorScheme.surface,
+      textColor: colorScheme.onSurface,
+      titleTextStyle: theme.textTheme.titleMedium?.copyWith(
+        color: colorScheme.onSurface,
+        fontWeight: FontWeight.w700,
+      ),
+      descTextStyle: theme.textTheme.bodyMedium?.copyWith(
+        color: colorScheme.onSurfaceVariant,
+        height: 1.4,
+      ),
+      overlayOpacity: 0.72,
+      blurValue: 1,
+      targetPadding: const EdgeInsets.all(4),
+      targetBorderRadius: BorderRadius.circular(12),
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -158,6 +270,15 @@ class ConvertView extends StatelessWidget {
             }
 
             final settingsState = context.watch<SettingsCubit>().state;
+            final hasCompletedOnboarding = context.select(
+              (OnboardingCubit cubit) => cubit.state.hasCompletedOnboarding,
+            );
+            _maybeStartShowcase(
+              convertState: state,
+              settingsState: settingsState,
+              hasCompletedOnboarding: hasCompletedOnboarding,
+            );
+
             final displayCurrencies = settingsState.displaySelectionInitialized
                 ? () {
                     final selected = settingsState.displayCurrencies.toSet();
@@ -190,6 +311,21 @@ class ConvertView extends StatelessWidget {
                       state: state,
                       showCurrencyFlags: showCurrencyFlags,
                       useCurrencySymbols: useCurrencySymbols,
+                      currencyFieldWrapper: (child) => _buildShowcase(
+                        context,
+                        key: _baseCurrencyShowcaseKey,
+                        title: 'Default base',
+                        description:
+                            'Choose the base currency you want to convert from.',
+                        child: child,
+                      ),
+                      amountFieldWrapper: (child) => _buildShowcase(
+                        context,
+                        key: _amountShowcaseKey,
+                        title: 'Amount',
+                        description: 'Enter the amount you want to convert.',
+                        child: child,
+                      ),
                       onCurrencyChanged: (currency) {
                         if (currency == null) {
                           return;
@@ -207,91 +343,107 @@ class ConvertView extends StatelessWidget {
                         Expanded(
                           child: SectionTitle(text: l10n.labelTo),
                         ),
-                        SizedBox(
-                          width: 92,
-                          height: 34,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: DropdownButton<CurrencySortOption>(
-                                value: state.sortOption,
-                                isExpanded: true,
-                                isDense: true,
-                                alignment: Alignment.center,
-                                underline: const SizedBox.shrink(),
-                                iconSize: 18,
+                        _buildShowcase(
+                          context,
+                          key: _sortingShowcaseKey,
+                          title: 'Sort results',
+                          description:
+                              'Change how the displayed currencies are ordered.',
+                          child: SizedBox(
+                            width: 92,
+                            height: 34,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
                                 borderRadius: BorderRadius.circular(10),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                items: CurrencySortOption.values
-                                    .map(
-                                      (option) =>
-                                          DropdownMenuItem<CurrencySortOption>(
-                                        value: option,
-                                        child: Center(
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 2),
-                                            child: Text(
-                                              option.label,
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: DropdownButton<CurrencySortOption>(
+                                  value: state.sortOption,
+                                  isExpanded: true,
+                                  isDense: true,
+                                  alignment: Alignment.center,
+                                  underline: const SizedBox.shrink(),
+                                  iconSize: 18,
+                                  borderRadius: BorderRadius.circular(10),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                    )
-                                    .toList(),
-                                selectedItemBuilder: (context) {
-                                  return CurrencySortOption.values
+                                  items: CurrencySortOption.values
                                       .map(
-                                        (option) => Center(
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 2),
-                                            child: Text(
-                                              option.buttonLabel,
-                                              textAlign: TextAlign.center,
+                                        (option) => DropdownMenuItem<
+                                            CurrencySortOption>(
+                                          value: option,
+                                          child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 2,
+                                              ),
+                                              child: Text(
+                                                option.label,
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       )
-                                      .toList();
-                                },
-                                onChanged: (option) {
-                                  if (option == null) {
-                                    return;
-                                  }
-                                  context
-                                      .read<ConvertCubit>()
-                                      .updateSortOption(option);
-                                },
+                                      .toList(),
+                                  selectedItemBuilder: (context) {
+                                    return CurrencySortOption.values
+                                        .map(
+                                          (option) => Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 2,
+                                              ),
+                                              child: Text(
+                                                option.buttonLabel,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList();
+                                  },
+                                  onChanged: (option) {
+                                    if (option == null) {
+                                      return;
+                                    }
+                                    context
+                                        .read<ConvertCubit>()
+                                        .updateSortOption(option);
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
                         const SizedBox(width: 4),
-                        IconButton(
-                          onPressed: settingsState.currencies.isNotEmpty
-                              ? () => showDisplayCurrenciesSheet(
-                                    context,
-                                    settingsState,
-                                  )
-                              : null,
-                          tooltip: l10n.settingsDisplayCurrencies,
-                          icon: const Icon(Icons.view_list),
+                        _buildShowcase(
+                          context,
+                          key: _displayCurrenciesShowcaseKey,
+                          title: 'Display currencies',
+                          description:
+                              'Choose which currencies appear in the results list.',
+                          child: IconButton(
+                            onPressed: settingsState.currencies.isNotEmpty
+                                ? () => showDisplayCurrenciesSheet(
+                                      context,
+                                      settingsState,
+                                    )
+                                : null,
+                            tooltip: l10n.settingsDisplayCurrencies,
+                            icon: const Icon(Icons.view_list),
+                          ),
                         ),
                       ],
                     ),

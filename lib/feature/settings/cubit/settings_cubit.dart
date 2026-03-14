@@ -8,6 +8,8 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
   })  : _getCurrenciesUseCase = getCurrenciesUseCase,
         super(SettingsState.initial());
 
+  static const int _convertShowcaseStorageVersion = 2;
+
   final GetCurrenciesUseCase _getCurrenciesUseCase;
 
   Future<void> initialize() async {
@@ -58,6 +60,39 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     emit(
       state.copyWith(
         useCurrencySymbols: value,
+      ),
+    );
+  }
+
+  void markConvertShowcaseSeen() {
+    if (state.convertShowcaseSeen) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        convertShowcaseSeen: true,
+      ),
+    );
+  }
+
+  void markChartsShowcaseSeen() {
+    if (state.chartsShowcaseSeen) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        chartsShowcaseSeen: true,
+      ),
+    );
+  }
+
+  void markSettingsShowcaseSeen() {
+    if (state.settingsShowcaseSeen) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        settingsShowcaseSeen: true,
       ),
     );
   }
@@ -147,6 +182,17 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     final rawUseCurrencySymbols = json['useCurrencySymbols'];
     final useCurrencySymbols =
         rawUseCurrencySymbols is! bool || rawUseCurrencySymbols;
+    final rawConvertShowcaseSeen = json['convertShowcaseSeen'];
+    final rawConvertShowcaseVersion = json['convertShowcaseSeenVersion'];
+    final convertShowcaseSeen = rawConvertShowcaseSeen is bool &&
+        rawConvertShowcaseSeen &&
+        rawConvertShowcaseVersion == _convertShowcaseStorageVersion;
+    final rawChartsShowcaseSeen = json['chartsShowcaseSeen'];
+    final chartsShowcaseSeen =
+        rawChartsShowcaseSeen is bool && rawChartsShowcaseSeen;
+    final rawSettingsShowcaseSeen = json['settingsShowcaseSeen'];
+    final settingsShowcaseSeen =
+        rawSettingsShowcaseSeen is bool && rawSettingsShowcaseSeen;
 
     return SettingsState.initial().copyWith(
       currencies: currencies,
@@ -156,6 +202,9 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       displaySelectionInitialized: hasDisplaySelection,
       showCurrencyFlags: showCurrencyFlags,
       useCurrencySymbols: useCurrencySymbols,
+      convertShowcaseSeen: convertShowcaseSeen,
+      chartsShowcaseSeen: chartsShowcaseSeen,
+      settingsShowcaseSeen: settingsShowcaseSeen,
     );
   }
 
@@ -169,6 +218,10 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       'displaySelectionInitialized': state.displaySelectionInitialized,
       'showCurrencyFlags': state.showCurrencyFlags,
       'useCurrencySymbols': state.useCurrencySymbols,
+      'convertShowcaseSeen': state.convertShowcaseSeen,
+      'convertShowcaseSeenVersion': _convertShowcaseStorageVersion,
+      'chartsShowcaseSeen': state.chartsShowcaseSeen,
+      'settingsShowcaseSeen': state.settingsShowcaseSeen,
     };
   }
 }

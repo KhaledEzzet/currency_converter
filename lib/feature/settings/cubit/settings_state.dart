@@ -10,6 +10,9 @@ class SettingsState {
     required this.displaySelectionInitialized,
     required this.showCurrencyFlags,
     required this.useCurrencySymbols,
+    required this.convertShowcaseSeen,
+    required this.chartsShowcaseSeen,
+    required this.settingsShowcaseSeen,
     required this.errorMessage,
   });
 
@@ -23,6 +26,9 @@ class SettingsState {
       displaySelectionInitialized: false,
       showCurrencyFlags: true,
       useCurrencySymbols: true,
+      convertShowcaseSeen: false,
+      chartsShowcaseSeen: false,
+      settingsShowcaseSeen: false,
       errorMessage: null,
     );
   }
@@ -35,6 +41,9 @@ class SettingsState {
   final bool displaySelectionInitialized;
   final bool showCurrencyFlags;
   final bool useCurrencySymbols;
+  final bool convertShowcaseSeen;
+  final bool chartsShowcaseSeen;
+  final bool settingsShowcaseSeen;
   final String? errorMessage;
 
   SettingsState copyWith({
@@ -46,6 +55,9 @@ class SettingsState {
     bool? displaySelectionInitialized,
     bool? showCurrencyFlags,
     bool? useCurrencySymbols,
+    bool? convertShowcaseSeen,
+    bool? chartsShowcaseSeen,
+    bool? settingsShowcaseSeen,
     String? errorMessage,
   }) {
     return SettingsState(
@@ -59,6 +71,9 @@ class SettingsState {
           displaySelectionInitialized ?? this.displaySelectionInitialized,
       showCurrencyFlags: showCurrencyFlags ?? this.showCurrencyFlags,
       useCurrencySymbols: useCurrencySymbols ?? this.useCurrencySymbols,
+      convertShowcaseSeen: convertShowcaseSeen ?? this.convertShowcaseSeen,
+      chartsShowcaseSeen: chartsShowcaseSeen ?? this.chartsShowcaseSeen,
+      settingsShowcaseSeen: settingsShowcaseSeen ?? this.settingsShowcaseSeen,
       errorMessage: errorMessage,
     );
   }

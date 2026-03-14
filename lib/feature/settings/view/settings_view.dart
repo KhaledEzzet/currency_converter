@@ -7,6 +7,7 @@ import 'package:currency_converter/core/utils/feedback/feedback_utils.dart';
 import 'package:currency_converter/core/utils/logger/logger_utils.dart';
 import 'package:currency_converter/core/utils/package_info/package_info_utils.dart';
 import 'package:currency_converter/feature/convert/view/widgets/currency_flag.dart';
+import 'package:currency_converter/feature/onboarding/cubit/onboarding_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
 import 'package:currency_converter/feature/settings/view/widgets/display_currencies_sheet.dart';
@@ -14,9 +15,48 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:showcaseview/showcaseview.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
+
+  @override
+  State<SettingsView> createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
+  static const _showcaseScope = 'settings_view_showcase';
+
+  final GlobalKey _darkModeShowcaseKey = GlobalKey();
+  final GlobalKey _languageShowcaseKey = GlobalKey();
+  final GlobalKey _currencyFlagsShowcaseKey = GlobalKey();
+  final GlobalKey _currencySymbolsShowcaseKey = GlobalKey();
+  final GlobalKey _defaultBaseShowcaseKey = GlobalKey();
+
+  late final ShowcaseView _showcaseView;
+  bool _showcaseScheduled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _showcaseView = ShowcaseView.register(
+      scope: _showcaseScope,
+      enableAutoScroll: true,
+      onFinish: _markSettingsShowcaseSeen,
+      onDismiss: (_) => _markSettingsShowcaseSeen(),
+      globalTooltipActionConfig: const TooltipActionConfig(),
+      globalTooltipActions: const [
+        TooltipActionButton(type: TooltipDefaultActionType.skip),
+        TooltipActionButton(type: TooltipDefaultActionType.next),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _showcaseView.unregister();
+    super.dispose();
+  }
 
   String _languageLabel(AppLocalizations l10n, Locale locale) {
     switch (locale.languageCode) {
@@ -148,10 +188,93 @@ class SettingsView extends StatelessWidget {
     );
   }
 
+  void _markSettingsShowcaseSeen() {
+    if (!mounted) {
+      return;
+    }
+    context.read<SettingsCubit>().markSettingsShowcaseSeen();
+  }
+
+  void _maybeStartShowcase({
+    required SettingsState settingsState,
+    required bool hasCompletedOnboarding,
+    required bool isRouteVisible,
+  }) {
+    if (_showcaseScheduled ||
+        !hasCompletedOnboarding ||
+        !isRouteVisible ||
+        settingsState.status != SettingsStatus.success ||
+        settingsState.currencies.isEmpty ||
+        settingsState.settingsShowcaseSeen) {
+      return;
+    }
+
+    _showcaseScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      _showcaseView.startShowCase(
+        [
+          _darkModeShowcaseKey,
+          _languageShowcaseKey,
+          _currencyFlagsShowcaseKey,
+          _currencySymbolsShowcaseKey,
+          _defaultBaseShowcaseKey,
+        ],
+        delay: const Duration(milliseconds: 300),
+      );
+    });
+  }
+
+  Widget _buildShowcase(
+    BuildContext context, {
+    required GlobalKey key,
+    required String title,
+    required String description,
+    required Widget child,
+  }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Showcase(
+      key: key,
+      title: title,
+      description: description,
+      tooltipBackgroundColor: colorScheme.surface,
+      textColor: colorScheme.onSurface,
+      titleTextStyle: theme.textTheme.titleMedium?.copyWith(
+        color: colorScheme.onSurface,
+        fontWeight: FontWeight.w700,
+      ),
+      descTextStyle: theme.textTheme.bodyMedium?.copyWith(
+        color: colorScheme.onSurfaceVariant,
+        height: 1.4,
+      ),
+      overlayOpacity: 0.72,
+      blurValue: 1,
+      targetPadding: const EdgeInsets.all(4),
+      targetBorderRadius: BorderRadius.circular(12),
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final appVersion = PackageInfoUtils.getAppVersion();
+    final settingsState = context.watch<SettingsCubit>().state;
+    final hasCompletedOnboarding = context.select(
+      (OnboardingCubit cubit) => cubit.state.hasCompletedOnboarding,
+    );
+    final isRouteVisible = ModalRoute.of(context)?.isCurrent ?? true;
+
+    _maybeStartShowcase(
+      settingsState: settingsState,
+      hasCompletedOnboarding: hasCompletedOnboarding,
+      isRouteVisible: isRouteVisible,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -167,12 +290,20 @@ class SettingsView extends StatelessWidget {
           BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, themeMode) {
               final isDarkMode = themeMode == ThemeMode.dark;
-              return SwitchListTile(
-                value: isDarkMode,
-                onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
-                secondary: const Icon(Icons.dark_mode),
-                title: Text(l10n.settingsDarkMode),
-                subtitle: Text(isDarkMode ? l10n.settingsOn : l10n.settingsOff),
+              return _buildShowcase(
+                context,
+                key: _darkModeShowcaseKey,
+                title: 'Dark mode',
+                description:
+                    'Switch the app between light and dark appearance.',
+                child: SwitchListTile(
+                  value: isDarkMode,
+                  onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
+                  secondary: const Icon(Icons.dark_mode),
+                  title: Text(l10n.settingsDarkMode),
+                  subtitle:
+                      Text(isDarkMode ? l10n.settingsOn : l10n.settingsOff),
+                ),
               );
             },
           ),
@@ -180,25 +311,31 @@ class SettingsView extends StatelessWidget {
           BlocBuilder<LocaleCubit, Locale>(
             builder: (context, locale) {
               final currentLocale = Locale(locale.languageCode);
-              return ListTile(
-                leading: const Icon(Icons.language),
-                title: Text(l10n.labelLanguage),
-                trailing: DropdownButtonHideUnderline(
-                  child: DropdownButton<Locale>(
-                    value: currentLocale,
-                    isDense: true,
-                    items: AppLocalizations.supportedLocales.map((supported) {
-                      return DropdownMenuItem(
-                        value: supported,
-                        child: _buildLanguageLabel(l10n, supported),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      if (value == null) {
-                        return;
-                      }
-                      context.read<LocaleCubit>().updateLocale(value);
-                    },
+              return _buildShowcase(
+                context,
+                key: _languageShowcaseKey,
+                title: 'Language',
+                description: 'Choose the language used across the app.',
+                child: ListTile(
+                  leading: const Icon(Icons.language),
+                  title: Text(l10n.labelLanguage),
+                  trailing: DropdownButtonHideUnderline(
+                    child: DropdownButton<Locale>(
+                      value: currentLocale,
+                      isDense: true,
+                      items: AppLocalizations.supportedLocales.map((supported) {
+                        return DropdownMenuItem(
+                          value: supported,
+                          child: _buildLanguageLabel(l10n, supported),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        context.read<LocaleCubit>().updateLocale(value);
+                      },
+                    ),
                   ),
                 ),
               );
@@ -210,43 +347,53 @@ class SettingsView extends StatelessWidget {
             title: Text(l10n.settingsGeneralTitle),
             subtitle: Text(l10n.settingsGeneralSubtitle),
           ),
-          BlocBuilder<SettingsCubit, SettingsState>(
-            builder: (context, state) {
-              return Column(
-                children: [
-                  SwitchListTile(
-                    value: state.showCurrencyFlags,
-                    onChanged: (value) {
-                      context
-                          .read<SettingsCubit>()
-                          .updateShowCurrencyFlags(value: value);
-                    },
-                    secondary: const Icon(Icons.flag_outlined),
-                    title: Text(l10n.settingsShowCurrencyFlags),
-                    subtitle: Text(
-                      state.showCurrencyFlags
-                          ? l10n.settingsOn
-                          : l10n.settingsOff,
-                    ),
+          Column(
+            children: [
+              _buildShowcase(
+                context,
+                key: _currencyFlagsShowcaseKey,
+                title: 'Currency flags',
+                description:
+                    'Show or hide country flags beside currencies in dropdowns and lists.',
+                child: SwitchListTile(
+                  value: settingsState.showCurrencyFlags,
+                  onChanged: (value) {
+                    context
+                        .read<SettingsCubit>()
+                        .updateShowCurrencyFlags(value: value);
+                  },
+                  secondary: const Icon(Icons.flag_outlined),
+                  title: Text(l10n.settingsShowCurrencyFlags),
+                  subtitle: Text(
+                    settingsState.showCurrencyFlags
+                        ? l10n.settingsOn
+                        : l10n.settingsOff,
                   ),
-                  SwitchListTile(
-                    value: state.useCurrencySymbols,
-                    onChanged: (value) {
-                      context
-                          .read<SettingsCubit>()
-                          .updateUseCurrencySymbols(value: value);
-                    },
-                    secondary: const Icon(Icons.payments_outlined),
-                    title: Text(l10n.settingsUseCurrencySymbols),
-                    subtitle: Text(
-                      state.useCurrencySymbols
-                          ? l10n.settingsOn
-                          : l10n.settingsOff,
-                    ),
+                ),
+              ),
+              _buildShowcase(
+                context,
+                key: _currencySymbolsShowcaseKey,
+                title: 'Currency symbols',
+                description:
+                    r'Use symbols like $ and € instead of currency codes when available.',
+                child: SwitchListTile(
+                  value: settingsState.useCurrencySymbols,
+                  onChanged: (value) {
+                    context
+                        .read<SettingsCubit>()
+                        .updateUseCurrencySymbols(value: value);
+                  },
+                  secondary: const Icon(Icons.payments_outlined),
+                  title: Text(l10n.settingsUseCurrencySymbols),
+                  subtitle: Text(
+                    settingsState.useCurrencySymbols
+                        ? l10n.settingsOn
+                        : l10n.settingsOff,
                   ),
-                ],
-              );
-            },
+                ),
+              ),
+            ],
           ),
           const Divider(height: 24),
           ListTile(
@@ -254,68 +401,68 @@ class SettingsView extends StatelessWidget {
             title: Text(l10n.settingsCurrenciesTitle),
             subtitle: Text(l10n.settingsCurrenciesSubtitle),
           ),
-          BlocBuilder<SettingsCubit, SettingsState>(
-            builder: (context, state) {
-              final hasCurrencies = state.currencies.isNotEmpty;
-              if (state.status == SettingsStatus.loading && !hasCurrencies) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-
-              if (state.status == SettingsStatus.failure && !hasCurrencies) {
-                return ListTile(
-                  leading: const Icon(Icons.error_outline),
-                  title: Text(l10n.settingsUnableToLoadCurrencies),
-                  subtitle: Text(state.errorMessage ?? l10n.errorGeneric),
-                );
-              }
-
-              return Column(
-                children: [
-                  ListTile(
+          if (settingsState.status == SettingsStatus.loading &&
+              settingsState.currencies.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          else if (settingsState.status == SettingsStatus.failure &&
+              settingsState.currencies.isEmpty)
+            ListTile(
+              leading: const Icon(Icons.error_outline),
+              title: Text(l10n.settingsUnableToLoadCurrencies),
+              subtitle: Text(settingsState.errorMessage ?? l10n.errorGeneric),
+            )
+          else
+            Column(
+              children: [
+                _buildShowcase(
+                  context,
+                  key: _defaultBaseShowcaseKey,
+                  title: 'Default base',
+                  description:
+                      'Choose the default base currency used in convert and charts.',
+                  child: ListTile(
                     leading: const Icon(Icons.account_balance_wallet),
                     title: Text(l10n.settingsDefaultBase),
                     trailing: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        value: hasCurrencies &&
-                                state.currencies.contains(state.baseCurrency)
-                            ? state.baseCurrency
+                        value: settingsState.currencies.contains(
+                          settingsState.baseCurrency,
+                        )
+                            ? settingsState.baseCurrency
                             : null,
                         isDense: true,
-                        items: state.currencies
+                        items: settingsState.currencies
                             .map(
                               (currency) => DropdownMenuItem<String>(
                                 value: currency,
                                 child: buildCurrencyLabel(
                                   currency,
-                                  showFlags: state.showCurrencyFlags,
+                                  showFlags: settingsState.showCurrencyFlags,
                                 ),
                               ),
                             )
                             .toList(),
-                        onChanged: hasCurrencies
-                            ? context.read<SettingsCubit>().updateBaseCurrency
-                            : null,
+                        onChanged:
+                            context.read<SettingsCubit>().updateBaseCurrency,
                       ),
                     ),
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.view_list),
-                    title: Text(l10n.settingsDisplayCurrencies),
-                    subtitle: Text(_displaySelectionLabel(l10n, state)),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: hasCurrencies
-                        ? () => showDisplayCurrenciesSheet(context, state)
-                        : null,
-                  ),
-                ],
-              );
-            },
-          ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.view_list),
+                  title: Text(l10n.settingsDisplayCurrencies),
+                  subtitle: Text(_displaySelectionLabel(l10n, settingsState)),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () =>
+                      showDisplayCurrenciesSheet(context, settingsState),
+                ),
+              ],
+            ),
           const Divider(height: 24),
           ListTile(
             leading: const Icon(Icons.feedback_outlined),
