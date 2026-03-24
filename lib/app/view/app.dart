@@ -104,6 +104,7 @@ class App extends StatelessWidget {
                 child: MaterialApp.router(
                   // App Name
                   title: StringConstants.appName,
+                  debugShowCheckedModeBanner: false,
 
                   // Theme
                   theme: lightTheme,
