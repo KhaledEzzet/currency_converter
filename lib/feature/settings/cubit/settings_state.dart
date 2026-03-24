@@ -10,6 +10,7 @@ class SettingsState {
     required this.displaySelectionInitialized,
     required this.showCurrencyFlags,
     required this.useCurrencySymbols,
+    required this.webPriceAccessibilityEnabled,
     required this.convertShowcaseSeen,
     required this.chartsShowcaseSeen,
     required this.settingsShowcaseSeen,
@@ -26,6 +27,7 @@ class SettingsState {
       displaySelectionInitialized: false,
       showCurrencyFlags: true,
       useCurrencySymbols: true,
+      webPriceAccessibilityEnabled: false,
       convertShowcaseSeen: false,
       chartsShowcaseSeen: false,
       settingsShowcaseSeen: false,
@@ -41,6 +43,7 @@ class SettingsState {
   final bool displaySelectionInitialized;
   final bool showCurrencyFlags;
   final bool useCurrencySymbols;
+  final bool webPriceAccessibilityEnabled;
   final bool convertShowcaseSeen;
   final bool chartsShowcaseSeen;
   final bool settingsShowcaseSeen;
@@ -55,6 +58,7 @@ class SettingsState {
     bool? displaySelectionInitialized,
     bool? showCurrencyFlags,
     bool? useCurrencySymbols,
+    bool? webPriceAccessibilityEnabled,
     bool? convertShowcaseSeen,
     bool? chartsShowcaseSeen,
     bool? settingsShowcaseSeen,
@@ -71,6 +75,8 @@ class SettingsState {
           displaySelectionInitialized ?? this.displaySelectionInitialized,
       showCurrencyFlags: showCurrencyFlags ?? this.showCurrencyFlags,
       useCurrencySymbols: useCurrencySymbols ?? this.useCurrencySymbols,
+      webPriceAccessibilityEnabled:
+          webPriceAccessibilityEnabled ?? this.webPriceAccessibilityEnabled,
       convertShowcaseSeen: convertShowcaseSeen ?? this.convertShowcaseSeen,
       chartsShowcaseSeen: chartsShowcaseSeen ?? this.chartsShowcaseSeen,
       settingsShowcaseSeen: settingsShowcaseSeen ?? this.settingsShowcaseSeen,

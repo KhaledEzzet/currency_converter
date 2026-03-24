@@ -11,6 +11,8 @@ import 'package:currency_converter/feature/onboarding/cubit/onboarding_cubit.dar
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
 import 'package:currency_converter/feature/settings/view/widgets/display_currencies_sheet.dart';
+import 'package:currency_converter/feature/web_accessibility/extension_settings_bridge.dart';
+import 'package:currency_converter/locator.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -264,6 +266,8 @@ class _SettingsViewState extends State<SettingsView> {
     final l10n = AppLocalizations.of(context);
     final appVersion = PackageInfoUtils.getAppVersion();
     final settingsState = context.watch<SettingsCubit>().state;
+    final isExtensionContext =
+        Locator.resolve<ExtensionSettingsBridge>().isExtensionContext;
     final hasCompletedOnboarding = context.select(
       (OnboardingCubit cubit) => cubit.state.hasCompletedOnboarding,
     );
@@ -393,6 +397,22 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                 ),
               ),
+              if (isExtensionContext)
+                SwitchListTile(
+                  value: settingsState.webPriceAccessibilityEnabled,
+                  onChanged: (value) {
+                    context
+                        .read<SettingsCubit>()
+                        .updateWebPriceAccessibility(value: value);
+                  },
+                  secondary: const Icon(Icons.travel_explore_outlined),
+                  title: const Text('Webpage price accessibility'),
+                  subtitle: Text(
+                    settingsState.webPriceAccessibilityEnabled
+                        ? 'Detect prices on websites and show converted values on hover.'
+                        : 'Off for webpage price detection.',
+                  ),
+                ),
             ],
           ),
           const Divider(height: 24),

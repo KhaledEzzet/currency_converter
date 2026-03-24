@@ -10,6 +10,7 @@ import 'package:currency_converter/feature/convert/domain/usecases/get_latest_ra
 import 'package:currency_converter/feature/convert/view/convert_view.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
 import 'package:currency_converter/feature/settings/view/settings_view.dart';
+import 'package:currency_converter/feature/web_accessibility/extension_settings_bridge.dart';
 import 'package:currency_converter/locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +28,8 @@ final class AppRouter {
           return BlocProvider(
             create: (_) => SettingsCubit(
               getCurrenciesUseCase: Locator.resolve<GetCurrenciesUseCase>(),
+              extensionSettingsBridge:
+                  Locator.resolve<ExtensionSettingsBridge>(),
             )..initialize(),
             child: child,
           );

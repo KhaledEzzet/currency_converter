@@ -1,18 +1,26 @@
+import 'dart:async';
+
+import 'package:currency_converter/core/utils/logger/logger_utils.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_state.dart';
+import 'package:currency_converter/feature/web_accessibility/extension_settings_bridge.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class SettingsCubit extends HydratedCubit<SettingsState> {
   SettingsCubit({
     required GetCurrenciesUseCase getCurrenciesUseCase,
+    required ExtensionSettingsBridge extensionSettingsBridge,
   })  : _getCurrenciesUseCase = getCurrenciesUseCase,
+        _extensionSettingsBridge = extensionSettingsBridge,
         super(SettingsState.initial());
 
   static const int _convertShowcaseStorageVersion = 2;
 
   final GetCurrenciesUseCase _getCurrenciesUseCase;
+  final ExtensionSettingsBridge _extensionSettingsBridge;
 
   Future<void> initialize() async {
+    unawaited(_syncExtensionSettings(state));
     emit(state.copyWith(status: SettingsStatus.loading));
     await _loadCurrencies();
   }
@@ -30,6 +38,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
         baseSelectionInitialized: true,
       ),
     );
+    unawaited(_syncExtensionSettings(state));
   }
 
   void updateDisplayCurrencies(List<String> currencies) {
@@ -62,6 +71,18 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
         useCurrencySymbols: value,
       ),
     );
+  }
+
+  void updateWebPriceAccessibility({required bool value}) {
+    if (value == state.webPriceAccessibilityEnabled) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        webPriceAccessibilityEnabled: value,
+      ),
+    );
+    unawaited(_syncExtensionSettings(state));
   }
 
   void markConvertShowcaseSeen() {
@@ -125,6 +146,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
           displayCurrencies: displayCurrencies,
         ),
       );
+      unawaited(_syncExtensionSettings(state));
     } catch (error) {
       emit(
         state.copyWith(
@@ -142,6 +164,21 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       return codes;
     } catch (_) {
       return state.currencies;
+    }
+  }
+
+  Future<void> _syncExtensionSettings(SettingsState nextState) async {
+    try {
+      await _extensionSettingsBridge.syncSettings(
+        ExtensionSettingsPayload(
+          baseCurrency: nextState.baseCurrency,
+          webPriceAccessibilityEnabled: nextState.webPriceAccessibilityEnabled,
+        ),
+      );
+    } catch (error) {
+      LoggerUtils.instance.logWarning(
+        'Unable to sync extension settings: $error',
+      );
     }
   }
 
@@ -182,6 +219,11 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     final rawUseCurrencySymbols = json['useCurrencySymbols'];
     final useCurrencySymbols =
         rawUseCurrencySymbols is! bool || rawUseCurrencySymbols;
+    final rawWebPriceAccessibilityEnabled =
+        json['webPriceAccessibilityEnabled'];
+    final webPriceAccessibilityEnabled =
+        rawWebPriceAccessibilityEnabled is bool &&
+            rawWebPriceAccessibilityEnabled;
     final rawConvertShowcaseSeen = json['convertShowcaseSeen'];
     final rawConvertShowcaseVersion = json['convertShowcaseSeenVersion'];
     final convertShowcaseSeen = rawConvertShowcaseSeen is bool &&
@@ -202,6 +244,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       displaySelectionInitialized: hasDisplaySelection,
       showCurrencyFlags: showCurrencyFlags,
       useCurrencySymbols: useCurrencySymbols,
+      webPriceAccessibilityEnabled: webPriceAccessibilityEnabled,
       convertShowcaseSeen: convertShowcaseSeen,
       chartsShowcaseSeen: chartsShowcaseSeen,
       settingsShowcaseSeen: settingsShowcaseSeen,
@@ -218,6 +261,7 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
       'displaySelectionInitialized': state.displaySelectionInitialized,
       'showCurrencyFlags': state.showCurrencyFlags,
       'useCurrencySymbols': state.useCurrencySymbols,
+      'webPriceAccessibilityEnabled': state.webPriceAccessibilityEnabled,
       'convertShowcaseSeen': state.convertShowcaseSeen,
       'convertShowcaseSeenVersion': _convertShowcaseStorageVersion,
       'chartsShowcaseSeen': state.chartsShowcaseSeen,

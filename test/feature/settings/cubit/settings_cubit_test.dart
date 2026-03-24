@@ -2,6 +2,7 @@ import 'package:currency_converter/feature/convert/domain/entities/latest_rates.
 import 'package:currency_converter/feature/convert/domain/repositories/convert_repository.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
 import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
+import 'package:currency_converter/feature/web_accessibility/extension_settings_bridge.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -49,17 +50,33 @@ class _TestStorage implements Storage {
   Future<void> close() async {}
 }
 
+class _FakeExtensionSettingsBridge implements ExtensionSettingsBridge {
+  @override
+  bool get isExtensionContext => true;
+
+  final List<ExtensionSettingsPayload> syncedPayloads =
+      <ExtensionSettingsPayload>[];
+
+  @override
+  Future<void> syncSettings(ExtensionSettingsPayload payload) async {
+    syncedPayloads.add(payload);
+  }
+}
+
 void main() {
   late _TestStorage storage;
   late SettingsCubit cubit;
+  late _FakeExtensionSettingsBridge extensionSettingsBridge;
 
   setUp(() {
     storage = _TestStorage();
     HydratedBloc.storage = storage;
+    extensionSettingsBridge = _FakeExtensionSettingsBridge();
     cubit = SettingsCubit(
       getCurrenciesUseCase: const GetCurrenciesUseCase(
         repository: _FakeConvertRepository(),
       ),
+      extensionSettingsBridge: extensionSettingsBridge,
     );
   });
 
@@ -113,6 +130,33 @@ void main() {
     );
 
     expect(restoredState?.convertShowcaseSeen, isTrue);
+  });
+
+  test('persists the webpage price accessibility setting', () async {
+    cubit.updateWebPriceAccessibility(value: true);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(cubit.state.webPriceAccessibilityEnabled, isTrue);
+    expect(storage.values, hasLength(1));
+    expect(
+      Map<String, dynamic>.from(storage.values.values.single as Map),
+      containsPair('webPriceAccessibilityEnabled', true),
+    );
+    expect(extensionSettingsBridge.syncedPayloads, isNotEmpty);
+    expect(
+      extensionSettingsBridge.syncedPayloads.last.webPriceAccessibilityEnabled,
+      isTrue,
+    );
+  });
+
+  test('restores webpage price accessibility from saved state', () {
+    final restoredState = cubit.fromJson(
+      const <String, dynamic>{
+        'webPriceAccessibilityEnabled': true,
+      },
+    );
+
+    expect(restoredState?.webPriceAccessibilityEnabled, isTrue);
   });
 
   test('marks the charts showcase as seen and persists it', () async {

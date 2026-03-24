@@ -10,6 +10,8 @@ import 'package:currency_converter/feature/convert/data/repositories/convert_rep
 import 'package:currency_converter/feature/convert/domain/repositories/convert_repository.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
 import 'package:currency_converter/feature/convert/domain/usecases/get_latest_rates_usecase.dart';
+import 'package:currency_converter/feature/web_accessibility/extension_settings_bridge.dart';
+import 'package:currency_converter/feature/web_accessibility/extension_settings_bridge_factory.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -38,6 +40,9 @@ abstract final class Locator {
       )
       // Client Dependencies
       ..registerFactory(Dio.new)
+      ..registerLazySingleton<ExtensionSettingsBridge>(
+        createExtensionSettingsBridge,
+      )
       // Charts Datasources
       ..registerLazySingleton<ChartsRemoteDataSource>(
         () => ChartsRemoteDataSourceImpl(networkClient: instance()),
