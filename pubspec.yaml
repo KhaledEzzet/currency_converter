@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.8
 
   # Localization
   flutter_localizations:
@@ -70,6 +71,13 @@ flutter:
   generate: true
   uses-material-design: true
   fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
     - family: NotoNaskhArabic
       fonts:
         - asset: assets/fonts/NotoNaskhArabic-Regular.ttf
