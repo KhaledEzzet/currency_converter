@@ -1,7 +1,7 @@
 const SETTINGS_KEY = 'currencyConverterExtensionSettings';
 const DEFAULT_SETTINGS = {
   baseCurrency: 'USD',
-  webPriceAccessibilityEnabled: false,
+  webPriceAccessibilityEnabled: true,
 };
 const RATE_CACHE_TTL_MS = 15 * 60 * 1000;
 
@@ -25,7 +25,9 @@ async function getStoredSettings() {
       normalizeCurrencyCode(rawSettings?.baseCurrency) ??
       DEFAULT_SETTINGS.baseCurrency,
     webPriceAccessibilityEnabled:
-      rawSettings?.webPriceAccessibilityEnabled === true,
+      typeof rawSettings?.webPriceAccessibilityEnabled === 'boolean'
+        ? rawSettings.webPriceAccessibilityEnabled
+        : DEFAULT_SETTINGS.webPriceAccessibilityEnabled,
   };
 }
 

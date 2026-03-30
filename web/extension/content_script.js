@@ -44,7 +44,7 @@
 
   let extensionSettings = {
     baseCurrency: 'USD',
-    webPriceAccessibilityEnabled: false,
+    webPriceAccessibilityEnabled: true,
   };
   let tooltipElement = null;
   let mutationObserver = null;
@@ -81,7 +81,9 @@
     return {
       baseCurrency,
       webPriceAccessibilityEnabled:
-        settings?.webPriceAccessibilityEnabled === true,
+        typeof settings?.webPriceAccessibilityEnabled === 'boolean'
+          ? settings.webPriceAccessibilityEnabled
+          : true,
     };
   }
 

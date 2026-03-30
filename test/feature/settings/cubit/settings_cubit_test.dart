@@ -90,6 +90,10 @@ void main() {
     expect(cubit.state.settingsShowcaseSeen, isFalse);
   });
 
+  test('starts with webpage price accessibility enabled', () {
+    expect(cubit.state.webPriceAccessibilityEnabled, isTrue);
+  });
+
   test('marks the convert showcase as seen and persists it', () async {
     cubit.markConvertShowcaseSeen();
     await Future<void>.delayed(Duration.zero);
@@ -133,19 +137,19 @@ void main() {
   });
 
   test('persists the webpage price accessibility setting', () async {
-    cubit.updateWebPriceAccessibility(value: true);
+    cubit.updateWebPriceAccessibility(value: false);
     await Future<void>.delayed(Duration.zero);
 
-    expect(cubit.state.webPriceAccessibilityEnabled, isTrue);
+    expect(cubit.state.webPriceAccessibilityEnabled, isFalse);
     expect(storage.values, hasLength(1));
     expect(
       Map<String, dynamic>.from(storage.values.values.single as Map),
-      containsPair('webPriceAccessibilityEnabled', true),
+      containsPair('webPriceAccessibilityEnabled', false),
     );
     expect(extensionSettingsBridge.syncedPayloads, isNotEmpty);
     expect(
       extensionSettingsBridge.syncedPayloads.last.webPriceAccessibilityEnabled,
-      isTrue,
+      isFalse,
     );
   });
 
@@ -157,6 +161,25 @@ void main() {
     );
 
     expect(restoredState?.webPriceAccessibilityEnabled, isTrue);
+  });
+
+  test(
+    'defaults webpage price accessibility to true when restoring old state',
+    () {
+      final restoredState = cubit.fromJson(const <String, dynamic>{});
+
+      expect(restoredState?.webPriceAccessibilityEnabled, isTrue);
+    },
+  );
+
+  test('restores disabled webpage price accessibility from saved state', () {
+    final restoredState = cubit.fromJson(
+      const <String, dynamic>{
+        'webPriceAccessibilityEnabled': false,
+      },
+    );
+
+    expect(restoredState?.webPriceAccessibilityEnabled, isFalse);
   });
 
   test('marks the charts showcase as seen and persists it', () async {

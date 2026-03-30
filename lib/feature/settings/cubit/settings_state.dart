@@ -27,7 +27,7 @@ class SettingsState {
       displaySelectionInitialized: false,
       showCurrencyFlags: true,
       useCurrencySymbols: true,
-      webPriceAccessibilityEnabled: false,
+      webPriceAccessibilityEnabled: true,
       convertShowcaseSeen: false,
       chartsShowcaseSeen: false,
       settingsShowcaseSeen: false,

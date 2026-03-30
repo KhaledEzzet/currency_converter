@@ -222,8 +222,9 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     final rawWebPriceAccessibilityEnabled =
         json['webPriceAccessibilityEnabled'];
     final webPriceAccessibilityEnabled =
-        rawWebPriceAccessibilityEnabled is bool &&
-            rawWebPriceAccessibilityEnabled;
+        rawWebPriceAccessibilityEnabled is bool
+            ? rawWebPriceAccessibilityEnabled
+            : true;
     final rawConvertShowcaseSeen = json['convertShowcaseSeen'];
     final rawConvertShowcaseVersion = json['convertShowcaseSeenVersion'];
     final convertShowcaseSeen = rawConvertShowcaseSeen is bool &&
