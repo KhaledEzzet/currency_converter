@@ -3,7 +3,7 @@
   "name": "Currency Converter – Live Rates, Charts & Multi-Currency Tracking",
   "short_name": "Currency Converter",
   "description": "Real-time currency converter chrome extension with live exchange rates, historical currency charts, and forex rate tracker.",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "permissions": [
     "storage"
   ],
