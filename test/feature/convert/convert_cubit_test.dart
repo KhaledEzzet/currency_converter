@@ -35,7 +35,7 @@ void main() {
   setUpAll(() async {
     final dir = await Directory.systemTemp.createTemp('hydrated_bloc_test');
     HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: dir,
+      storageDirectory: HydratedStorageDirectory(dir.path),
     );
   });
 

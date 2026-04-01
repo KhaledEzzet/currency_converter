@@ -10,17 +10,23 @@ import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
-Future<void> bootstrap({required FutureOr<Widget> Function() builder, required AppEnvironment environment}) async {
+Future<void> bootstrap({
+  required FutureOr<Widget> Function() builder,
+  required AppEnvironment environment,
+}) async {
   FlutterError.onError = (details) {
-    LoggerUtils.instance.logFatalError(details.exceptionAsString(), details.stack);
+    LoggerUtils.instance
+        .logFatalError(details.exceptionAsString(), details.stack);
   };
   await runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: kIsWeb
-            ? HydratedStorage.webStorageDirectory
-            : await getApplicationDocumentsDirectory(),
+            ? HydratedStorageDirectory.web
+            : HydratedStorageDirectory(
+                (await getApplicationDocumentsDirectory()).path,
+              ),
       );
       // Initialize Locator and Utils
       await Future.wait([
