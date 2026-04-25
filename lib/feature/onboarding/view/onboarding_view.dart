@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:currency_converter/app/l10n/cubit/locale_cubit.dart';
+import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
 import 'package:currency_converter/feature/convert/view/widgets/currency_flag.dart';
 import 'package:currency_converter/feature/onboarding/cubit/onboarding_cubit.dart';
 import 'package:currency_converter/feature/onboarding/cubit/onboarding_state.dart';
@@ -71,7 +73,7 @@ class OnboardingView extends StatefulWidget {
 
 class _OnboardingViewState extends State<OnboardingView>
     with SingleTickerProviderStateMixin {
-  static const int _totalPages = 8;
+  static const int _totalPages = 10;
 
   late final PageController _pageController;
   late final AnimationController _pulseController;
@@ -170,7 +172,7 @@ class _OnboardingViewState extends State<OnboardingView>
 
   void _onPageChanged(int page) {
     setState(() => _currentPage = page);
-    if (page == 7) _beginProcessing();
+    if (page == 9) _beginProcessing();
   }
 
   void _beginProcessing() {
@@ -253,6 +255,14 @@ class _OnboardingViewState extends State<OnboardingView>
                               ? _selectedDisplay.remove(c)
                               : _selectedDisplay.add(c);
                         }),
+                        onNext: _goNext,
+                      ),
+                      _ThemeSelectionPage(
+                        isDark: isDark,
+                        onNext: _goNext,
+                      ),
+                      _LanguagePage(
+                        isDark: isDark,
                         onNext: _goNext,
                       ),
                       _ProcessingPage(
@@ -1452,6 +1462,374 @@ class _ProcessingPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+// ─── Screen 7: Theme Selection ─────────────────────────────────────────────
+
+class _ThemeSelectionPage extends StatelessWidget {
+  const _ThemeSelectionPage({required this.isDark, required this.onNext});
+  final bool isDark;
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ThemeCubit, ThemeMode>(
+      builder: (context, themeMode) {
+        final dark = themeMode == ThemeMode.dark;
+        final primary = dark ? Colors.white : const Color(0xff111111);
+        final secondary =
+            dark ? const Color(0xff98989f) : const Color(0xff6e6e73);
+        final cardBg = dark ? const Color(0xff1c1c1e) : Colors.white;
+        final border = dark ? const Color(0xff2c2c2e) : const Color(0xffe5e5ea);
+        final accent = dark ? const Color(0xff0a84ff) : const Color(0xff007aff);
+
+        return _PagePadding(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _PageTitle(
+                'How do you like your apps?',
+                isDark: dark,
+                subtitle: 'You can always change this in Settings.',
+              ),
+              const SizedBox(height: 24),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _ThemeCard(
+                        label: 'Light',
+                        emoji: '☀️',
+                        isSelected: themeMode == ThemeMode.light,
+                        isDark: dark,
+                        cardBg: cardBg,
+                        border: border,
+                        accent: accent,
+                        primary: primary,
+                        previewBg: const Color(0xfff5f5f7),
+                        previewCard: Colors.white,
+                        previewText: const Color(0xff111111),
+                        onTap: () {
+                          context.read<ThemeCubit>().setTheme(ThemeMode.light);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: _ThemeCard(
+                        label: 'Dark',
+                        emoji: '🌙',
+                        isSelected: themeMode == ThemeMode.dark,
+                        isDark: dark,
+                        cardBg: cardBg,
+                        border: border,
+                        accent: accent,
+                        primary: primary,
+                        previewBg: const Color(0xff000000),
+                        previewCard: const Color(0xff1c1c1e),
+                        previewText: Colors.white,
+                        onTap: () {
+                          context.read<ThemeCubit>().setTheme(ThemeMode.dark);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: onNext,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: accent,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size.fromHeight(54),
+                    textStyle: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    themeMode == ThemeMode.dark ? 'Dark it is →' : 'Keep it light →',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: Text(
+                  'The app changes live as you pick',
+                  style: TextStyle(color: secondary, fontSize: 13),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ThemeCard extends StatelessWidget {
+  const _ThemeCard({
+    required this.label,
+    required this.emoji,
+    required this.isSelected,
+    required this.isDark,
+    required this.cardBg,
+    required this.border,
+    required this.accent,
+    required this.primary,
+    required this.previewBg,
+    required this.previewCard,
+    required this.previewText,
+    required this.onTap,
+  });
+
+  final String label;
+  final String emoji;
+  final bool isSelected;
+  final bool isDark;
+  final Color cardBg;
+  final Color border;
+  final Color accent;
+  final Color primary;
+  final Color previewBg;
+  final Color previewCard;
+  final Color previewText;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedBorder = isSelected ? accent : border;
+    final selectedBg = isSelected ? accent.withValues(alpha: 0.06) : cardBg;
+
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          color: selectedBg,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: selectedBorder,
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: previewBg,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 8,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: previewText.withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: previewCard,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            _PreviewRow(
+                              color: previewText.withValues(alpha: 0.7),
+                            ),
+                            const SizedBox(height: 6),
+                            _PreviewRow(
+                              color: previewText.withValues(alpha: 0.5),
+                              width: 0.6,
+                            ),
+                            const SizedBox(height: 6),
+                            _PreviewRow(
+                              color: previewText.withValues(alpha: 0.4),
+                              width: 0.75,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(emoji, style: const TextStyle(fontSize: 22)),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? accent : primary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              if (isSelected) ...[
+                const SizedBox(height: 4),
+                Icon(CupertinoIcons.checkmark_circle_fill,
+                    color: accent, size: 18),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PreviewRow extends StatelessWidget {
+  const _PreviewRow({required this.color, this.width = 1.0});
+  final Color color;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) => Container(
+        height: 5,
+        width: constraints.maxWidth * width,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(3),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Screen 8: Language ────────────────────────────────────────────────────
+
+class _LanguagePage extends StatelessWidget {
+  const _LanguagePage({required this.isDark, required this.onNext});
+  final bool isDark;
+  final VoidCallback onNext;
+
+  static const _languages = [
+    ('en', '🇺🇸', 'English'),
+    ('ar', '🇸🇦', 'العربية'),
+    ('de', '🇩🇪', 'Deutsch'),
+    ('fr', '🇫🇷', 'Français'),
+    ('hi', '🇮🇳', 'हिन्दी'),
+    ('pl', '🇵🇱', 'Polski'),
+    ('ru', '🇷🇺', 'Русский'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LocaleCubit, Locale>(
+      builder: (context, locale) {
+        final dark = Theme.of(context).brightness == Brightness.dark;
+        final primary = dark ? Colors.white : const Color(0xff111111);
+        final cardBg = dark ? const Color(0xff1c1c1e) : Colors.white;
+        final border = dark ? const Color(0xff2c2c2e) : const Color(0xffe5e5ea);
+        final accent = dark ? const Color(0xff0a84ff) : const Color(0xff007aff);
+
+        return _PagePadding(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _PageTitle(
+                'What language do you speak?',
+                isDark: dark,
+                subtitle: 'The whole app switches instantly.',
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: cardBg,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: border),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: ListView.separated(
+                      padding: EdgeInsets.zero,
+                      itemCount: _languages.length,
+                      separatorBuilder: (_, __) => Divider(
+                        height: 1,
+                        color: border,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                      itemBuilder: (context, i) {
+                        final (code, flag, name) = _languages[i];
+                        final isSelected = locale.languageCode == code;
+                        return GestureDetector(
+                          onTap: () {
+                            context
+                                .read<LocaleCubit>()
+                                .updateLocale(Locale(code));
+                            Future.delayed(
+                              const Duration(milliseconds: 200),
+                              onNext,
+                            );
+                          },
+                          behavior: HitTestBehavior.opaque,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  flag,
+                                  style: const TextStyle(fontSize: 22),
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Text(
+                                    name,
+                                    style: TextStyle(
+                                      color: isSelected ? accent : primary,
+                                      fontSize: 16,
+                                      fontWeight: isSelected
+                                          ? FontWeight.w700
+                                          : FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                if (isSelected)
+                                  Icon(
+                                    CupertinoIcons.checkmark_circle_fill,
+                                    color: accent,
+                                    size: 20,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
