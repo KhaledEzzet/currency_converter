@@ -5,8 +5,12 @@ import 'package:currency_converter/app/router/app_router.dart';
 import 'package:currency_converter/app/theme/cubit/theme_cubit.dart';
 import 'package:currency_converter/app/theme/dark/dark_theme.dart';
 import 'package:currency_converter/app/theme/light/light_theme.dart';
+import 'package:currency_converter/feature/convert/domain/usecases/get_currencies_usecase.dart';
 import 'package:currency_converter/feature/onboarding/cubit/onboarding_cubit.dart';
 import 'package:currency_converter/feature/onboarding/view/onboarding_view.dart';
+import 'package:currency_converter/feature/settings/cubit/settings_cubit.dart';
+import 'package:currency_converter/feature/web_accessibility/extension_settings_bridge.dart';
+import 'package:currency_converter/locator.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,6 +87,12 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => OnboardingCubit(),
+        ),
+        BlocProvider(
+          create: (_) => SettingsCubit(
+            getCurrenciesUseCase: Locator.resolve<GetCurrenciesUseCase>(),
+            extensionSettingsBridge: Locator.resolve<ExtensionSettingsBridge>(),
+          )..initialize(),
         ),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
